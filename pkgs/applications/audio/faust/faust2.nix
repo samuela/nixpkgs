@@ -31,7 +31,7 @@ let
   };
 
   meta = with stdenv.lib; {
-    homepage = "https://faust.grame.fr/";
+    homepage = "http://faust.grame.fr/";
     downloadPage = "https://github.com/grame-cncm/faust/";
     license = licenses.gpl2;
     platforms = platforms.linux;

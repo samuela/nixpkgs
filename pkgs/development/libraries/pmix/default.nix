@@ -3,7 +3,7 @@
 } :
 
 let
-  version = "3.2.1";
+  version = "3.2.0";
 
 in stdenv.mkDerivation {
   pname = "pmix";
@@ -13,7 +13,7 @@ in stdenv.mkDerivation {
     repo = "openpmix";
     owner = "openpmix";
     rev = "v${version}";
-    sha256 = "0c9q9a18kdilj6ddqlsvalyv4js79qvslnccn79xl2gl3wm3lyzh";
+    sha256 = "171hpz0m6lpyjd1hkxy7fl06fcgymz8cssqgbxzg92b7x595276b";
   };
 
   postPatch = ''

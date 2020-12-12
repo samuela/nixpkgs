@@ -1,4 +1,4 @@
-{ fetchFromGitHub, lib, mkDerivation
+{ stdenv, fetchFromGitHub
 # nativeBuildInputs
 , qmake, pkgconfig
 # Qt
@@ -8,7 +8,7 @@
 , python3
 , wrapQtAppsHook }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "radare2-cutter";
   version = "1.12.0";
 
@@ -30,31 +30,21 @@ mkDerivation rec {
       --replace "include(lib_radare2.pri)" ""
   '';
 
-  nativeBuildInputs = [ qmake pkgconfig python3 wrapQtAppsHook ];
-  propagatedBuildInputs = [ python3.pkgs.pyside2 ];
-  buildInputs = [ qtbase qtsvg qtwebengine r2-for-cutter python3 ];
+  nativeBuildInputs = [ qmake pkgconfig ];
+  buildInputs = [ qtbase qtsvg qtwebengine r2-for-cutter python3 wrapQtAppsHook ];
 
-  qmakeFlags = with python3.pkgs; [
+  qmakeFlags = [
     "CONFIG+=link_pkgconfig"
     "PKGCONFIG+=r_core"
     # Leaving this enabled doesn't break build but generates errors
     # at runtime (to console) about being unable to load needed bits.
     # Disable until can be looked at.
     "CUTTER_ENABLE_JUPYTER=false"
-    # Enable support for Python plugins
-    "CUTTER_ENABLE_PYTHON=true"
-    "CUTTER_ENABLE_PYTHON_BINDINGS=true"
-    "SHIBOKEN_EXTRA_OPTIONS+=-I${r2-for-cutter}/include/libr"
   ];
-
-  preBuild = ''
-    export NIX_LDFLAGS="$NIX_LDFLAGS $(pkg-config --libs python3-embed)"
-    qtWrapperArgs+=(--prefix PYTHONPATH : "$PYTHONPATH")
-  '';
 
   enableParallelBuilding = true;
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "A Qt and C++ GUI for radare2 reverse engineering framework";
     homepage = src.meta.homepage;
     license = licenses.gpl3;

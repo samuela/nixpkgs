@@ -1,8 +1,9 @@
-{ stdenv, fetchurl, installShellFiles }:
-
+{ stdenv, fetchurl }:
 stdenv.mkDerivation rec {
   version = "1.12";
   pname = "beanstalkd";
+
+  installPhase=''make install "PREFIX=$out"'';
 
   src = fetchurl {
     url = "https://github.com/kr/beanstalkd/archive/v${version}.tar.gz";
@@ -10,14 +11,6 @@ stdenv.mkDerivation rec {
   };
 
   hardeningDisable = [ "fortify" ];
-
-  makeFlags = [ "PREFIX=${placeholder "out"}" ];
-
-  nativeBuildInputs = [ installShellFiles ];
-
-  postInstall = ''
-    installManPage doc/beanstalkd.1
-  '';
 
   meta = with stdenv.lib; {
     homepage = "http://kr.github.io/beanstalkd/";
@@ -27,3 +20,4 @@ stdenv.mkDerivation rec {
     platforms = platforms.all;
   };
 }
+

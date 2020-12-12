@@ -63,8 +63,7 @@ redoxRustPlatform.buildRustPackage rec {
     DESTDIR=$out make install
   '';
 
-  # TODO: should be hostPlatform
-  TARGET = buildPackages.rust.toRustTargetSpec stdenvNoCC.targetPlatform;
+  TARGET = buildPackages.rust.toRustTarget stdenvNoCC.targetPlatform;
 
   cargoSha256 = "1fzz7ba3ga57x1cbdrcfrdwwjr70nh4skrpxp4j2gak2c3scj6rz";
 

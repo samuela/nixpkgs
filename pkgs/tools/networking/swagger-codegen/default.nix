@@ -1,7 +1,7 @@
 { stdenv, fetchurl, jre, makeWrapper }:
 
 stdenv.mkDerivation rec {
-  version = "2.4.17";
+  version = "2.3.1";
   pname = "swagger-codegen";
 
   jarfilename = "${pname}-cli-${version}.jar";
@@ -11,8 +11,8 @@ stdenv.mkDerivation rec {
   ];
 
   src = fetchurl {
-    url = "https://repo1.maven.org/maven2/io/swagger/${pname}-cli/${version}/${jarfilename}";
-    sha256 = "06xx42ayh4xqpr71lq1hj7kv1v6m9ld9jm1d15fhs935zqckv32a";
+    url = "https://oss.sonatype.org/content/repositories/releases/io/swagger/${pname}-cli/${version}/${jarfilename}";
+    sha256 = "171qr0zx7i6cykv54vqjf3mplrf7w4a1fpq47wsj861lbf8xm322";
   };
 
   phases = [ "installPhase" ];

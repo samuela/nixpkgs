@@ -6,7 +6,7 @@
 , capturer
 , pytest
 , mock
-, util-linux
+, utillinux
 }:
 
 buildPythonPackage rec {
@@ -24,7 +24,7 @@ buildPythonPackage rec {
     PATH=$PATH:$out/bin pytest . -k "not test_plain_text_output_format \
                                      and not test_auto_install"
   '';
-  checkInputs = [ pytest mock util-linux ];
+  checkInputs = [ pytest mock utillinux ];
 
   propagatedBuildInputs = [ humanfriendly verboselogs capturer ];
 

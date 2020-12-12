@@ -5,11 +5,12 @@
 , withVoice ? true, libopus
 , aiohttp
 , websockets
+, pynacl
 }:
 
 buildPythonPackage rec {
   pname = "discord.py";
-  version = "1.5.1";
+  version = "1.3.4";
   disabled = pythonOlder "3.5.3";
 
   # only distributes wheels on pypi now
@@ -17,7 +18,7 @@ buildPythonPackage rec {
     owner = "Rapptz";
     repo = pname;
     rev = "v${version}";
-    sha256 = "1bidyclwv20p1kfphj21r5gm3kr2vxx0zd151wg7fcngbbx7gmza";
+    sha256 = "1i4h6vq681x8s05wi0n3ykavsxjh9hxdxn6banwjcqzhxzkyhsxi";
   };
 
   propagatedBuildInputs = [ aiohttp websockets ];
@@ -29,6 +30,7 @@ buildPythonPackage rec {
     substituteInPlace "discord/opus.py" \
       --replace "ctypes.util.find_library('opus')" "'${libopus}/lib/libopus.so.0'"
   '';
+
 
   # only have integration tests with discord
   doCheck = false;
@@ -44,10 +46,9 @@ buildPythonPackage rec {
     "discord.ext.commands.bot"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "A python wrapper for the Discord API";
-    homepage = "https://discordpy.rtfd.org/";
-    maintainers = [ maintainers.ivar ];
-    license = licenses.mit;
+    homepage    = "https://discordpy.rtfd.org/";
+    license     = lib.licenses.mit;
   };
 }

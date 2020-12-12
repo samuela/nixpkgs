@@ -7,8 +7,6 @@ buildDunePackage rec {
   pname = "ke";
   version = "0.4";
 
-  useDune2 = true;
-
   src = fetchurl {
     url = "https://github.com/mirage/ke/releases/download/v${version}/ke-v${version}.tbz";
     sha256 = "13c9xy60vmq29mnwpg3h3zgl6gjbjfwbx1s0crfc6xwvark0zxnx";
@@ -16,7 +14,7 @@ buildDunePackage rec {
 
   propagatedBuildInputs = [ bigarray-compat fmt ];
 
-  checkInputs = [ alcotest bigstringaf ];
+  checkInputs = lib.optionals doCheck [ alcotest bigstringaf ];
   doCheck = true;
 
   minimumOCamlVersion = "4.03";

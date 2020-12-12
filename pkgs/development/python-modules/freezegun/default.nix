@@ -1,6 +1,5 @@
 { stdenv
 , buildPythonPackage
-, pythonOlder
 , fetchPypi
 , isPy27
 , dateutil
@@ -12,12 +11,11 @@
 
 buildPythonPackage rec {
   pname = "freezegun";
-  version = "1.0.0";
-  disabled = pythonOlder "3.5";
+  version = "0.3.15";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1cf08e441f913ff5e59b19cc065a8faa9dd1ddc442eaf0375294f344581a0643";
+    sha256 = "e2062f2c7f95cc276a834c22f1a17179467176b624cc6f936e8bc3be5535ad1b";
   };
 
   propagatedBuildInputs = [ dateutil six ];

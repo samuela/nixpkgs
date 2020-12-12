@@ -4,23 +4,25 @@
 }:
 
 let
-  inherit (python3Packages) docutils python;
+  inherit (python3Packages) docutils dulwich python;
 
 in python3Packages.buildPythonApplication rec {
   pname = "mercurial";
-  version = "5.6";
+  version = "5.4.2";
 
   src = fetchurl {
     url = "https://mercurial-scm.org/release/mercurial-${version}.tar.gz";
-    sha256 = "1hk2y30zzdnlv8f71kabvh0xi9c7qhp28ksh20vpd0r712sv79yz";
+    sha256 = "0ls8nwx3nz26pibphw54fg8pxqb365zmmqx95lqrxqqyf3d972sw";
   };
 
   format = "other";
 
-  passthru = { inherit python; }; # pass it so that the same version can be used in hg2git
+  inherit python; # pass it so that the same version can be used in hg2git
 
   buildInputs = [ makeWrapper docutils unzip ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ ApplicationServices ];
+
+  propagatedBuildInputs = [ dulwich ];
 
   makeFlags = [ "PREFIX=$(out)" ];
 

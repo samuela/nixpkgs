@@ -6,16 +6,16 @@ in
 
 rustPlatform.buildRustPackage rec {
   pname = "leftwm";
-  version = "0.2.5";
+  version = "0.2.4";
 
   src = fetchFromGitHub {
     owner = "leftwm";
     repo = "leftwm";
     rev = version;
-    sha256 = "03kk3vg0r88317zv8j2bj44wq2fwxi25rv1aasvayrh1i5j6zr10";
+    sha256 = "0xmkhkdpz1bpczrar9y6assdzhd7qxybnkjqs36h099fk9xqmsav";
   };
 
-  cargoSha256 = "0m4sv4chxzk60njixlyja44rpn04apf3bm04fgd3v7abpr169f2s";
+  cargoSha256 = "06wnx81fhs19pz5qnir6h2v2kmj73y1g354nadcx6650q9pnhdv4";
 
   buildInputs = [ makeWrapper libX11 libXinerama ];
 

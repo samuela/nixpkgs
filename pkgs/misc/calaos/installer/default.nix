@@ -1,14 +1,14 @@
 { mkDerivation, stdenv, fetchFromGitHub, qmake, qttools, qtbase }:
 
 mkDerivation rec {
-  pname = "calaos_installer";
-  version = "3.5";
+  name = "calaos_installer-3.1";
+  version = "3.1";
 
   src = fetchFromGitHub {
     owner = "calaos";
     repo = "calaos_installer";
     rev = "v${version}";
-    sha256 = "hx7XVF2iueKFR67U0EvSK1vYZnJBnuOpUOkSjx7h1XY=";
+    sha256 = "0g8igj5sax5vjqzrpbil7i6329708lqqwvg5mwiqd0zzzha9sawd";
   };
 
   nativeBuildInputs = [ qmake qttools ];

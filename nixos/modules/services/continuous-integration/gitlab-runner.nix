@@ -541,7 +541,7 @@ in
         jq
         moreutils
         remarshal
-        util-linux
+        utillinux
         cfg.package
       ] ++ cfg.extraPackages;
       reloadIfChanged = true;

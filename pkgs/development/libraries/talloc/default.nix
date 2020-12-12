@@ -1,6 +1,6 @@
 { stdenv
 , fetchurl
-, python3
+, python
 , pkg-config
 , readline
 , libxslt
@@ -10,7 +10,7 @@
 , wafHook
 }:
 
-stdenv.mkDerivation (rec {
+stdenv.mkDerivation rec {
   pname = "talloc";
   version = "2.3.1";
 
@@ -22,14 +22,13 @@ stdenv.mkDerivation (rec {
   nativeBuildInputs = [
     pkg-config
     fixDarwinDylibNames
-    python3
+    python
     wafHook
     docbook-xsl-nons
     docbook_xml_dtd_42
   ];
 
   buildInputs = [
-    python3
     readline
     libxslt
   ];
@@ -57,9 +56,4 @@ stdenv.mkDerivation (rec {
     license = licenses.gpl3;
     platforms = platforms.all;
   };
-} // stdenv.lib.optionalAttrs (stdenv.hostPlatform != stdenv.buildPlatform) {
-  # python-config from build Python gives incorrect values when cross-compiling.
-  # If python-config is not found, the build falls back to using the sysconfig
-  # module, which works correctly when cross-compiling.
-  PYTHON_CONFIG = "/invalid";
-})
+}

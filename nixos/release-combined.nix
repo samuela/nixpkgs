@@ -49,7 +49,6 @@ in rec {
         [ "nixos.channel" ]
         (onFullSupported "nixos.dummy")
         (onAllSupported "nixos.iso_minimal")
-        (onSystems ["x86_64-linux" "aarch64-linux"] "nixos.amazonImage")
         (onSystems ["x86_64-linux"] "nixos.iso_plasma5")
         (onSystems ["x86_64-linux"] "nixos.iso_gnome")
         (onFullSupported "nixos.manual")
@@ -98,7 +97,6 @@ in rec {
         (onFullSupported "nixos.tests.login")
         (onFullSupported "nixos.tests.misc")
         (onFullSupported "nixos.tests.mutableUsers")
-        (onFullSupported "nixos.tests.nano")
         (onFullSupported "nixos.tests.nat.firewall-conntrack")
         (onFullSupported "nixos.tests.nat.firewall")
         (onFullSupported "nixos.tests.nat.standalone")

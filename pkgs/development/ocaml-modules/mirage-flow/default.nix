@@ -4,7 +4,6 @@ buildDunePackage rec {
   pname = "mirage-flow";
   version = "2.0.1";
 
-  useDune2 = true;
   minimumOCamlVersion = "4.05";
 
   src = fetchurl {

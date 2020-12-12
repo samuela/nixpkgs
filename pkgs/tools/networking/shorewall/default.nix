@@ -10,7 +10,7 @@
 , perlPackages
 , stdenv
 , tree
-, util-linux
+, utillinux
 }:
 let
   PATH = stdenv.lib.concatStringsSep ":"
@@ -19,7 +19,7 @@ let
              "${iptables}/bin"
              "${ipset}/bin"
              "${ebtables}/bin"
-             "${util-linux}/bin"
+             "${utillinux}/bin"
              "${gnugrep}/bin"
              "${gnused}/bin"
            ];
@@ -50,7 +50,7 @@ stdenv.mkDerivation rec {
     ipset
     iptables
     ebtables
-    util-linux
+    utillinux
     gnugrep
     gnused
     perl

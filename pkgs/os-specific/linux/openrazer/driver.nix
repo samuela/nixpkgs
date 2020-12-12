@@ -2,7 +2,7 @@
 , fetchFromGitHub
 , kernel
 , stdenv
-, util-linux
+, utillinux
 }:
 
 let
@@ -28,7 +28,7 @@ stdenv.mkDerivation (common // {
     substituteInPlace $RAZER_RULES_OUT \
       --replace razer_mount $RAZER_MOUNT_OUT
     substituteInPlace $RAZER_MOUNT_OUT \
-      --replace /usr/bin/logger ${util-linux}/bin/logger \
+      --replace /usr/bin/logger ${utillinux}/bin/logger \
       --replace chgrp ${coreutils}/bin/chgrp \
       --replace "PATH='/sbin:/bin:/usr/sbin:/usr/bin'" ""
   '';

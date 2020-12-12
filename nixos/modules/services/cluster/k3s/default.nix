@@ -76,10 +76,6 @@ in
       enable = mkDefault true;
     };
 
-    # TODO: disable this once k3s supports cgroupsv2, either by docker
-    # supporting it, or their bundled containerd
-    systemd.enableUnifiedCgroupHierarchy = false;
-
     systemd.services.k3s = {
       description = "k3s service";
       after = mkIf cfg.docker [ "docker.service" ];

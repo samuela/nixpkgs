@@ -4,14 +4,14 @@
 
 buildPythonPackage rec {
   pname = "zigpy-deconz";
-  version = "0.11.0";
+  version = "0.9.2";
 
   propagatedBuildInputs = [ pyserial pyserial-asyncio zigpy ];
   checkInputs = [ pytest pytest-asyncio asynctest ];
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "a2263f8bc5807ebac55bb665eca553b514384ce270b66f83df02c39184193020";
+    sha256 = "f4256136d714c00d22f6d2abf975438e2bc080cc43b8afef0decb80ed8066ef6";
   };
 
   meta = with stdenv.lib; {

@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "jsonnet";
-  version = "0.17.0";
+  version = "0.16.0";
 
   src = fetchFromGitHub {
     rev = "v${version}";
     owner = "google";
     repo = "jsonnet";
-    sha256 = "1ddz14699v5lqx3dh0mb7hfffr6fk5zhmzn3z8yxkqqvriqnciim";
+    sha256 = "0wxhc0ghjk88zrrn9a18h979ipkia2rx12489515gzhlplfx6724";
   };
 
   enableParallelBuilding = true;

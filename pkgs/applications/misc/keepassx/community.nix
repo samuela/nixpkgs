@@ -31,7 +31,7 @@
 , withKeePassKeeShare ? true
 , withKeePassKeeShareSecure ? true
 , withKeePassSSHAgent ? true
-, withKeePassNetworking ? true
+, withKeePassNetworking ? false
 , withKeePassTouchID ? true
 , withKeePassFDOSecrets ? true
 }:

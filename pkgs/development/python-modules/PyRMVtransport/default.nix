@@ -1,13 +1,13 @@
 { lib, buildPythonPackage, fetchFromGitHub
 , flit
-, lxml, httpx
-, pytest, pytestcov, pytest-asyncio, pytest-mock, aresponses
+, lxml, aiohttp
+, pytest, pytestcov, pytest-asyncio, pytest-mock, pytest-aiohttp, aresponses
 , pythonOlder
 }:
 
 buildPythonPackage rec {
   pname = "PyRMVtransport";
-  version = "0.2.10";
+  version = "0.2.9";
   format = "pyproject";
   disabled = pythonOlder "3.6";
 
@@ -15,7 +15,7 @@ buildPythonPackage rec {
     owner = "cgtobi";
     repo = pname;
     rev = "v${version}";
-    sha256 = "03qrylidb1d6zw6a22d1drdf73cvfxqcqaa8qi8x4pli1axcfh5w";
+    sha256 = "1h3d0yxzrfi47zil5gr086v0780q768z8v5psvcikqw852f93vxb";
   };
 
   nativeBuildInputs = [
@@ -23,19 +23,16 @@ buildPythonPackage rec {
   ];
 
   propagatedBuildInputs = [
-    httpx
+    aiohttp
     lxml
   ];
-
-  # requires pytest-httpx
-  doCheck = false;
 
   checkInputs = [
     pytest
     pytestcov
     pytest-asyncio
     pytest-mock
-    # pytest-httpx is missing
+    pytest-aiohttp
     aresponses
   ];
   checkPhase = ''

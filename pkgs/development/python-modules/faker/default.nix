@@ -1,43 +1,40 @@
 { lib, buildPythonPackage, fetchPypi, pythonOlder,
-# Build inputs
-dateutil, six, text-unidecode, ipaddress ? null
-# Test inputs
-, email_validator
-, freezegun
-, mock
-, more-itertools
-, pytestCheckHook
-, pytestrunner
-, ukpostcodeparser
-, validators
+  # Build inputs
+  dateutil, six, text-unidecode, ipaddress ? null
+  # Test inputs
+  , email_validator
+  , freezegun
+  , mock
+  , more-itertools
+  , pytest
+  , pytestrunner
+  , random2
+  , ukpostcodeparser
+  , validators
 }:
 
 assert pythonOlder "3.3" -> ipaddress != null;
 
 buildPythonPackage rec {
   pname = "Faker";
-  version = "4.18.0";
+  version = "4.1.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0raxw6mgvf9523v7917zqw76vqnpp0d6v3i310qnjnhpxmm78yb2";
+    sha256 = "ff188c416864e3f7d8becd8f9ee683a4b4101a2a2d2bcdcb3e84bb1bdd06eaae";
   };
 
   nativeBuildInputs = [ pytestrunner ];
   checkInputs = [
     email_validator
     freezegun
-    pytestCheckHook
+    pytest
+    random2
     ukpostcodeparser
     validators
   ]
   ++ lib.optionals (pythonOlder "3.3") [ mock ]
   ++ lib.optionals (pythonOlder "3.0") [ more-itertools ];
-
-  # avoid tests which import random2, an abandoned library
-  pytestFlagsArray = [
-    "--ignore=tests/providers/test_ssn.py"
-  ];
 
   propagatedBuildInputs = [
     dateutil

@@ -1,4 +1,4 @@
-{ stdenv, rustc, minimalContent ? true }:
+{ stdenv, rustc }:
 
 stdenv.mkDerivation {
   name = "rust-src";
@@ -6,9 +6,6 @@ stdenv.mkDerivation {
   phases = [ "unpackPhase" "installPhase" ];
   installPhase = ''
     mv src $out
-    rm -rf $out/{${if minimalContent
-      then "ci,doc,etc,grammar,llvm-project,llvm-emscripten,rtstartup,rustllvm,test,tools,vendor,stdarch"
-      else "ci,doc,etc,grammar,llvm-project,llvm-emscripten,rtstartup,rustllvm,test,vendor"
-    }}
+    rm -rf $out/{ci,doc,etc,grammar,llvm-project,llvm-emscripten,rtstartup,rustllvm,test,tools,vendor,stdarch}
   '';
 }

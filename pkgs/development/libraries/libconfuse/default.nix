@@ -2,20 +2,14 @@
 
 stdenv.mkDerivation rec {
   pname = "libconfuse";
-  version = "3.3";
+  version = "3.2.2";
 
   src = fetchFromGitHub {
-    sha256 = "1npfk5jv59kk4n8pkyx89fn9s6p8x3gbffs42jaw24frgxfgp8ca";
+    sha256 = "0djjq7j9iiyqxqqrlzm476xkibjasqvgzjwkalgj1l3f2smi53aw";
     rev = "v${version}";
     repo = "libconfuse";
     owner = "martinh";
   };
-
-  postPatch = ''
-    substituteInPlace tests/Makefile.am \
-      --replace 'TESTS            += empty_string' "" \
-      --replace 'TESTS            += print_filter' ""
-  '';
 
   nativeBuildInputs = [ autoreconfHook flex ];
 

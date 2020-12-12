@@ -1,5 +1,5 @@
 { stdenv, libsodium, fetchFromGitHub, wget, pkgconfig, autoreconfHook, openssl, db62, boost17x
-, zlib, gtest, gmock, callPackage, gmp, qt4, util-linux, protobuf, qrencode, libevent }:
+, zlib, gtest, gmock, callPackage, gmp, qt4, utillinux, protobuf, qrencode, libevent }:
 
 let librustzcash = callPackage ./librustzcash {};
 in
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
   buildInputs = [ gtest gmock gmp openssl wget db62 boost17x zlib
                   protobuf libevent libsodium librustzcash ]
-                  ++ optionals stdenv.isLinux [ util-linux ];
+                  ++ optionals stdenv.isLinux [ utillinux ];
 
   configureFlags = [ "--with-boost-libdir=${boost17x.out}/lib" ];
 

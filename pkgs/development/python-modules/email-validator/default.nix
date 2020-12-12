@@ -1,12 +1,12 @@
 { lib, buildPythonPackage, fetchPypi, isPy3k, dnspython, idna, ipaddress }:
 
 buildPythonPackage rec {
-  pname = "email-validator";
-  version = "1.1.2";
+  pname = "email_validator";
+  version = "1.1.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1a13bd6050d1db4475f13e444e169b6fe872434922d38968c67cea9568cce2f0";
+    sha256 = "63094045c3e802c3d3d575b18b004a531c36243ca8d1cec785ff6bfcb04185bb";
   };
 
   doCheck = false;

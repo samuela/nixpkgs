@@ -1,6 +1,6 @@
-{ mkDerivation, lib, fetchurl, qmake }:
+{ stdenv, lib, fetchurl, wrapQtAppsHook, qmake }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "xflr5";
   version = "6.47";
 
@@ -11,9 +11,9 @@ mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  nativeBuildInputs = [ qmake ];
+  nativeBuildInputs = [ qmake wrapQtAppsHook ];
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "An analysis tool for airfoils, wings and planes";
     homepage = https://sourceforge.net/projects/xflr5/;
     license = licenses.gpl3;

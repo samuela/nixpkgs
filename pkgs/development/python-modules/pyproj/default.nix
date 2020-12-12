@@ -1,7 +1,7 @@
 { lib, buildPythonPackage, fetchFromGitHub, python, pkgs, pythonOlder, isPy27, substituteAll
 , aenum
 , cython
-, pytestCheckHook
+, pytest
 , mock
 , numpy
 , shapely
@@ -34,23 +34,20 @@ buildPythonPackage rec {
     numpy shapely
   ] ++ lib.optional (pythonOlder "3.6") aenum;
 
-  checkInputs = [ pytestCheckHook mock ];
+  checkInputs = [ pytest mock ];
 
-  # prevent importing local directory
-  preCheck = "cd test";
-  pytestFlagsArray = [
-    "--ignore=test_doctest_wrapper.py"
-    "--ignore=test_datadir.py"
-  ];
-
-  disabledTests = [
-    "alternative_grid_name"
-    "transform_wgs84_to_alaska"
-    "transformer_group__unavailable"
-    "transform_group__missing_best"
-    "datum"
-    "repr"
-  ];
+  # ignore rounding errors, and impure docgen
+  # datadir is ignored because it does the proj look up logic, which isn't relevant
+  checkPhase = ''
+    pytest . -k 'not alternative_grid_name \
+                 and not transform_wgs84_to_alaska \
+                 and not transformer_group__unavailable \
+                 and not transform_group__missing_best \
+                 and not datum \
+                 and not repr' \
+            --ignore=test/test_doctest_wrapper.py \
+            --ignore=test/test_datadir.py
+  '';
 
   meta = {
     description = "Python interface to PROJ.4 library";

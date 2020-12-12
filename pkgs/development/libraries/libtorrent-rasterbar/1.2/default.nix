@@ -1,10 +1,10 @@
-{ stdenv, fetchFromGitHub, pkg-config, automake, autoconf
-, zlib, boost, openssl, libtool, python, libiconv, ncurses, SystemConfiguration
+{ stdenv, lib, fetchFromGitHub, pkgconfig, automake, autoconf
+, zlib, boost, openssl, libtool, python, libiconv, ncurses
 }:
 
 let
   version = "1.2.6";
-  formattedVersion = stdenv.lib.replaceChars ["."] ["_"] version;
+  formattedVersion = lib.replaceChars ["."] ["_"] version;
 
   # Make sure we override python, so the correct version is chosen
   # for the bindings, if overridden
@@ -22,12 +22,8 @@ in stdenv.mkDerivation {
   };
 
   enableParallelBuilding = true;
-
-  nativeBuildInputs = [ automake autoconf libtool pkg-config ];
-
-  buildInputs = [ boostPython openssl zlib python libiconv ncurses ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [ SystemConfiguration ];
-
+  nativeBuildInputs = [ automake autoconf libtool pkgconfig ];
+  buildInputs = [ boostPython openssl zlib python libiconv ncurses ];
   preConfigure = "./autotool.sh";
 
   postInstall = ''
@@ -49,7 +45,6 @@ in stdenv.mkDerivation {
     description = "A C++ BitTorrent implementation focusing on efficiency and scalability";
     license = licenses.bsd3;
     maintainers = [ maintainers.phreedom ];
-    broken = stdenv.isDarwin;
     platforms = platforms.unix;
   };
 }

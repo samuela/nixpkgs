@@ -1,7 +1,6 @@
 { stdenv, mkDerivationWith, fetchFromGitHub, fetchpatch
 , doxygen, python3Packages, libopenshot
-, wrapGAppsHook, gtk3
-, qtsvg }:
+, wrapGAppsHook, gtk3 }:
 
 mkDerivationWith python3Packages.buildPythonApplication rec {
   pname = "openshot-qt";
@@ -30,12 +29,6 @@ mkDerivationWith python3Packages.buildPythonApplication rec {
 
   postFixup = ''
     wrapProgram $out/bin/openshot-qt \
-  ''
-  # Fix toolbar icons on Darwin
-  + stdenv.lib.optionalString stdenv.isDarwin ''
-      --suffix QT_PLUGIN_PATH : "${stdenv.lib.getBin qtsvg}/lib/qt-5.12.7/plugins" \
-  ''
-  + ''
       "''${gappsWrapperArgs[@]}" \
       "''${qtWrapperArgs[@]}"
   '';
@@ -54,9 +47,6 @@ mkDerivationWith python3Packages.buildPythonApplication rec {
     '';
     license = with licenses; gpl3Plus;
     maintainers = with maintainers; [ AndersonTorres ];
-    platforms = with platforms; unix;
-    # Cannot use a newer Qt (5.15) version because it requires qtwebkit
-    # and our qtwebkit fails to build with 5.15. 01bcfd3579219d60e5d07df309a000f96b2b658b
-    broken = true;
+    platforms = with platforms; linux;
   };
 }

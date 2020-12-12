@@ -27,7 +27,7 @@ in
               popd
             '';
           diskImageBase = "nixos-image-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.raw";
-          buildInputs = [ pkgs.util-linux pkgs.perl ];
+          buildInputs = [ pkgs.utillinux pkgs.perl ];
           exportReferencesGraph =
             [ "closure" config.system.build.toplevel ];
         }

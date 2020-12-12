@@ -3,9 +3,7 @@
 , libopenshot-audio, imagemagick, ffmpeg_3
 , swig, python3
 , unittest-cpp, cppzmq, zeromq
-, qtbase, qtmultimedia
-, llvmPackages
-}:
+, qtbase, qtmultimedia }:
 
 with stdenv.lib;
 stdenv.mkDerivation rec {
@@ -29,9 +27,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
   [ imagemagick ffmpeg_3 swig python3 unittest-cpp
-    cppzmq zeromq qtbase qtmultimedia ]
-    ++ optional stdenv.isDarwin llvmPackages.openmp
-  ;
+    cppzmq zeromq qtbase qtmultimedia ];
 
   LIBOPENSHOT_AUDIO_DIR = libopenshot-audio;
   "UNITTEST++_INCLUDE_DIR" = "${unittest-cpp}/include/UnitTest++";
@@ -50,6 +46,6 @@ stdenv.mkDerivation rec {
     '';
     license = with licenses; gpl3Plus;
     maintainers = with maintainers; [ AndersonTorres ];
-    platforms = with platforms; unix;
+    platforms = with platforms; linux;
   };
 }

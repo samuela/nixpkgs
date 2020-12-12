@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, makeWrapper, darwin, bootstrap-chicken ? null }:
+{ stdenv, fetchurl, makeWrapper, bootstrap-chicken ? null }:
 
 let
   version = "5.2.0";
@@ -21,21 +21,14 @@ stdenv.mkDerivation {
     sha256 = "1yl0hxm9cirgcp8jgxp6vv29lpswfvaw3zfkh6rsj0vkrv44k4c1";
   };
 
-  setupHook = lib.optional (bootstrap-chicken != null) ./setup-hook.sh;
+  setupHook = lib.ifEnable (bootstrap-chicken != null) ./setup-hook.sh;
 
-  # -fno-strict-overflow is not a supported argument in clang on darwin
-  hardeningDisable = lib.optionals stdenv.isDarwin ["strictoverflow"];
-
-  makeFlags = [
-    "PLATFORM=${platform}" "PREFIX=$(out)"
-  ] ++ (lib.optionals stdenv.isDarwin [
-    "XCODE_TOOL_PATH=${darwin.binutils.bintools}/bin"
-    "C_COMPILER=$(CC)"
-  ]);
+  buildFlags = [ "PLATFORM=${platform}" "PREFIX=$(out)" ];
+  installFlags = [ "PLATFORM=${platform}" "PREFIX=$(out)" ];
 
   buildInputs = [
     makeWrapper
-  ] ++ (lib.optionals (bootstrap-chicken != null) [
+  ] ++ (lib.ifEnable (bootstrap-chicken != null) [
     bootstrap-chicken
   ]);
 
@@ -53,7 +46,7 @@ stdenv.mkDerivation {
     homepage = "http://www.call-cc.org/";
     license = stdenv.lib.licenses.bsd3;
     maintainers = with stdenv.lib.maintainers; [ corngood ];
-    platforms = stdenv.lib.platforms.linux ++ stdenv.lib.platforms.darwin; # Maybe other Unix
+    platforms = stdenv.lib.platforms.linux; # Maybe other non-darwin Unix
     description = "A portable compiler for the Scheme programming language";
     longDescription = ''
       CHICKEN is a compiler for the Scheme programming language.

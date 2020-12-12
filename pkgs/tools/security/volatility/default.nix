@@ -1,14 +1,12 @@
-{ stdenv, fetchFromGitHub, pythonPackages }:
+{ stdenv, fetchurl, pythonPackages }:
 
 pythonPackages.buildPythonApplication rec {
+  version = "2.6";
   pname = "volatility";
-  version = "2.6.1";
 
-  src = fetchFromGitHub {
-    owner = "volatilityfoundation";
-    repo = pname;
-    rev = version;
-    sha256 = "1v92allp3cv3akk71kljcwxr27h1k067dsq7j9h8jnlwk9jxh6rf";
+  src = fetchurl {
+    url = "https://downloads.volatilityfoundation.org/releases/${version}/${pname}-${version}.zip";
+    sha256 = "15cjrx31nnqa3bpjkv0x05j7f2sb7pq46a72zh7qg55zf86hawsv";
   };
 
   doCheck = false;

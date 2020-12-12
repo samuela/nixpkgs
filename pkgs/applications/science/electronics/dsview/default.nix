@@ -1,46 +1,42 @@
-{ lib, mkDerivation, fetchFromGitHub, pkgconfig, cmake
-, libzip, boost, fftw, qtbase, libusb1, libsigrok4dsl
-, libsigrokdecode4dsl, python3, fetchpatch
+{ stdenv, fetchFromGitHub, pkgconfig, cmake,
+libzip, boost, fftw, qtbase,
+libusb1, wrapQtAppsHook, libsigrok4dsl, libsigrokdecode4dsl
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "dsview";
 
-  version = "1.12";
+  version = "0.99";
 
   src = fetchFromGitHub {
       owner = "DreamSourceLab";
       repo = "DSView";
-      rev = "v${version}";
-      sha256 = "q7F4FuK/moKkouXTNPZDVon/W/ZmgtNHJka4MiTxA0U=";
+      rev = version;
+      sha256 = "189i3baqgn8k3aypalayss0g489xi0an9hmvyggvxmgg1cvcwka2";
   };
 
-  sourceRoot = "source/DSView";
+  postUnpack = ''
+    export sourceRoot=$sourceRoot/DSView
+  '';
 
   patches = [
     # Fix absolute install paths
     ./install.patch
-
-    # Fix buld with Qt5.15 already merged upstream for future release
-    # Using local file instead of content of commit #33e3d896a47 because
-    # sourceRoot make it unappliable
-    ./qt515.patch
   ];
 
-  nativeBuildInputs = [ cmake pkgconfig ];
+  nativeBuildInputs = [ cmake pkgconfig wrapQtAppsHook ];
 
   buildInputs = [
-    boost fftw qtbase libusb1 libzip libsigrokdecode4dsl libsigrok4dsl
-    python3
+   boost fftw qtbase libusb1 libzip libsigrokdecode4dsl libsigrok4dsl
   ];
 
   enableParallelBuilding = true;
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "A GUI program for supporting various instruments from DreamSourceLab, including logic analyzer, oscilloscope, etc";
     homepage = "https://www.dreamsourcelab.com/";
     license = licenses.gpl3Plus;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ bachp ];
+    maintainers = [ maintainers.bachp ];
   };
 }

@@ -6,12 +6,12 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "1.8.6";
+  version = "1.8.5";
   pname = "iptables";
 
   src = fetchurl {
     url = "https://www.netfilter.org/projects/${pname}/files/${pname}-${version}.tar.bz2";
-    sha256 = "0rvp0k8a72h2snrdx48cfn75bfa0ycrd2xl3kjysbymq7q6gxx50";
+    sha256 = "02a3575ypdpg6a2x752mhk3f7h1381ymkq1n0gss6fp6292xfmyl";
   };
 
   nativeBuildInputs = [ pkgconfig pruneLibtoolFiles flex bison ];

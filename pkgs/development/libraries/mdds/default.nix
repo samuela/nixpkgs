@@ -1,20 +1,18 @@
-{ stdenv, fetchurl, boost, llvmPackages }:
+{ stdenv, fetchurl, boost }:
 
 stdenv.mkDerivation rec {
   pname = "mdds";
-  version = "1.7.0";
+  version = "1.6.0";
 
   src = fetchurl {
     url = "https://kohei.us/files/${pname}/src/${pname}-${version}.tar.bz2";
-    sha256 = "1kzy70b18f2dsqarmdmzbj9nc9kf2lvc5xxgkg6wdax3jf12lsm6";
+    sha256 = "0zg0v9rfs92ff1gpnb06gzbxbnd9nqdar5fk8dnkmy0jpnf5qn7i";
   };
 
   postInstall = ''
     mkdir -p "$out/lib/pkgconfig"
     cp "$out/share/pkgconfig/"* "$out/lib/pkgconfig"
   '';
-
-  buildInputs = stdenv.lib.optionals stdenv.cc.isClang [ llvmPackages.openmp ];
 
   checkInputs = [ boost ];
 

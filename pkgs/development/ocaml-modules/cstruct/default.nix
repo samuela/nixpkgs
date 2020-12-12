@@ -1,19 +1,13 @@
-{ lib, fetchurl, buildDunePackage, bigarray-compat }:
+{ lib, fetchurl, buildDunePackage }:
 
 buildDunePackage rec {
   pname = "cstruct";
-  version = "5.0.0";
-
-  useDune2 = true;
-
-  minimumOCamlVersion = "4.03";
+  version = "4.0.0";
 
   src = fetchurl {
     url = "https://github.com/mirage/ocaml-cstruct/releases/download/v${version}/cstruct-v${version}.tbz";
-    sha256 = "1z403q2nkgz5x07j0ypy6q0mk2yxgqbp1jlqkngbajna7124x2pb";
+    sha256 = "1q4fsc2m6d96yf42g3wb3gcnhpnxw800df5mh3yr25pprj8y4m1a";
   };
-
-  propagatedBuildInputs = [ bigarray-compat ];
 
   meta = {
     description = "Access C-like structures directly from OCaml";

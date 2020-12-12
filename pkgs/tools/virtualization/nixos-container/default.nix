@@ -1,4 +1,4 @@
-{ substituteAll, perlPackages, shadow, util-linux }:
+{ substituteAll, perlPackages, shadow, utillinux }:
 
 substituteAll {
     name = "nixos-container";
@@ -7,10 +7,10 @@ substituteAll {
     src = ./nixos-container.pl;
     perl = "${perlPackages.perl}/bin/perl -I${perlPackages.FileSlurp}/${perlPackages.perl.libPrefix}";
     su = "${shadow.su}/bin/su";
-    utillinux = util-linux;
+    inherit utillinux;
 
     postInstall = ''
-      t=$out/share/bash-completion/completions
+      t=$out/etc/bash_completion.d
       mkdir -p $t
       cp ${./nixos-container-completion.sh} $t/nixos-container
     '';

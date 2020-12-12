@@ -1,4 +1,4 @@
-{ stdenv, fetchpatch, fetchFromGitHub, pkgconfig, glib, mpv-unwrapped }:
+{ stdenv, fetchpatch, fetchFromGitHub, pkgconfig, glib, mpv }:
 
 stdenv.mkDerivation rec {
   pname = "mpv-mpris";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  buildInputs = [ glib mpv-unwrapped ];
+  buildInputs = [ glib mpv ];
 
   installFlags = [ "SCRIPTS_DIR=$(out)/share/mpv/scripts" ];
 

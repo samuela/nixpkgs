@@ -1,16 +1,16 @@
 { stdenv, lib, buildPythonPackage, fetchPypi, isPy3k, pythonOlder
 , attrs, click, cligj, click-plugins, six, munch, enum34
-, pytest, boto3, mock, giflib, pytz
+, pytest, boto3, mock, giflib
 , gdal_2 # can't bump to 3 yet, https://github.com/Toblerity/Fiona/issues/745
 }:
 
 buildPythonPackage rec {
   pname = "Fiona";
-  version = "1.8.18";
+  version = "1.8.13.post1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "b732ece0ff8886a29c439723a3e1fc382718804bb057519d537a81308854967a";
+    sha256 = "00366f2j21b5r4r8310sadf7jjhdr44s0381dhjqkw2nzpwjnhqs";
   };
 
   CXXFLAGS = lib.optionalString stdenv.cc.isClang "-std=c++11";
@@ -30,7 +30,6 @@ buildPythonPackage rec {
     click-plugins
     six
     munch
-    pytz
   ] ++ lib.optional (!isPy3k) enum34;
 
   checkInputs = [

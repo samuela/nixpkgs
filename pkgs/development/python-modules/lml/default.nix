@@ -7,11 +7,11 @@
 
 buildPythonPackage rec {
   pname = "lml";
-  version = "0.1.0";
+  version = "0.0.9";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "57a085a29bb7991d70d41c6c3144c560a8e35b4c1030ffb36d85fa058773bcc5";
+    sha256 = "6luoF7Styen1whclzSR1+RKTO34t/fB5Ku2AB3FU9j8=";
   };
 
   checkInputs = [

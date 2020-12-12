@@ -68,7 +68,7 @@ stdenv.mkDerivation rec {
       fullName = "Custom, BSD-like. See COPYING file.";
       free = true;
     };
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms = platforms.linux;
   };
 }

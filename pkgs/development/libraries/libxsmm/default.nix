@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, coreutils, gfortran, gnused
-, python3, util-linux, which
+, python3, utillinux, which
 
 , enableStatic ? false
 }:
@@ -22,7 +22,7 @@ in stdenv.mkDerivation {
     gfortran
     gnused
     python3
-    util-linux
+    utillinux
     which
   ];
 

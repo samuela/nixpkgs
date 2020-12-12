@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
       easy to use.
     '';
     license = licenses.gpl2Plus;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms = platforms.unix;
   };
 }

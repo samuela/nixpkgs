@@ -1,7 +1,4 @@
-{ stdenv, fetchFromGitHub, pkgconfig, cmake, doxygen
-, alsaLib, libX11, libXft, libXrandr, libXinerama, libXext, libXcursor
-, zlib, AGL, Cocoa, Foundation
-}:
+{ stdenv, fetchFromGitHub, pkgconfig, cmake, doxygen, alsaLib , libX11, libXft, libXrandr, libXinerama, libXext, libXcursor }:
 
 with stdenv.lib;
 stdenv.mkDerivation rec {
@@ -19,12 +16,7 @@ stdenv.mkDerivation rec {
   [ pkgconfig cmake doxygen ];
 
   buildInputs =
-    optionals stdenv.isLinux [ alsaLib ]
-    ++ (if stdenv.isDarwin then
-          [ zlib AGL Cocoa Foundation ]
-        else
-          [ libX11 libXft libXrandr libXinerama libXext libXcursor ])
-  ;
+  [ alsaLib libX11 libXft libXrandr libXinerama libXext libXcursor ];
 
   doCheck = false;
 
@@ -38,6 +30,6 @@ stdenv.mkDerivation rec {
     '';
     license = with licenses; gpl3Plus;
     maintainers = with maintainers; [ AndersonTorres ];
-    platforms = with platforms; unix;
+    platforms = with platforms; linux;
   };
 }

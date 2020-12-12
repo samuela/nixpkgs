@@ -6,7 +6,6 @@
 buildDunePackage rec {
   pname = "conduit";
   version = "2.2.2";
-  useDune2 = true;
 
   minimumOCamlVersion = "4.07";
 

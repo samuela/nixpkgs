@@ -2,13 +2,15 @@
 
 buildPythonPackage rec {
   pname = "mss";
-  version = "6.1.0";
+  version = "6.0.0";
   disabled = !isPy3k;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "aebd069f3e05667fe9c7b9fa4b1771fe42a4710ce1058ce0236936ce06fa5394";
+    sha256 = "0dicp55adbqxb7hqlck95hngb1klv5s26lszw3xim30k18bwqaxl";
   };
+
+  propagatedBuildInputs = [ ];
 
   # By default it attempts to build Windows-only functionality
   prePatch = ''
@@ -20,7 +22,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     description = "Cross-platform multiple screenshots module in pure Python";
-    homepage = "https://github.com/BoboTiG/python-mss";
+    homepage = "https://github.com/BoboTiG/mss/";
     license = licenses.mit;
     maintainers = with maintainers; [ austinbutler ];
   };

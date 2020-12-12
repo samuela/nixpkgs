@@ -3,10 +3,9 @@
 , bash, getopt, makeWrapper }:
 
 stdenv.mkDerivation rec {
-  pname = "xmlto";
-  version = "0.0.28";
+  name = "xmlto-0.0.28";
   src = fetchurl {
-    url = "https://releases.pagure.org/${pname}/${pname}-${version}.tar.bz2";
+    url = "http://fedorahosted.org/releases/x/m/xmlto/${name}.tar.bz2";
     sha256 = "0xhj8b2pwp4vhl9y16v3dpxpsakkflfamr191mprzsspg4xdyc0i";
   };
 

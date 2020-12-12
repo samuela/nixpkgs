@@ -1,14 +1,14 @@
-{ buildDunePackage, gnuplot, ocaml_lwt, metrics, metrics-lwt, mtime, uuidm }:
+{ lib, buildDunePackage, gnuplot, ocaml_lwt, metrics, metrics-lwt, mtime, uuidm }:
 
 buildDunePackage rec {
 
   pname = "metrics-unix";
 
-  inherit (metrics) version useDune2 src;
+  inherit (metrics) version src;
 
   propagatedBuildInputs = [ gnuplot ocaml_lwt metrics mtime uuidm ];
 
-  checkInputs = [ metrics-lwt ];
+  checkInputs = lib.optional doCheck metrics-lwt;
 
   doCheck = true;
 

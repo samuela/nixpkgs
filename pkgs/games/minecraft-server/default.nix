@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, nixosTests, jre_headless }:
+{ stdenv, fetchurl, jre_headless }:
 stdenv.mkDerivation {
   pname = "minecraft-server";
   version = "1.16.4";
@@ -25,10 +25,7 @@ stdenv.mkDerivation {
 
   phases = "installPhase";
 
-  passthru = {
-    tests = { inherit (nixosTests) minecraft-server; };
-    updateScript = ./update.sh;
-  };
+  passthru.updateScript = ./update.sh;
 
   meta = with stdenv.lib; {
     description = "Minecraft Server";

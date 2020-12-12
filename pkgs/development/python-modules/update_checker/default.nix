@@ -1,10 +1,8 @@
-{ stdenv, buildPythonPackage, fetchPypi, requests, isPy27
-}:
+{ stdenv, buildPythonPackage, fetchPypi, requests}:
 
 buildPythonPackage rec {
   pname = "update_checker";
   version = "0.18.0";
-  disabled = isPy27;
 
   src = fetchPypi {
     inherit pname version;

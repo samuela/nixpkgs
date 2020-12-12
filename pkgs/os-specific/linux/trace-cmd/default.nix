@@ -23,7 +23,7 @@ stdenv.mkDerivation {
     "man_dir=${placeholder "man"}/share/man"
     "libdir=${placeholder "lib"}/lib"
     "includedir=${placeholder "dev"}/include"
-    "BASH_COMPLETE_DIR=${placeholder "out"}/share/bash-completion/completions"
+    "BASH_COMPLETE_DIR=${placeholder "out"}/etc/bash_completion.d"
   ];
 
   meta = with stdenv.lib; {

@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "wal-g";
-  version = "0.2.19";
+  version = "0.2.17";
 
   src = fetchFromGitHub {
     owner = "wal-g";
     repo = "wal-g";
     rev = "v${version}";
-    sha256 = "030c949cs13x4gnby6apy1adis8d4dlg3gzhhhs991117dxb0i3v";
+    sha256 = "0r6vy2b3xqwa22286srwngk63sq4aza6aj7brwc130vypcps7svp";
   };
 
-  vendorSha256 = "186cqn10fljzjc876byaj1affd8xmi8zvmkfxp9dbzsfxdir4nf7";
+  vendorSha256 = "0r73l4kxzldca1vg5mshq6iqsxcrndcbmbp3d7i9pxyb2kig8gv5";
 
   buildInputs = [ brotli ];
 
@@ -27,6 +27,6 @@ buildGoModule rec {
     homepage = "https://github.com/wal-g/wal-g";
     license = licenses.asl20;
     description = "An archival restoration tool for PostgreSQL";
-    maintainers = with maintainers; [ marsam ];
+    maintainers = with maintainers; [ ocharles marsam ];
   };
 }

@@ -640,7 +640,13 @@ rec {
        unique [ 3 2 3 4 ]
        => [ 3 2 4 ]
    */
- unique = foldl' (acc: e: if elem e acc then acc else acc ++ [ e ]) [];
+  unique = list:
+    if list == [] then
+      []
+    else
+      let
+        x = head list;
+      in [x] ++ unique (remove x list);
 
   /* Intersects list 'e' and another list. O(nm) complexity.
 

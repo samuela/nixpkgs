@@ -1,5 +1,5 @@
 { config, stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, help2man, fuse
-, util-linux, makeWrapper
+, utillinux, makeWrapper
 , enableDebugBuild ? config.lxcfs.enableDebugBuild or false }:
 
 with stdenv.lib;
@@ -30,9 +30,9 @@ stdenv.mkDerivation rec {
   installFlags = [ "SYSTEMD_UNIT_DIR=\${out}/lib/systemd" ];
 
   postInstall = ''
-    # `mount` hook requires access to the `mount` command from `util-linux`:
+    # `mount` hook requires access to the `mount` command from `utillinux`:
     wrapProgram "$out/share/lxcfs/lxc.mount.hook" \
-      --prefix PATH : "${util-linux}/bin"
+      --prefix PATH : "${utillinux}/bin"
   '';
 
   postFixup = ''

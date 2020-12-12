@@ -1,12 +1,7 @@
-import ./make-test-python.nix ({ pkgs, ...} :
-let
-
-  perlEnv = pkgs.perl.withPackages (p: [p.NetZooKeeper]);
-
-in {
+import ./make-test-python.nix ({ pkgs, ...} : {
   name = "zookeeper";
   meta = with pkgs.stdenv.lib.maintainers; {
-    maintainers = [ nequissimus ztzg ];
+    maintainers = [ nequissimus ];
   };
 
   nodes = {
@@ -34,13 +29,6 @@ in {
     )
     server.wait_until_succeeds(
         "${pkgs.zookeeper}/bin/zkCli.sh -server localhost:2181 get /foo | grep hello"
-    )
-
-    server.wait_until_succeeds(
-        "${perlEnv}/bin/perl -E 'use Net::ZooKeeper qw(:acls); $z=Net::ZooKeeper->new(q(localhost:2181)); $z->create(qw(/perl foo acl), ZOO_OPEN_ACL_UNSAFE) || die $z->get_error()'"
-    )
-    server.wait_until_succeeds(
-        "${perlEnv}/bin/perl -E 'use Net::ZooKeeper qw(:acls); $z=Net::ZooKeeper->new(q(localhost:2181)); $z->get(qw(/perl)) eq qw(foo) || die $z->get_error()'"
     )
   '';
 })

@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, nodejs, which, python27, util-linux, nixosTests }:
+{ stdenv, fetchFromGitHub, nodejs, which, python27, utillinux, nixosTests }:
 
 stdenv.mkDerivation rec {
   pname = "cjdns";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ which python27 nodejs ] ++
     # for flock
-    stdenv.lib.optional stdenv.isLinux util-linux;
+    stdenv.lib.optional stdenv.isLinux utillinux;
 
   CFLAGS = "-O2 -Wno-error=stringop-truncation";
   buildPhase =

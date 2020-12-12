@@ -1,32 +1,20 @@
-{ stdenv, writeScriptBin, fetchFromGitLab, autoreconfHook, pkg-config
-, autoconf-archive, libxslt, boost , gtkmm2 , imagemagick, sane-backends
-, tesseract4, udev, libusb1, gnum4 }:
+{ stdenv, fetchFromGitLab, autoreconfHook, pkg-config, boost, gtkmm2
+, imagemagick, sane-backends, tesseract4, udev, libusb1}:
 
-
-let
-  fakegit = writeScriptBin "git" ''
-    #! ${stdenv.shell} -e
-    if [ "$1" = "describe" ]; then
-      [ -r .rev ] && cat .rev || true
-    fi
-  '';
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "utsushi";
-  version = "unstable-2020-11-10";
+  version = "3.59.2";
 
-  src = fetchFromGitLab {
+  src = fetchFromGitLab{
     owner = pname;
-    repo = pname;
-    rev = "04700043e2d16062eb8bd27f4efff3024f387d32";
-    sha256 = "0rxv5n0985d414i6hwichsn7hybwgwsimpy5s4hmcsvxqcpks4li";
+    repo = "imagescan";
+    rev = version;
+    sha256 = "06gp97dfnf43l6kb988scmm66q9n5rc7ndwv3rykrdpyhy8rbi05";
   };
 
   nativeBuildInputs = [
     autoreconfHook
     pkg-config
-    autoconf-archive
-    fakegit
-    libxslt
   ];
 
   buildInputs = [
@@ -38,21 +26,19 @@ in stdenv.mkDerivation rec {
     libusb1.dev
   ];
 
-  NIX_CFLAGS_COMPILE = [
-    "-Wno-error=deprecated-declarations"
-    "-Wno-error=parentheses"
-    "-Wno-error=unused-variable"
-  ];
-
+  NIX_CFLAGS_COMPILE = "-Wno-error=deprecated-declarations -Wno-error=parentheses -Wno-error=unused-variable";
 
   postPatch = ''
+    # remove vendored dependencies
+    rm -r upstream/boost
+
     # create fake udev and sane config
     mkdir -p $out/etc/{sane.d,udev/rules.d}
     touch $out/etc/sane.d/dll.conf
-    # absolute paths to convert & tesseract
-    sed -i '/\[AC_DEFINE(\[HAVE_IMAGE_MAGICK\], \[1\])/a \             MAGICK_CONVERT="${imagemagick}/bin/convert"' configure.ac
+
+    # absolute paths to conver & tesseract
     substituteInPlace filters/magick.cpp \
-      --replace 'convert ' '${imagemagick}/bin/convert '
+      --replace '"convert' '"${imagemagick}/bin/convert'
     substituteInPlace filters/reorient.cpp \
       --replace '"tesseract' '"${tesseract4}/bin/tesseract'
     substituteInPlace filters/get-text-orientation \
@@ -75,7 +61,7 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doInstallCheck = false;
+  doInstallCheck = true;
 
   meta = with stdenv.lib; {
     description = "SANE utsushi backend for some Epson scanners";
@@ -146,7 +132,7 @@ in stdenv.mkDerivation rec {
     '';
     homepage = "https://gitlab.com/utsushi/imagescan";
     license = licenses.gpl3Plus;
-    maintainers = with maintainers; [ wucke13 maxwilson ];
+    maintainers = with maintainers; [ wucke13 ];
     platforms = platforms.linux;
   };
 }

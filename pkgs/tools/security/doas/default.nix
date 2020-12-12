@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation rec {
   pname = "doas";
-  version = "6.8";
+  version = "6.6.1";
 
   src = fetchFromGitHub {
     owner = "Duncaen";
     repo = "OpenDoas";
     rev = "v${version}";
-    sha256 = "1dlwnvy8r6slxcy260gfkximp1ms510wdslpfq9y6xvd2qi5izcb";
+    sha256 = "07kkc5729p654jrgfsc8zyhiwicgmq38yacmwfvay2b3gmy728zn";
   };
 
   # otherwise confuses ./configure
@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch = ''
-    sed -i '/\(chown\|chmod\)/d' GNUmakefile
+    sed -i '/\(chown\|chmod\)/d' bsd.prog.mk
   '';
 
   buildInputs = [ bison pam ];

@@ -2,19 +2,14 @@
 , gettext
 , fetchurl
 , python3
-, meson
-, ninja
 , pkg-config
 , gtk3
 , glib
-, gjs
-, webkitgtk
 , gobject-introspection
 , wrapGAppsHook
 , itstool
 , libxml2
 , docbook-xsl-nons
-, docbook_xml_dtd_42
 , gnome3
 , gdk-pixbuf
 , libxslt
@@ -23,22 +18,19 @@
 
 stdenv.mkDerivation rec {
   pname = "glade";
-  version = "3.38.2";
+  version = "3.36.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/glade/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "1dxsiz9ahqkxg2a1dw9sbd8jg59y5pdz4c1gvnbmql48gmj8gz4q";
+    sha256 = "023gx8rj51njn8fsb6ma5kz1irjpxi4js0n8rwy22inc4ysldd8r";
   };
 
   nativeBuildInputs = [
-    meson
-    ninja
     pkg-config
     gettext
     itstool
     wrapGAppsHook
     docbook-xsl-nons
-    docbook_xml_dtd_42
     libxslt
     libxml2
     gobject-introspection
@@ -47,8 +39,6 @@ stdenv.mkDerivation rec {
   buildInputs = [
     gtk3
     glib
-    gjs
-    webkitgtk
     libxml2
     python3
     python3.pkgs.pygobject3
@@ -56,6 +46,8 @@ stdenv.mkDerivation rec {
     gdk-pixbuf
     gnome3.adwaita-icon-theme
   ];
+
+  enableParallelBuilding = true;
 
   passthru = {
     updateScript = gnome3.updateScript {

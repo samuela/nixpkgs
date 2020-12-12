@@ -1,23 +1,21 @@
-{ lib, buildDunePackage, fetchFromGitHub, ocaml, alcotest, result }:
+{ lib, buildDunePackage, fetchFromGitHub, alcotest, result }:
 
 buildDunePackage rec {
   pname = "dispatch";
-  version = "0.5.0";
-
-  useDune2 = true;
+  version = "0.4.1";
 
   src = fetchFromGitHub {
     owner = "inhabitedtype";
     repo = "ocaml-dispatch";
     rev = version;
-    sha256 = "12r39ylbxc297cbwjadhd1ghxnwwcdzfjk68r97wim8hcgzxyxv4";
+    sha256 = "05kb9zcihk50r2haqz8vrlr7kmaka6vrs4j1z500lmnl877as6qr";
   };
 
   propagatedBuildInputs = [ result ];
 
-  checkInputs = [ alcotest ];
+  checkInputs = lib.optional doCheck alcotest;
 
-  doCheck = lib.versionAtLeast ocaml.version "4.05";
+  doCheck = true;
 
   meta = {
     inherit (src.meta) homepage;

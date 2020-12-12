@@ -4,9 +4,8 @@
 , pkgconfig
 , flint
 , gmp
-, python3
+, python2
 , singular
-, ncurses
 }:
 
 stdenv.mkDerivation rec {
@@ -24,8 +23,8 @@ stdenv.mkDerivation rec {
     flint
     gmp
     singular
-    python3
-    ncurses
+    singular
+    python2
   ];
 
   nativeBuildInputs = [
@@ -43,7 +42,7 @@ stdenv.mkDerivation rec {
     '';
     homepage    = "http://pynac.org";
     license = licenses.gpl3;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms   = platforms.unix;
   };
 }

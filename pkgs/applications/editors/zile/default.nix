@@ -1,15 +1,15 @@
-{ fetchurl, stdenv, glib, libgee, pkg-config, ncurses, boehmgc, perl, help2man, vala }:
+{ fetchurl, stdenv, pkgconfig, ncurses, boehmgc, perl, help2man }:
 
 stdenv.mkDerivation rec {
-  name = "zile-2.6.0.90";
+  name = "zile-2.4.14";
 
   src = fetchurl {
     url = "mirror://gnu/zile/${name}.tar.gz";
-    sha256 = "1bhdwnasmqhy0hi3fqmpzr8xkw5zlqjpmf1cj42h4cg3fnamp6r3";
+    sha256 = "0x3byaddms8l3g7igx6njycqsq98wgapysdb5c7lhcnajlkp8y3s";
   };
 
-  buildInputs = [ glib libgee ncurses boehmgc vala ];
-  nativeBuildInputs = [ perl pkg-config ]
+  buildInputs = [ ncurses boehmgc ];
+  nativeBuildInputs = [ perl pkgconfig ]
     # `help2man' wants to run Zile, which won't work when the
     # newly-produced binary can't be run at build-time.
     ++ stdenv.lib.optional

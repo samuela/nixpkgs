@@ -1,30 +1,11 @@
-{ stdenv
-, fetchFromGitHub
-, SDL
-, ffmpeg
-, frei0r
-, libjack2
-, libdv
-, libsamplerate
-, libvorbis
-, libxml2
-, movit
-, pkgconfig
-, sox
-, qtbase
-, qtsvg
-, fftw
-, vid-stab
-, opencv3
-, ladspa-sdk
-, genericUpdater
-, common-updater-scripts
-, ladspaPlugins
-, mkDerivation
-, which
+{ stdenv, fetchFromGitHub, SDL, ffmpeg, frei0r, libjack2, libdv, libsamplerate
+, libvorbis, libxml2, makeWrapper, movit, pkgconfig, sox, qtbase, qtsvg
+, fftw, vid-stab, opencv3, ladspa-sdk, genericUpdater, common-updater-scripts
 }:
+
 let inherit (stdenv.lib) getDev; in
-mkDerivation rec {
+
+stdenv.mkDerivation rec {
   pname = "mlt";
   version = "6.22.1";
 
@@ -36,36 +17,17 @@ mkDerivation rec {
   };
 
   buildInputs = [
-    SDL
-    ffmpeg
-    frei0r
-    libjack2
-    libdv
-    libsamplerate
-    libvorbis
-    libxml2
-    movit
-    pkgconfig
-    qtbase
-    qtsvg
-    sox
-    fftw
-    vid-stab
-    opencv3
+    SDL ffmpeg frei0r libjack2 libdv libsamplerate libvorbis libxml2
+    makeWrapper movit pkgconfig qtbase qtsvg sox fftw vid-stab opencv3
     ladspa-sdk
-    ladspaPlugins
   ];
-
-  nativeBuildInputs = [ which ];
 
   outputs = [ "out" "dev" ];
 
   # Mostly taken from:
   # http://www.kdenlive.org/user-manual/downloading-and-installing-kdenlive/installing-source/installing-mlt-rendering-engine
   configureFlags = [
-    "--avformat-swscale"
-    "--enable-gpl"
-    "--enable-gpl3"
+    "--avformat-swscale" "--enable-gpl" "--enable-gpl" "--enable-gpl3"
     "--enable-opengl"
   ];
 
@@ -77,12 +39,9 @@ mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  qtWrapperArgs = [
-    "--prefix FREI0R_PATH : ${frei0r}/lib/frei0r-1"
-    "--prefix LADSPA_PATH : ${ladspaPlugins}/lib/ladspa"
-  ];
-
   postInstall = ''
+    wrapProgram $out/bin/melt --prefix FREI0R_PATH : ${frei0r}/lib/frei0r-1
+
     # Remove an unnecessary reference to movit.dev.
     s=${movit.dev}/include
     t=$(for ((i = 0; i < ''${#s}; i++)); do echo -n X; done)

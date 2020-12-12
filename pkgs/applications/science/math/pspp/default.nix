@@ -1,19 +1,19 @@
 { stdenv, fetchurl, libxml2, readline, zlib, perl, cairo, gtk3, gsl
 , pkgconfig, gtksourceview, pango, gettext, dconf
 , makeWrapper, gsettings-desktop-schemas, hicolor-icon-theme
-, texinfo, ssw, python3
+, texinfo, ssw
 }:
 
 stdenv.mkDerivation rec {
   pname = "pspp";
-  version = "1.4.1";
+  version = "1.2.0";
 
   src = fetchurl {
     url = "mirror://gnu/pspp/${pname}-${version}.tar.gz";
-    sha256 = "0lqrash677b09zxdlxp89z6k02y4i23mbqg83956dwl69wc53dan";
+    sha256 = "07pp27zycrb5x927jwaj9r3q7hy915jh51xs85zxby6gfiwl63m5";
   };
 
-  nativeBuildInputs = [ pkgconfig texinfo python3 ];
+  nativeBuildInputs = [ pkgconfig texinfo ];
   buildInputs = [ libxml2 readline zlib perl cairo gtk3 gsl
     gtksourceview pango gettext
     makeWrapper gsettings-desktop-schemas hicolor-icon-theme ssw

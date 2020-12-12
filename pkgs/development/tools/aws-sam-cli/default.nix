@@ -1,11 +1,11 @@
 { fetchFromGitHub
 , lib
-, python3
+, python
 , enableTelemetry ? false
 }:
 
 let
-  py = python3.override {
+  py = python.override {
     packageOverrides = self: super: {
       flask = super.flask.overridePythonAttrs (oldAttrs: rec {
         version = "1.0.2";

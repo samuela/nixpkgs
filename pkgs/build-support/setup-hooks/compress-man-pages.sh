@@ -21,7 +21,6 @@ compressManPages() {
 
     # Point symlinks to compressed manpages.
     find "$dir"/share/man/ -type l -a '!' -regex '.*\.\(bz2\|gz\)$' -print0 \
-        | sort -z \
         | while IFS= read -r -d $'\0' f
     do
         local target

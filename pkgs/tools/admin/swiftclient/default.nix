@@ -2,11 +2,11 @@
 
 buildPythonApplication rec {
   pname = "python-swiftclient";
-  version = "3.11.0";
+  version = "3.10.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "3972f8b1986e60ea786ad01697e6882f331209ae947ef8b795531940f1e0732b";
+    sha256 = "0176b17aa14cc2ef82a327dc70b66af670bdb39dcf836896f81269db376932ea";
   };
 
   propagatedBuildInputs = [ requests six pbr setuptools ];

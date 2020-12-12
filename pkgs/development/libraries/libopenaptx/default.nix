@@ -2,22 +2,16 @@
 
 stdenv.mkDerivation rec {
   pname = "libopenaptx";
-  version = "0.2.0";
+  version = "0.1.0";
 
   src = fetchFromGitHub {
     owner = "pali";
     repo = "libopenaptx";
     rev = version;
-    sha256 = "nTpw4vWgJ765FM6Es3SzaaaZr0YDydXglb0RWLbiigI=";
+    sha256 = "0996qmkmbax7ccknxrd3bx8xibs79a1ffms69scsj59f3kgj6854";
   };
 
-  makeFlags = [
-    "PREFIX=${placeholder "out"}"
-    # disable static builds
-    "ANAME="
-    "AOBJECTS="
-    "STATIC_UTILITIES="
-  ];
+  makeFlags = [ "PREFIX=$(out)" ];
 
   enableParallelBuilding = true;
 

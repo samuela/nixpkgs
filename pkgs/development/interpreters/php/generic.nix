@@ -126,10 +126,6 @@ let
                   if test -e $out/bin/php-fpm; then
                     wrapProgram $out/bin/php-fpm --set PHP_INI_SCAN_DIR $out/lib
                   fi
-
-                  if test -e $out/bin/phpdbg; then
-                    wrapProgram $out/bin/phpdbg --set PHP_INI_SCAN_DIR $out/lib
-                  fi
                 '';
               };
             in
@@ -198,8 +194,7 @@ let
             ++ lib.optional (!ipv6Support) "--disable-ipv6"
             ++ lib.optional systemdSupport "--with-fpm-systemd"
             ++ lib.optional valgrindSupport "--with-valgrind=${valgrind.dev}"
-            ++ lib.optional (ztsSupport && (lib.versionOlder version "8.0")) "--enable-maintainer-zts"
-            ++ lib.optional (ztsSupport && (lib.versionAtLeast version "8.0")) "--enable-zts"
+            ++ lib.optional ztsSupport "--enable-maintainer-zts"
 
 
             # Sendmail

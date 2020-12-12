@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ glib expat ];
 
   postInstall = ''
-    installShellCompletion --bash src/prevo-completion
+    installShellCompletion --bash $out/etc/bash_completion.d/prevo-completion
   '';
 
   meta = with stdenv.lib; {

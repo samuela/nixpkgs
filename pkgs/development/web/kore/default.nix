@@ -1,31 +1,19 @@
-{ stdenv, fetchFromGitHub, openssl, curl, postgresql, yajl }:
+{ stdenv, fetchFromGitHub, openssl }:
 
 stdenv.mkDerivation rec {
   pname = "kore";
-  version = "4.0.1";
+  version = "3.3.1";
 
   src = fetchFromGitHub {
     owner = "jorisvink";
     repo = pname;
-    rev = version;
-    sha256 = "0186lih30zps2d4600ikafbgsml269jzpcszdggzzkdw8p628qw9";
+    rev = "${version}-release";
+    sha256 = "0jlvry9p1f7284cscfsg04ngbaq038yx3nz815jcr5s3d2jzps3h";
   };
 
-  buildInputs = [ openssl curl postgresql yajl ];
+  buildInputs = [ openssl ];
 
-  makeFlags = [
-    "PREFIX=${placeholder "out"}"
-    "ACME=1"
-    "CURL=1"
-    "TASKS=1"
-    "PGSQL=1"
-    "JSONRPC=1"
-    "DEBUG=1"
-  ];
-
-  preBuild = ''
-    make platform.h
-  '';
+  makeFlags = [ "PREFIX=${placeholder "out"}" ];
 
   # added to fix build w/gcc7 and clang5
   NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.cc.isGNU "-Wno-error=pointer-compare"

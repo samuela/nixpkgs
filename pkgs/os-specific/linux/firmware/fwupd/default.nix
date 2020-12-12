@@ -2,6 +2,7 @@
 
 { stdenv
 , fetchurl
+, fetchpatch
 , fetchFromGitHub
 , substituteAll
 , gtk-doc
@@ -14,7 +15,8 @@
 , gusb
 , sqlite
 , libarchive
-, curl
+, glib-networking
+, libsoup
 , help2man
 , libjcat
 , libxslt
@@ -87,7 +89,7 @@ let
 
   self = stdenv.mkDerivation rec {
     pname = "fwupd";
-    version = "1.5.3";
+    version = "1.5.1";
 
     # libfwupd goes to lib
     # daemon, plug-ins and libfwupdplugin go to out
@@ -96,7 +98,7 @@ let
 
     src = fetchurl {
       url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-      sha256 = "005y5wicmm6f2v8i9m3axx7ivgj3z8mbqps4v9m71bsqmq298j86";
+      sha256 = "0fpxcl6bighiipyl4qspjhi0lwisrgq8jdahm68mk34rmrx50sgf";
     };
 
     patches = [
@@ -116,6 +118,12 @@ let
         src = ./installed-tests-path.patch;
         # Needs a different set of modules than po/make-images.
         inherit installedTestsPython;
+      })
+
+      # Skip tests requiring network.
+      (fetchpatch {
+        url = "https://github.com/fwupd/fwupd/commit/db15442c7c217610954786bd40779c14ed0e034b.patch";
+        sha256 = "/jzpGMJcqLisjecKpSUfA8ZCU53n7BOPR6tMgEX/qL8=";
       })
     ];
 
@@ -144,13 +152,14 @@ let
       gusb
       sqlite
       libarchive
-      curl
+      libsoup
       elfutils
       gnu-efi
       libgudev
       colord
       libjcat
       libuuid
+      glib-networking
       json-glib
       umockdev
       bash-completion
@@ -167,11 +176,6 @@ let
     mesonFlags = [
       "-Dgtkdoc=true"
       "-Dplugin_dummy=true"
-      # We are building the official releases.
-      "-Dsupported_build=true"
-      # Would dlopen libsoup to preserve compatibility with clients linking against older fwupd.
-      # https://github.com/fwupd/fwupd/commit/173d389fa59d8db152a5b9da7cc1171586639c97
-      "-Dsoup_session_compat=false"
       "-Dudevdir=lib/udev"
       "-Dsystemd_root_prefix=${placeholder "out"}"
       "-Dinstalled_test_prefix=${placeholder "installedTests"}"

@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchpatch, lvm2, libuuid, gettext, readline
-, util-linux, check, enableStatic ? false }:
+, utillinux, check, enableStatic ? false }:
 
 stdenv.mkDerivation rec {
   name = "parted-3.1";
@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optional enableStatic "--enable-static";
 
   doCheck = true;
-  checkInputs = [ check util-linux ];
+  checkInputs = [ check utillinux ];
 
   meta = {
     description = "Create, destroy, resize, check, and copy partitions";

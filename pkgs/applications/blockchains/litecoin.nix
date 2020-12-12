@@ -1,7 +1,7 @@
 { stdenv, mkDerivation, fetchFromGitHub
 , pkgconfig, autoreconfHook
 , openssl, db48, boost, zlib, miniupnpc
-, glib, protobuf, util-linux, qrencode
+, glib, protobuf, utillinux, qrencode
 , AppKit
 , withGui ? true, libevent
 , qtbase, qttools
@@ -24,7 +24,7 @@ mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
   buildInputs = [ openssl db48 boost zlib zeromq
-                  miniupnpc glib protobuf util-linux libevent ]
+                  miniupnpc glib protobuf utillinux libevent ]
                   ++ optionals stdenv.isDarwin [ AppKit ]
                   ++ optionals withGui [ qtbase qttools qrencode ];
 

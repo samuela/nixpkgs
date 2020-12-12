@@ -9,11 +9,11 @@
 
 buildPythonPackage rec {
   pname = "pyrsistent";
-  version = "0.17.3";
+  version = "0.16.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "2e636185d9eb976a18a8a8e96efce62f2905fea90041958d8cc2a189756ebf3e";
+    sha256 = "28669905fe725965daa16184933676547c5bb40a5153055a8dee2a4bd7933ad3";
   };
 
   propagatedBuildInputs = [ six ];

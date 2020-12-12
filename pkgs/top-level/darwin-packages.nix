@@ -14,9 +14,7 @@ in
     extraBuildInputs = [];
   };
 
-  apple_sdk = callPackage ../os-specific/darwin/apple-sdk {
-    inherit (darwin) darwin-stubs print-reexports;
-  };
+  apple_sdk = callPackage ../os-specific/darwin/apple-sdk { };
 
   binutils-unwrapped = callPackage ../os-specific/darwin/binutils {
     inherit (darwin) cctools;
@@ -42,10 +40,6 @@ in
   cf-private = darwin.apple_sdk.frameworks.CoreFoundation;
 
   DarwinTools = callPackage ../os-specific/darwin/DarwinTools { };
-
-  darwin-stubs = callPackage ../os-specific/darwin/darwin-stubs { };
-
-  print-reexports = callPackage ../os-specific/darwin/apple-sdk/print-reexports { };
 
   maloader = callPackage ../os-specific/darwin/maloader {
     inherit (darwin) opencflite;

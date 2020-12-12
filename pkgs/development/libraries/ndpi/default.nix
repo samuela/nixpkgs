@@ -1,7 +1,6 @@
-{ stdenv, fetchFromGitHub, which, autoconf, automake, libtool, libpcap
-, pkg-config }:
+{ stdenv, fetchFromGitHub, which, autoconf, automake, libtool, libpcap }:
 
-let version = "3.4"; in
+let version = "2.8"; in
 
 stdenv.mkDerivation {
   pname = "ndpi";
@@ -11,16 +10,13 @@ stdenv.mkDerivation {
     owner = "ntop";
     repo = "nDPI";
     rev = version;
-    sha256 = "0xjh9gv0mq0213bjfs5ahrh6m7l7g99jjg8104c0pw54hz0p5pq1";
+    sha256 = "0lc4vga89pm954vf92g9fa6xwsjkb13jd6wrcc35zy5j04nf9rzf";
   };
 
   configureScript = "./autogen.sh";
 
   nativeBuildInputs = [which autoconf automake libtool];
-  buildInputs = [
-    libpcap
-    pkg-config
-  ];
+  buildInputs = [libpcap];
 
   meta = with stdenv.lib; {
     description = "A library for deep-packet inspection";

@@ -3,7 +3,6 @@
 buildDunePackage rec {
 	pname = "ocplib-json-typed";
 	version = "0.7.1";
-	useDune2 = true;
 	src = fetchFromGitHub {
 		owner = "OCamlPro";
 		repo = "ocplib-json-typed";

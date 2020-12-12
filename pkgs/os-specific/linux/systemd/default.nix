@@ -1,7 +1,6 @@
 { stdenv
 , lib
 , fetchFromGitHub
-, fetchpatch
 , buildPackages
 , ninja
 , meson
@@ -19,7 +18,7 @@
 
   # Mandatory dependencies
 , libcap
-, util-linux
+, utillinux
 , kbd
 , kmod
 
@@ -58,12 +57,11 @@
 
 , withAnalyze ? true
 , withApparmor ? true
-, withCompression ? true  # adds bzip2, lz4 and xz
 , withCoredump ? true
+, withCompression ? true  # adds bzip2, lz4 and xz
 , withCryptsetup ? true
 , withDocumentation ? true
 , withEfi ? stdenv.hostPlatform.isEfi
-, withHomed ? false
 , withHostnamed ? true
 , withHwdb ? true
 , withImportd ? true
@@ -72,18 +70,16 @@
 , withMachined ? true
 , withNetworkd ? true
 , withNss ? true
-, withOomd ? false
 , withPCRE2 ? true
 , withPolkit ? true
-, withPortabled ? false
 , withRemote ? true
 , withResolved ? true
 , withShellCompletions ? true
 , withTimedated ? true
 , withTimesyncd ? true
 , withUserDb ? true
-, libfido2
-, p11-kit
+, withHomed ? false, p11-kit, libfido2
+# , withPortabled ? false TODO
 
   # name argument
 , pname ? "systemd"
@@ -98,7 +94,7 @@
 assert withResolved -> (libgcrypt != null && libgpgerror != null);
 assert withImportd ->
 (curl.dev != null && zlib != null && xz != null && libgcrypt != null
-  && gnutar != null && gnupg != null && withCompression);
+  && gnutar != null && gnupg != null && withCompression );
 
 assert withEfi -> (gnu-efi != null);
 assert withRemote -> lib.getDev curl != null;
@@ -108,10 +104,11 @@ assert withHomed -> withCryptsetup;
 
 assert withCryptsetup ->
 (cryptsetup != null);
+
 let
   wantCurl = withRemote || withImportd;
 
-  version = "247";
+  version = "246.6";
 in
 stdenv.mkDerivation {
   inherit version pname;
@@ -120,15 +117,14 @@ stdenv.mkDerivation {
   # This has proven to be less error-prone than the previous systemd fork.
   src = fetchFromGitHub {
     owner = "systemd";
-    repo = "systemd";
+    repo = "systemd-stable";
     rev = "v${version}";
-    sha256 = "1nwsr6p65zy5jpabvjbszq5g556l1npaf2xsik4p4pvjjwnn1nx6";
+    sha256 = "1yhj2jlighqqpw1xk9q52f3pncjn47ipi224k35d6syb94q2b988";
   };
 
   # If these need to be regenerated, `git am path/to/00*.patch` them into a
   # systemd worktree, rebase to the more recent systemd version, and export the
   # patches again via `git format-patch v${version}`.
-  # Use `find . -name "*.patch" | sort` to get an up-to-date listing of all patches
   patches = [
     ./0001-Start-device-units-for-uninitialised-encrypted-devic.patch
     ./0002-Don-t-try-to-unmount-nix-or-nix-store.patch
@@ -141,14 +137,14 @@ stdenv.mkDerivation {
     ./0009-Change-usr-share-zoneinfo-to-etc-zoneinfo.patch
     ./0010-localectl-use-etc-X11-xkb-for-list-x11.patch
     ./0011-build-don-t-create-statedir-and-don-t-touch-prefixdi.patch
-    ./0012-inherit-systemd-environment-when-calling-generators.patch
-    ./0013-add-rootprefix-to-lookup-dir-paths.patch
-    ./0014-systemd-shutdown-execute-scripts-in-etc-systemd-syst.patch
-    ./0015-systemd-sleep-execute-scripts-in-etc-systemd-system-.patch
-    ./0016-kmod-static-nodes.service-Update-ConditionFileNotEmp.patch
-    ./0017-path-util.h-add-placeholder-for-DEFAULT_PATH_NORMAL.patch
-    ./0018-logind-seat-debus-show-CanMultiSession-again.patch
-    ./0019-Revert-pkg-config-prefix-is-not-really-configurable-.patch
+    ./0012-Install-default-configuration-into-out-share-factory.patch
+    ./0013-inherit-systemd-environment-when-calling-generators.patch
+    ./0014-add-rootprefix-to-lookup-dir-paths.patch
+    ./0015-systemd-shutdown-execute-scripts-in-etc-systemd-syst.patch
+    ./0016-systemd-sleep-execute-scripts-in-etc-systemd-system-.patch
+    ./0017-kmod-static-nodes.service-Update-ConditionFileNotEmp.patch
+    ./0018-path-util.h-add-placeholder-for-DEFAULT_PATH_NORMAL.patch
+    ./0019-logind-seat-debus-show-CanMultiSession-again.patch
   ];
 
   postPatch = ''
@@ -200,20 +196,20 @@ stdenv.mkDerivation {
       pam
     ]
 
-    ++ lib.optional withApparmor libapparmor
-    ++ lib.optional wantCurl (lib.getDev curl)
+    ++ lib.optional  withApparmor libapparmor
+    ++ lib.optional  wantCurl (lib.getDev curl)
     ++ lib.optionals withCompression [ bzip2 lz4 xz ]
-    ++ lib.optional withCryptsetup (lib.getDev cryptsetup.dev)
-    ++ lib.optional withEfi gnu-efi
-    ++ lib.optional withKexectools kexectools
-    ++ lib.optional withLibseccomp libseccomp
-    ++ lib.optional withNetworkd iptables
-    ++ lib.optional withPCRE2 pcre2
-    ++ lib.optional withResolved libgpgerror
-    ++ lib.optional withSelinux libselinux
-    ++ lib.optional withRemote libmicrohttpd
+    ++ lib.optional  withCryptsetup (lib.getDev cryptsetup.dev)
+    ++ lib.optional  withEfi gnu-efi
+    ++ lib.optional  withKexectools kexectools
+    ++ lib.optional  withLibseccomp libseccomp
+    ++ lib.optional  withNetworkd iptables
+    ++ lib.optional  withPCRE2 pcre2
+    ++ lib.optional  withResolved libgpgerror
+    ++ lib.optional  withSelinux libselinux
+    ++ lib.optional  withRemote libmicrohttpd
     ++ lib.optionals withHomed [ p11-kit libfido2 ]
-  ;
+    ;
 
   #dontAddPrefix = true;
 
@@ -242,10 +238,9 @@ stdenv.mkDerivation {
     "-Dhostnamed=${lib.boolToString withHostnamed}"
     "-Dmachined=${lib.boolToString withMachined}"
     "-Dnetworkd=${lib.boolToString withNetworkd}"
-    "-Doomd=${lib.boolToString withOomd}"
     "-Dpolkit=${lib.boolToString withPolkit}"
     "-Dcryptsetup=${lib.boolToString withCryptsetup}"
-    "-Dportabled=${lib.boolToString withPortabled}"
+    "-Dportabled=false"
     "-Dhwdb=${lib.boolToString withHwdb}"
     "-Dremote=${lib.boolToString withRemote}"
     "-Dsysusers=false"
@@ -263,7 +258,6 @@ stdenv.mkDerivation {
     "-Dldconfig=false"
     "-Dsmack=true"
     "-Db_pie=true"
-    "-Dinstall-sysconfdir=false"
     /*
     As of now, systemd doesn't allow runtime configuration of these values. So
     the settings in /etc/login.defs have no effect on it. Many people think this
@@ -283,13 +277,13 @@ stdenv.mkDerivation {
 
     "-Dkill-path=${coreutils}/bin/kill"
     "-Dkmod-path=${kmod}/bin/kmod"
-    "-Dsulogin-path=${util-linux}/bin/sulogin"
-    "-Dmount-path=${util-linux}/bin/mount"
-    "-Dumount-path=${util-linux}/bin/umount"
+    "-Dsulogin-path=${utillinux}/bin/sulogin"
+    "-Dmount-path=${utillinux}/bin/mount"
+    "-Dumount-path=${utillinux}/bin/umount"
     "-Dcreate-log-dirs=false"
-
-    # Use cgroupsv2. This is already the upstream default, but better be explicit.
-    "-Ddefault-hierarchy=unified"
+    # Upstream uses cgroupsv2 by default. To support docker and other
+    # container managers we still need v1.
+    "-Ddefault-hierarchy=hybrid"
     # Upstream defaulted to disable manpages since they optimize for the much
     # more frequent development builds
     "-Dman=true"
@@ -332,18 +326,18 @@ stdenv.mkDerivation {
       test -e $i
       substituteInPlace $i \
         --replace /usr/bin/getent ${getent}/bin/getent \
-        --replace /sbin/mkswap ${lib.getBin util-linux}/sbin/mkswap \
-        --replace /sbin/swapon ${lib.getBin util-linux}/sbin/swapon \
-        --replace /sbin/swapoff ${lib.getBin util-linux}/sbin/swapoff \
+        --replace /sbin/mkswap ${lib.getBin utillinux}/sbin/mkswap \
+        --replace /sbin/swapon ${lib.getBin utillinux}/sbin/swapon \
+        --replace /sbin/swapoff ${lib.getBin utillinux}/sbin/swapoff \
         --replace /bin/echo ${coreutils}/bin/echo \
         --replace /bin/cat ${coreutils}/bin/cat \
-        --replace /sbin/sulogin ${lib.getBin util-linux}/sbin/sulogin \
+        --replace /sbin/sulogin ${lib.getBin utillinux}/sbin/sulogin \
         --replace /sbin/modprobe ${lib.getBin kmod}/sbin/modprobe \
         --replace /usr/lib/systemd/systemd-fsck $out/lib/systemd/systemd-fsck \
         --replace /bin/plymouth /run/current-system/sw/bin/plymouth # To avoid dependency
     done
 
-    for dir in tools src/resolve test src/test src/shared; do
+    for dir in tools src/resolve test src/test; do
       patchShebangs $dir
     done
 

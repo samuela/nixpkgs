@@ -39,7 +39,6 @@ buildPythonPackage rec {
     "--benchmark-disable"
     "--deselect=tests/test_inputs.py::URLTest::test_check"
     "--deselect=tests/test_inputs.py::EmailTest::test_valid_value_check"
-    "--deselect=tests/test_logging.py::LoggingTest::test_override_app_level"
   ];
 
   meta = with lib; {

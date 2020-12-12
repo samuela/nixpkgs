@@ -32,6 +32,5 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ qyliss ];
     license = licenses.gpl2;
     platforms = platforms.unix;
-    broken = stdenv.isDarwin;
   };
 }

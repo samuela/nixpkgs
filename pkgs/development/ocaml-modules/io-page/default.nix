@@ -4,7 +4,6 @@ buildDunePackage rec {
   pname = "io-page";
   version = "2.3.0";
 
-  useDune2 = true;
   minimumOCamlVersion = "4.02.3";
 
   src = fetchurl {

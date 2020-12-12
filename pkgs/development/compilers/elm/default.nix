@@ -74,12 +74,6 @@ let
     inherit (hsPkgs.elmPkgs) elm;
   };
 
-  elmRustPackages = {
-    elm-json = import ./packages/elm-json.nix {
-      inherit rustPlatform fetchurl openssl stdenv pkg-config;
-    };
-  };
-
   elmNodePackages = with elmLib;
     let
       nodePkgs = import ./packages/node-composition.nix {
@@ -116,9 +110,6 @@ let
       create-elm-app = patchNpmElm (patchBinwrap [elmi-to-json]
         nodePkgs.create-elm-app);
 
-      elm-review = patchBinwrap [elmRustPackages.elm-json]
-        nodePkgs.elm-review;
-
       elm-language-server = nodePkgs."@elm-tooling/elm-language-server";
 
       elm-optimize-level-2 = nodePkgs."elm-optimize-level-2";
@@ -126,6 +117,9 @@ let
       inherit (nodePkgs) elm-doc-preview elm-live elm-upgrade elm-xref elm-analyse;
     };
 
-in hsPkgs.elmPkgs // elmNodePackages // elmRustPackages // {
+in hsPkgs.elmPkgs // elmNodePackages // {
+  elm-json = import ./packages/elm-json.nix {
+    inherit rustPlatform fetchurl openssl stdenv pkg-config;
+  };
   lib = elmLib;
 }

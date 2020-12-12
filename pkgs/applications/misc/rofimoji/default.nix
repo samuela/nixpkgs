@@ -33,10 +33,7 @@ buildPythonApplication rec {
 
   # The 'extractors' sub-module is used for development
   # and has additional dependencies.
-  postPatch = ''
-    rm -rf extractors
-    substituteInPlace setup.py --replace 'pyxdg==0.26' 'pyxdg'
-  '';
+  postPatch = "rm -rf extractors";
 
   meta = with lib; {
     description = "A simple emoji and character picker for rofi";

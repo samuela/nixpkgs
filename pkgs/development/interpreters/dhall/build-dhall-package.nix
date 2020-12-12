@@ -1,4 +1,4 @@
-{ dhall, dhall-docs, haskell, lib, lndir, runCommand, writeText }:
+{ dhall, haskell, lib, lndir, runCommand, writeText }:
 
 { name
 
@@ -31,12 +31,6 @@
   # space within the Nix store, but if you set the following `source` option to
   # `true` then the package will also include `source.dhall`.
 , source ? false
-
-  # Directory to generate documentation for (i.e. as the `--input` option to the
-  # `dhall-docs` command.)
-  #
-  # If `null`, then no documentation is generated.
-, documentationRoot ? null
 }:
 
 let
@@ -48,11 +42,7 @@ let
 
   cache = ".cache";
 
-  data = ".local/share";
-
   cacheDhall = "${cache}/dhall";
-
-  dataDhall = "${data}/dhall";
 
   sourceFile = "source.dhall";
 
@@ -81,10 +71,4 @@ in
     echo "missing $SHA_HASH" > $out/binary.dhall
 
     ${lib.optionalString (!source) "rm $out/${sourceFile}"}
-
-    ${lib.optionalString (documentationRoot != null) ''
-    mkdir -p $out/${dataDhall}
-
-    XDG_DATA_HOME=$out/${data} ${dhall-docs}/bin/dhall-docs --input '${documentationRoot}' --output-link $out/docs
-    ''}
   ''

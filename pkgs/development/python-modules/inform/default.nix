@@ -3,7 +3,6 @@
 , six
 , hypothesis
 , pytest
-, pytestrunner
 , pytestCheckHook
 }:
 
@@ -18,14 +17,10 @@ buildPythonPackage rec {
     sha256 = "02zlprvidkz51aypss4knhv7dbr0sbpz3caqjzf9am2n1jx2viyy";
   };
 
-  nativeBuildInputs = [ pytestrunner ];
   propagatedBuildInputs = [ arrow six ];
 
   checkInputs = [ pytest hypothesis ];
-  checkPhase = ''
-    patchShebangs test.doctests.py test.inform.py
-    ./test.doctests.py && ./test.inform.py && pytest
-  '';
+  checkPhase = "./test.doctests.py && ./test.inform.py && pytest";
 
   meta = with lib; {
     description = "Print and logging utilities";

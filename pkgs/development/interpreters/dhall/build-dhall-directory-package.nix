@@ -14,17 +14,12 @@ lib.makePackageOverridable
     , src
     , # The file to import, relative to the root directory
       file ? "package.dhall"
-      # Set to `true` to generate documentation for the package
-    , document ? false
     }:
 
-    buildDhallPackage
-      ( { inherit name dependencies source;
+    buildDhallPackage {
+      inherit name dependencies source;
 
-          code = "${src}/${file}";
-
-        }
-      // lib.optionalAttrs document { documentationRoot = src; }
-      )
+      code = "${src}/${file}";
+    }
   )
 

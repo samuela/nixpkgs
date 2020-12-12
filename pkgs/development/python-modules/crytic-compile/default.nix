@@ -1,4 +1,4 @@
-{ lib, buildPythonPackage, fetchFromGitHub, pythonOlder, pysha3, setuptools }:
+{ lib, buildPythonPackage, fetchFromGitHub, pythonOlder, pysha3 }:
 
 buildPythonPackage rec {
   pname = "crytic-compile";
@@ -13,7 +13,7 @@ buildPythonPackage rec {
     sha256 = "01mis7bqsh0l5vjl6jwibzy99djza35fxmywy56q8k4jbxwmdcna";
   };
 
-  propagatedBuildInputs = [ pysha3 setuptools ];
+  propagatedBuildInputs = [ pysha3 ];
 
   doCheck = false;
 

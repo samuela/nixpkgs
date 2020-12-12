@@ -569,9 +569,9 @@ rec {
      standard GNU Autoconf scripts.
 
      Example:
-       enableFeatureAs true "shared" "foo"
+       enableFeature true "shared" "foo"
        => "--enable-shared=foo"
-       enableFeatureAs false "shared" (throw "ignored")
+       enableFeature false "shared" (throw "ignored")
        => "--disable-shared"
   */
   enableFeatureAs = enable: feat: value: enableFeature enable feat + optionalString enable "=${value}";
@@ -593,9 +593,9 @@ rec {
      standard GNU Autoconf scripts.
 
      Example:
-       withFeatureAs true "shared" "foo"
+       with_Feature true "shared" "foo"
        => "--with-shared=foo"
-       withFeatureAs false "shared" (throw "ignored")
+       with_Feature false "shared" (throw "ignored")
        => "--without-shared"
   */
   withFeatureAs = with_: feat: value: withFeature with_ feat + optionalString with_ "=${value}";
@@ -674,7 +674,7 @@ rec {
     else
       false;
 
-  /* Parse a string as an int.
+  /* Parse a string string as an int.
 
      Type: string -> int
 

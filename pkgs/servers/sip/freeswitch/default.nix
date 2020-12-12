@@ -1,6 +1,6 @@
-{ fetchFromGitHub, fetchpatch, stdenv, lib, pkgconfig, autoreconfHook
+{ fetchFromGitHub, stdenv, lib, pkgconfig, autoreconfHook
 , ncurses, gnutls, readline
-, openssl, perl, sqlite, libjpeg, speex, pcre, libuuid
+, openssl, perl, sqlite, libjpeg, speex, pcre
 , ldns, libedit, yasm, which, libsndfile, libtiff
 
 , callPackage
@@ -88,21 +88,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "freeswitch";
-  version = "1.10.5";
+  version = "1.10.3";
   src = fetchFromGitHub {
     owner = "signalwire";
     repo = pname;
     rev = "v${version}";
-    sha256 = "18dhyb19k28dcm1i8mhqvvgm2phsrmrwyjmfn79glk8pdlalvcha";
+    sha256 = "0rp4sxqxd2wsb5iyv0mh11l16zxvh7rbgfg0vcgns823gvh8lqai";
   };
-
-  patches = [
-    # https://github.com/signalwire/freeswitch/pull/812 fix mod_spandsp, mod_gsmopen build, drop when updating from 1.10.5
-    (fetchpatch {
-      url = "https://github.com/signalwire/freeswitch/commit/51fba83ed3ed2d9753d8e6b13e13001aca50b493.patch";
-      sha256 = "0h2bmifsyyasxjka3pczbmqym1chvz91fmb589njrdbwpkjyvqh3";
-    })
-  ];
   postPatch = ''
     patchShebangs     libs/libvpx/build/make/rtcd.pl
     substituteInPlace libs/libvpx/build/make/configure.sh \
@@ -122,7 +114,6 @@ stdenv.mkDerivation rec {
     openssl ncurses gnutls readline perl libjpeg
     sqlite pcre speex ldns libedit yasm which
     libsndfile libtiff
-    libuuid
   ]
   ++ lib.unique (lib.concatMap (mod: mod.inputs) enabledModules)
   ++ lib.optionals stdenv.isDarwin [ SystemConfiguration ];

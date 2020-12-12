@@ -1,22 +1,22 @@
 { lib, fetchPypi, buildPythonPackage, python, pkg-config, libX11
-, SDL2, SDL2_image, SDL2_mixer, SDL2_ttf, libpng, libjpeg, portmidi, freetype
+, SDL, SDL_image, SDL_mixer, SDL_ttf, libpng, libjpeg, portmidi, freetype
 }:
 
 buildPythonPackage rec {
   pname = "pygame";
-  version = "2.0.0";
+  version = "1.9.6";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "63b038da116a643046181b02173fd894d87d2f85ecfd6aa7d5ece73c6ef501e9";
+    sha256 = "301c6428c0880ecd4a9e3951b80e539c33863b6ff356a443db1758de4f297957";
   };
 
   nativeBuildInputs = [
-    pkg-config SDL2
+    pkg-config SDL
   ];
 
   buildInputs = [
-    SDL2 SDL2_image SDL2_mixer SDL2_ttf libpng libjpeg
+    SDL SDL_image SDL_mixer SDL_ttf libpng libjpeg
     portmidi libX11 freetype
   ];
 
@@ -27,7 +27,8 @@ buildPythonPackage rec {
     sed \
       -e "s/origincdirs = .*/origincdirs = []/" \
       -e "s/origlibdirs = .*/origlibdirs = []/" \
-      -e "/linux-gnu/d" \
+      -e "/'\/lib\/i386-linux-gnu', '\/lib\/x86_64-linux-gnu']/d" \
+      -e "/\/include\/smpeg/d" \
       -i buildconfig/config_unix.py
     ${lib.concatMapStrings (dep: ''
       sed \

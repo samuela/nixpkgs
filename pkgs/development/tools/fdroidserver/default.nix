@@ -23,7 +23,6 @@ python.pkgs.buildPythonApplication rec {
     ${python.interpreter} setup.py compile_catalog
   '';
   postInstall = ''
-    patchShebangs gradlew-fdroid
     install -m 0755 gradlew-fdroid $out/bin
   '';
 

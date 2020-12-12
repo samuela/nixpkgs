@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, util-linux, bash }:
+{ stdenv, fetchurl, pkgconfig, utillinux, bash }:
 
 stdenv.mkDerivation rec {
   pname = "bcache-tools";
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ util-linux ];
+  buildInputs = [ utillinux ];
 
   # * Remove broken install rules (they ignore $PREFIX) for stuff we don't need
   #   anyway (it's distro specific stuff).

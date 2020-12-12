@@ -19,18 +19,12 @@ buildPythonPackage rec {
     ln -s ${numpy.cfg} site.cfg
   '';
 
-  nativeBuildInputs = [
-    numpy
-  ];
-
-  propagatedBuildInputs = [
-    numpy
-  ];
+  propagatedBuildInputs = [ numpy ];
 
   checkPhase = ''
     runtest="$(pwd)/numexpr/tests/test_numexpr.py"
     pushd "$out"
-    ${python.interpreter} "$runtest"
+    ${python}/bin/${python.executable} "$runtest"
     popd
   '';
 

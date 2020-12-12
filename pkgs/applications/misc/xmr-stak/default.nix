@@ -1,5 +1,5 @@
 { stdenv, stdenvGcc6, lib
-, fetchFromGitHub, cmake, libmicrohttpd_0_9_70, openssl
+, fetchFromGitHub, cmake, libmicrohttpd, openssl
 , opencl-headers, ocl-icd, hwloc, cudatoolkit
 , devDonationLevel ? "0.0"
 , cudaSupport ? false
@@ -27,7 +27,7 @@ stdenv'.mkDerivation rec {
     ++ lib.optional (!openclSupport) "-DOpenCL_ENABLE=OFF";
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ libmicrohttpd_0_9_70 openssl hwloc ]
+  buildInputs = [ libmicrohttpd openssl hwloc ]
     ++ lib.optional cudaSupport cudatoolkit
     ++ lib.optionals openclSupport [ opencl-headers ocl-icd ];
 

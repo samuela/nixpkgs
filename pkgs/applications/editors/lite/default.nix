@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     description = "A lightweight text editor written in Lua";
     homepage = "https://github.com/rxi/lite";
     license = licenses.mit;
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
     platforms = platforms.unix;
   };
 }

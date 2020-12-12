@@ -1,33 +1,18 @@
-{ stdenv
-, buildPythonPackage
-, fetchPypi
-, pyparsing
-, six
-, pytestCheckHook
-, pretend
-, flit-core
-}:
+{ stdenv, buildPythonPackage, fetchPypi
+, pyparsing, six, pytest, pretend }:
 
 buildPythonPackage rec {
   pname = "packaging";
-  version = "20.7";
-  format = "pyproject";
+  version = "20.4";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "Ba87uF0yA3fbKBzyVKsFDhp+vL9UEGhamkB+GKH4EjY=";
+    sha256 = "4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8";
   };
-
-  nativeBuildInputs = [
-    flit-core
-  ];
 
   propagatedBuildInputs = [ pyparsing six ];
 
-  checkInputs = [
-    pytestCheckHook
-    pretend
-  ];
+  checkInputs = [ pytest pretend ];
 
   checkPhase = ''
     py.test tests

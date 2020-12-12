@@ -29,6 +29,6 @@ rustPlatform.buildRustPackage rec {
     description = "Shortcut menu-based task runner, inspired by Emacs Hydra";
     homepage = "https://github.com/Mange/tydra";
     license = licenses.mit;
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
   };
 }

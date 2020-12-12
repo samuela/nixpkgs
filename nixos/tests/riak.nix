@@ -1,7 +1,7 @@
 import ./make-test-python.nix ({ lib, pkgs, ... }: {
   name = "riak";
   meta = with lib.maintainers; {
-    maintainers = [ Br1ght0ne ];
+    maintainers = [ filalex77 ];
   };
 
   machine = {

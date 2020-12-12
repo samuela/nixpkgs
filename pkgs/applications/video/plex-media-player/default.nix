@@ -11,14 +11,14 @@ let
   depSrcs = import ./deps.nix { inherit fetchurl; };
 in mkDerivation rec {
   pname = "plex-media-player";
-  version = "2.58.0.1076";
-  vsnHash = "38e019da";
+  version = "2.55.0.1069";
+  vsnHash = "2369bed9";
 
   src = fetchFromGitHub {
     owner = "plexinc";
     repo = "plex-media-player";
     rev = "v${version}-${vsnHash}";
-    sha256 = "XFwcSHn9wG30bDMGFITBmhp6/VI1RLmxMxFFxjntTmw=";
+    sha256 = "1jq4592sgaia0xy2h7n3vh5i7c84sdh4l64fdc774r4i0bmg66qi";
   };
 
   nativeBuildInputs = [ pkgconfig cmake python3 ];
@@ -41,7 +41,7 @@ in mkDerivation rec {
   meta = with stdenv.lib; {
     description = "Streaming media player for Plex";
     license = licenses.gpl2;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ kylewlacy ];
     homepage = "https://plex.tv";
   };
 }

@@ -21,6 +21,6 @@ stdenv.mkDerivation {
     homepage = "http://pari.math.u-bordeaux.fr/";
     license = licenses.gpl2Plus;
     platforms = platforms.all;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
   };
 }

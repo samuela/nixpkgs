@@ -11,6 +11,7 @@
 , dill
 , pandas
 , partd
+, pytest_xdist
 }:
 
 buildPythonPackage rec {
@@ -28,6 +29,7 @@ buildPythonPackage rec {
 
   checkInputs = [
     pytestCheckHook
+    pytest_xdist # takes >10mins to run single-threaded
   ];
 
   dontUseSetuptoolsCheck = true;
@@ -52,7 +54,12 @@ buildPythonPackage rec {
       --replace "cmdclass=versioneer.get_cmdclass()," ""
   '';
 
-  #pytestFlagsArray = [ "-n $NIX_BUILD_CORES" ];
+  # dask test suite with consistently fail when using high core counts
+  preCheck = ''
+    NIX_BUILD_CORES=$((NIX_BUILD_CORES > 8 ? 8 : NIX_BUILD_CORES))
+  '';
+
+  pytestFlagsArray = [ "-n $NIX_BUILD_CORES" ];
 
   disabledTests = [
     "test_argwhere_str"

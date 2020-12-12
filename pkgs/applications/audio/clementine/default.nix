@@ -10,7 +10,6 @@ let
   withCD = config.clementine.cd or true;
   withCloud = config.clementine.cloud or true;
 
-  # On the update after all 1.4rc, qt5.15 will be supported.
   version = "1.4.0rc1";
 
   src = fetchFromGitHub {

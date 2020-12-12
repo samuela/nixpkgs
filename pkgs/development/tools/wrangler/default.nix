@@ -30,6 +30,6 @@ rustPlatform.buildRustPackage rec {
     description = "A CLI tool designed for folks who are interested in using Cloudflare Workers";
     homepage = "https://github.com/cloudflare/wrangler";
     license = with licenses; [ asl20 /* or */ mit ];
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
   };
 }

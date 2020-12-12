@@ -3,7 +3,7 @@
 , html-tidy, libzip, zlib, pcre, pcre2, libxslt, aspell, openldap, cyrus_sasl
 , uwimap, pam, libiconv, enchant1, libXpm, gd, libwebp, libjpeg, libpng
 , freetype, libffi, freetds, postgresql, sqlite, net-snmp, unixODBC, libedit
-, readline, rsync, fetchpatch, valgrind
+, readline, rsync, fetchpatch
 }:
 
 let
@@ -331,7 +331,7 @@ in
           sha256 = "055l40lpyhb0rbjn6y23qkzdhvpp7inbnn6x13cpn4inmhjqfpg4";
         });
       }
-      { name = "json"; enable = lib.versionOlder php.version "8.0"; }
+      { name = "json"; }
       { name = "ldap";
         buildInputs = [ openldap cyrus_sasl ];
         configureFlags = [
@@ -341,9 +341,7 @@ in
           "LDAP_LIBDIR=${openldap.out}/lib"
         ] ++ lib.optional stdenv.isLinux "--with-ldap-sasl=${cyrus_sasl.dev}";
         doCheck = false; }
-      { name = "mbstring"; buildInputs = [ oniguruma ] ++ lib.optionals (lib.versionAtLeast php.version "8.0") [
-          pcre'
-        ]; doCheck = false; }
+      { name = "mbstring"; buildInputs = [ oniguruma ]; doCheck = false; }
       { name = "mysqli";
         internalDeps = [ php.extensions.mysqlnd ];
         configureFlags = [ "--with-mysqli=mysqlnd" "--with-mysql-sock=/run/mysqld/mysqld.sock" ];
@@ -390,13 +388,11 @@ in
       # oci8 (7.4, 7.3, 7.2)
       # odbc (7.4, 7.3, 7.2)
       { name = "opcache";
-        buildInputs = [ pcre' ] ++ lib.optionals (lib.versionAtLeast php.version "8.0") [
-          valgrind.dev
-        ];
+        buildInputs = [ pcre' ];
         # HAVE_OPCACHE_FILE_CACHE is defined in config.h, which is
         # included from ZendAccelerator.h, but ZendAccelerator.h is
         # included after the ifdef...
-        patches = [] ++ lib.optional (lib.versionAtLeast php.version "8.0") [ ../development/interpreters/php/fix-opcache-configure.patch ] ++lib.optional (lib.versionOlder php.version "7.4") [
+        patches = lib.optional (lib.versionOlder php.version "7.4") [
           (pkgs.writeText "zend_file_cache_config.patch" ''
             --- a/ext/opcache/zend_file_cache.c
             +++ b/ext/opcache/zend_file_cache.c
@@ -460,7 +456,7 @@ in
         doCheck = false;
       }
       # recode (7.3, 7.2)
-      { name = "session"; doCheck = !(lib.versionAtLeast php.version "8.0"); }
+      { name = "session"; }
       { name = "shmop"; }
       { name = "simplexml";
         buildInputs = [ libxml2 pcre' ];

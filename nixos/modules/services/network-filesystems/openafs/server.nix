@@ -251,6 +251,7 @@ in {
         wantedBy = [ "multi-user.target" ];
         restartIfChanged = false;
         unitConfig.ConditionPathExists = [
+          "|/etc/openafs/server/rxkad.keytab"
           "|/etc/openafs/server/KeyFileExt"
         ];
         preStart = ''

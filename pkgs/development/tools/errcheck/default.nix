@@ -1,17 +1,23 @@
-{ lib, fetchFromGitHub, buildGoModule }:
+{ buildGoPackage
+, lib
+, fetchFromGitHub
+}:
 
-buildGoModule rec {
+buildGoPackage rec {
   pname = "errcheck";
-  version = "1.4.0";
+  version = "1.1.0";
+
+  goPackagePath = "github.com/kisielk/errcheck";
+  excludedPackages = "\\(testdata\\)";
 
   src = fetchFromGitHub {
     owner = "kisielk";
     repo = "errcheck";
     rev = "v${version}";
-    sha256 = "00skyvy31yliw0f395j5h3gichi5n2q1m24izjidxvyc2av7pjn6";
+    sha256 = "19vd4rxmqbk5lpiav3pf7df3yjlz0l0dwx9mn0gjq5f998iyhy6y";
   };
 
-  vendorSha256 = "0mx506qb5sy6p4zqjs1n0w7dg8pz2wf982qi9v7nrhxysl2rlnxf";
+  goDeps = ./deps.nix;
 
   meta = with lib; {
     description = "Program for checking for unchecked errors in go programs";

@@ -12,7 +12,6 @@
 , configurePhase ? null
 , meta ? {}
 , enableDebugInfo ? false
-, buildFlags ? []
 , ... }@attrs:
 
 with stdenv.lib;
@@ -40,12 +39,8 @@ let
     ''
     else setupHook;
 
-    buildInputs = buildInputs ++ [ erlang perl which gitMinimal wget ];
+    buildInputs = [ erlang perl which gitMinimal wget ];
     propagatedBuildInputs = beamDeps;
-
-    buildFlags = [ "SKIP_DEPS=1" ]
-      ++ lib.optional (enableDebugInfo || erlang.debugInfo) ''ERL_OPTS="$ERL_OPTS +debug_info"''
-      ++ buildFlags;
 
     configurePhase = if configurePhase == null
     then ''
@@ -63,7 +58,7 @@ let
     then ''
         runHook preBuild
 
-        make $buildFlags "''${buildFlagsArray[@]}"
+        make SKIP_DEPS=1 ERL_OPTS="$ERL_OPTS ${debugInfoFlag}"
 
         runHook postBuild
     ''

@@ -1,11 +1,9 @@
 { stdenv, fetchurl, libxml2, gnutls, libxslt, pkgconfig, libgcrypt, libtool
-# nss_3_53 is used instead of the latest due to a number of issues:
-# https://github.com/lsh123/xmlsec/issues?q=is%3Aissue+is%3Aopen+nss
-, openssl, nss_3_53, lib, runCommandCC, writeText }:
+, openssl, nss, lib, runCommandCC, writeText }:
 
 lib.fix (self:
 let
-  version = "1.2.31";
+  version = "1.2.30";
 in
 stdenv.mkDerivation {
   pname = "xmlsec";
@@ -13,7 +11,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://www.aleksey.com/xmlsec/download/xmlsec1-${version}.tar.gz";
-    sha256 = "mxC8Uswx5PdhYuOXXlDbJrcatJxXHYELMRymJr5aCyY=";
+    sha256 = "1j5bf7ni45jghyrbf7a14wx2pvfara557zyry7g7h8840c5kd11d";
   };
 
   patches = [
@@ -27,16 +25,11 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  buildInputs = [ libxml2 gnutls libxslt libgcrypt libtool openssl nss_3_53 ];
+  buildInputs = [ libxml2 gnutls libxslt libgcrypt libtool openssl nss ];
 
   enableParallelBuilding = true;
   doCheck = true;
-  checkInputs = [ nss_3_53.tools ];
-  preCheck = ''
-  substituteInPlace tests/testrun.sh \
-    --replace 'timestamp=`date +%Y%m%d_%H%M%S`' 'timestamp=19700101_000000' \
-    --replace 'TMPFOLDER=/tmp' '$(mktemp -d)'
-  '';
+  checkInputs = [ nss.tools ];
 
   # enable deprecated soap headers required by lasso
   # https://dev.entrouvert.org/issues/18771

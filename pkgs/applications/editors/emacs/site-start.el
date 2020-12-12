@@ -22,17 +22,6 @@ least specific (the system profile)"
                              (nix--profile-paths)))))
   (setq load-path (append paths load-path)))
 
-;;; Remove wrapper site-lisp from EMACSLOADPATH so it's not propagated
-;;; to any other Emacsen that might be started as subprocesses.
-(let ((wrapper-site-lisp (getenv "emacsWithPackages_siteLisp"))
-      (env-load-path (getenv "EMACSLOADPATH")))
-  (when wrapper-site-lisp
-    (setenv "emacsWithPackages_siteLisp" nil))
-  (when (and wrapper-site-lisp env-load-path)
-    (let* ((env-list (split-string env-load-path ":"))
-           (new-env-list (delete wrapper-site-lisp env-list)))
-      (setenv "EMACSLOADPATH" (when new-env-list
-                                (mapconcat 'identity new-env-list ":"))))))
 
 ;;; Make `woman' find the man pages
 (defvar woman-manpath)
@@ -63,6 +52,9 @@ least specific (the system profile)"
          (file-name-directory load-file-name)))) ; .../emacs/site-lisp/
       (version
        (file-name-as-directory
-        emacs-version))
+        (concat
+         (number-to-string emacs-major-version)
+         "."
+         (number-to-string emacs-minor-version))))
       (src (file-name-as-directory "src")))
   (setq find-function-C-source-directory (concat emacs version src)))

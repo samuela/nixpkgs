@@ -23,7 +23,8 @@ in stdenv.mkDerivation rec {
   dontUnpack = true;
 
   installPhase = ''
-    install -Dm755 $src $out/bin/TabNine
+    mkdir -p $out/bin
+    ln -s $src $out/bin/TabNine
   '';
 
   meta = with lib; {

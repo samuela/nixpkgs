@@ -17,7 +17,6 @@
 , mtxclient
 , boost17x
 , spdlog
-, fmt
 , olm
 , pkgconfig
 , nlohmann_json
@@ -48,7 +47,6 @@ mkDerivation rec {
     boost17x
     lmdb
     spdlog
-    fmt
     cmark
     qtbase
     qtmultimedia

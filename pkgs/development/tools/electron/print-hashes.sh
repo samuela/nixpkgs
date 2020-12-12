@@ -20,7 +20,6 @@ SYSTEMS=(
 )
 
 hashfile="$(nix-prefetch-url --print-path "https://github.com/electron/electron/releases/download/v${VERSION}/SHASUMS256.txt" 2>/dev/null | tail -n1)"
-headers="$(nix-prefetch-url "https://atom.io/download/electron/v${VERSION}/node-v${VERSION}-headers.tar.gz")"
 
 # Entry similar to the following goes in default.nix:
 
@@ -30,7 +29,5 @@ for S in "${!SYSTEMS[@]}"; do
   hash="$(grep " *electron-v${VERSION}-${SYSTEMS[$S]}.zip$" "$hashfile"|cut -f1 -d' ')"
   echo "    $S = \"$hash\";"
 done
-
-echo "    headers = \"$headers\";"
 
 echo "  };"

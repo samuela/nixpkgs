@@ -3,7 +3,7 @@
 , flex
 , zlib
 , perlPackages
-, util-linux
+, utillinux
 }:
 
 stdenv.mkDerivation rec {
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
   # so let's make sure it knows where to find it:
   postPatch = stdenv.lib.optionalString stdenv.isLinux ''
     substituteInPlace creduce/creduce_utils.pm --replace \
-      lscpu ${util-linux}/bin/lscpu
+      lscpu ${utillinux}/bin/lscpu
   '';
 
 

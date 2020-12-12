@@ -1,77 +1,55 @@
-{ stdenv
-, alsaLib
-, fetchFromGitHub
-, freetype
-, libGL
-, libX11
-, libXcursor
-, libXext
-, libXrender
-, meson
-, ninja
-, pkg-config
+{ stdenv, fetchFromGitHub, alsaLib, fftwSinglePrec, freetype, libjack2
+, pkgconfig, ladspa-sdk, premake3
+, libX11, libXcomposite, libXcursor, libXext, libXinerama, libXrender
 }:
 
-stdenv.mkDerivation rec {
+let
+  premakeos = if stdenv.hostPlatform.isDarwin then "osx"
+              else if stdenv.hostPlatform.isWindows then "mingw"
+              else "linux";
+in stdenv.mkDerivation rec {
   pname = "distrho-ports";
-  version = "2020-07-14";
+  version = "unstable-2019-10-09";
 
   src = fetchFromGitHub {
     owner = "DISTRHO";
     repo = "DISTRHO-Ports";
-    rev = version;
-    sha256 = "03ji41i6dpknws1vjwfxnl8c8bgisv2ng8xa4vqy2473k7wgdw4v";
+    rev = "7e62235e809e59770d0d91d2c48c3f50ce7c027a";
+    sha256 = "10hpsjcmk0cgcsic9r1wxyja9x6q9wb8w8254dlrnzyswl54r1f8";
   };
 
-  nativeBuildInputs = [ pkg-config meson ninja ];
+  configurePhase = ''
+    runHook preConfigure
 
+    sh ./scripts/premake-update.sh ${premakeos}
+
+    runHook postConfigure
+  '';
+
+  postPatch = ''
+    sed -e "s#@./scripts#sh scripts#" -i Makefile
+  '';
+
+  nativeBuildInputs = [ pkgconfig premake3 ];
   buildInputs = [
-    alsaLib
-    freetype
-    libGL
-    libX11
-    libXcursor
-    libXext
-    libXrender
+    alsaLib fftwSinglePrec freetype libjack2
+    libX11 libXcomposite libXcursor libXext
+    libXinerama libXrender ladspa-sdk
   ];
 
+  makeFlags = [ "PREFIX=$(out)" ];
+
   meta = with stdenv.lib; {
-    homepage = "http://distrho.sourceforge.net/ports";
-    description = "Linux audio plugins and LV2 ports";
+    homepage = "http://distrho.sourceforge.net";
+    description = "A collection of cross-platform audio effects and plugins";
     longDescription = ''
       Includes:
-        arctican-function
-        arctican-pilgrim
-        dexed
-        drowaudio-distortion
-        drowaudio-distortionshaper
-        drowaudio-flanger
-        drowaudio-reverb
-        drowaudio-tremolo
-        drumsynth
-        easySSP
-        eqinox
-        HiReSam
-        juce-opl
-        klangfalter
-        LUFSMeter
-        LUFSMeter-Multi
-        luftikus
-        obxd
-        pitchedDelay
-        refine
-        stereosourceseparation
-        tal-dub-3
-        tal-filter
-        tal-filter-2
-        tal-noisemaker
-        tal-reverb
-        tal-reverb-2
-        tal-reverb-3
-        tal-vocoder-2
-        temper
-        vex
-        wolpertinger
+      Dexed drowaudio-distortion drowaudio-distortionshaper drowaudio-flanger
+      drowaudio-reverb drowaudio-tremolo drumsynth EasySSP eqinox HiReSam
+      JuceDemoPlugin KlangFalter LUFSMeter LUFSMeterMulti Luftikus Obxd
+      PitchedDelay ReFine StereoSourceSeparation TAL-Dub-3 TAL-Filter
+      TAL-Filter-2 TAL-NoiseMaker TAL-Reverb TAL-Reverb-2 TAL-Reverb-3
+      TAL-Vocoder-2 TheFunction ThePilgrim Vex Wolpertinger
     '';
     license = with licenses; [ gpl2 gpl3 gpl2Plus lgpl3 mit ];
     maintainers = [ maintainers.goibhniu ];

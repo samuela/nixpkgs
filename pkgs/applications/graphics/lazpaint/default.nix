@@ -7,24 +7,24 @@ let
   bgrabitmap = fetchFromGitHub {
     owner = "bgrabitmap";
     repo = "bgrabitmap";
-    rev = "v11.2.5";
-    sha256 = "0w5pdihsxn039kalkf4cx23j69hz5r09qmhd358h2n74irv1r3x1";
+    rev = "v11.2.4";
+    sha256 = "1zk88crfn07md16wg6af4i8nlx4ikkhxq9gfk49jirwimgwbf1md";
   };
   bgracontrols = fetchFromGitHub {
     owner = "bgrabitmap";
     repo = "bgracontrols";
-    rev = "v7.0";
-    sha256 = "0qz3cscrc9jvhrix1hbmzhdxv6mxk0mz9azr46canflsydda8fjy";
+    rev = "v6.9";
+    sha256 = "0hwjlqlwqs4fqxlgay84hccs1lm3c6i9nmq9sxzrip410mggnjyw";
   };
 in stdenv.mkDerivation rec {
   pname = "lazpaint";
-  version = "7.1.5";
+  version = "7.1.4";
 
   src = fetchFromGitHub {
     owner = "bgrabitmap";
     repo = "lazpaint";
     rev = "v${version}";
-    sha256 = "0bpk3rlqzbxvgrxmrzs0hcrgwhsqnpjqv1kdd9cp09knimmksvy5";
+    sha256 = "19b0wrjjyvz3g2d2gdsz8ihc1clda5v22yb597an8j9sblp9m0nf";
   };
 
   nativeBuildInputs = [ lazarus fpc makeWrapper ];
@@ -56,6 +56,10 @@ in stdenv.mkDerivation rec {
     # Python is needed for scripts
     makeWrapper $out/share/lazpaint/lazpaint $out/bin/lazpaint \
       --prefix PATH : ${stdenv.lib.makeBinPath [ python3 ]}
+
+    substituteInPlace $out/share/applications/lazpaint.desktop \
+      --replace /usr/share/pixmaps/lazpaint.png $out/share/pixmaps/lazpaint.png \
+      --replace /usr/share/lazpaint/lazpaint $out/bin/lazpaint
   '';
 
   meta = with stdenv.lib; {

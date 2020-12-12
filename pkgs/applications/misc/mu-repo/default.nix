@@ -1,19 +1,20 @@
-{ lib, fetchFromGitHub, buildPythonApplication, pytestCheckHook, git }:
+{ lib, fetchFromGitHub, buildPythonApplication, pytest, git }:
 
 buildPythonApplication rec {
   pname = "mu-repo";
-  version = "1.8.1";
+  version = "1.8.0";
 
   src = fetchFromGitHub {
     owner = "fabioz";
     repo = pname;
-    rev = "mu_repo_${lib.replaceStrings [ "." ] [ "_" ] version}";
-    sha256 = "0mmjdkvmdlsndi2q56ybxyz2988ppxsbbr1g54nzzkkvab2bc2na";
+    rev = with lib;
+      "mu_repo_" + concatStringsSep "_" (splitVersion version);
+    sha256 = "1dxfggzbhiips0ww2s93yba9842ycp0i3x2i8vvcx0vgicv3rv6f";
   };
 
-  propagatedBuildInputs = [ git ];
-
-  checkInputs = [ pytestCheckHook git ];
+  checkInputs = [ pytest git ];
+  # disable test which assumes it's a git repo
+  checkPhase = "py.test mu_repo --ignore=mu_repo/tests/test_checkout.py";
 
   meta = with lib; {
     description = "Tool to help in dealing with multiple git repositories";

@@ -1,7 +1,7 @@
 { stdenv, lib, fetchurl, extra-cmake-modules
 , qtbase, kio
 , libatasmart, parted
-, util-linux }:
+, utillinux }:
 
 stdenv.mkDerivation rec {
   pname = "kpmcore";
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
     kio
 
-    util-linux # needs blkid (note that this is not provided by util-linux-compat)
+    utillinux # needs blkid (note that this is not provided by utillinux-compat)
   ];
 
   nativeBuildInputs = [ extra-cmake-modules ];

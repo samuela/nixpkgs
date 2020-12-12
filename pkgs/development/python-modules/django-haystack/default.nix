@@ -4,11 +4,11 @@
 
 buildPythonPackage rec {
   pname = "django-haystack";
-  version = "3.0";
+  version = "2.8.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "d490f920afa85471dd1fa5000bc8eff4b704daacbe09aee1a64e75cbc426f3be";
+    sha256 = "8b54bcc926596765d0a3383d693bcdd76109c7abb6b2323b3984a39e3576028c";
   };
 
   checkInputs = [ pysolr whoosh dateutil geopy coverage nose mock coverage requests ];

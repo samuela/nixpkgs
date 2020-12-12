@@ -4,7 +4,6 @@
 , fetchFromGitHub
 , pyserial
 , pyserial-asyncio
-, pyusb
 , pytest-asyncio
 , pytestCheckHook
 , pythonOlder
@@ -12,7 +11,7 @@
 
 buildPythonPackage rec {
   pname = "zigpy-zigate";
-  version = "0.7.3";
+  version = "0.6.2";
   # https://github.com/Martiusweb/asynctest/issues/152
   # broken by upstream python bug with asynctest and
   # is used exclusively by home-assistant with python 3.8
@@ -22,13 +21,12 @@ buildPythonPackage rec {
     owner = "zigpy";
     repo = "zigpy-zigate";
     rev = version;
-    sha256 = "068v8n8yimmpnwqcdz5m9g35z1x0dir478cbc1s1nyhw1xn50vg1";
+    sha256 = "EV6DV+BytUcPMtzYVKDnq/Uv2efg3stjL5uVlL62II4=";
   };
 
-  propagatedBuildInputs = [
+  buildInputs = [
     pyserial
     pyserial-asyncio
-    pyusb
     zigpy
   ];
 

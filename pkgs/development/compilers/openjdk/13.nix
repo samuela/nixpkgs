@@ -151,7 +151,6 @@ let
     passthru = {
       architecture = "";
       home = "${openjdk}/lib/openjdk";
-      inherit gtk3;
     };
   };
 in openjdk

@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, cmake, pkgconfig, boost, gnuradio
-, makeWrapper, cppunit, gr-osmosdr, log4cpp
+, makeWrapper, cppunit, gr-osmosdr
 , pythonSupport ? true, python, swig
 }:
 
@@ -19,7 +19,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [
-    cmake boost gnuradio makeWrapper cppunit gr-osmosdr log4cpp
+    cmake boost gnuradio makeWrapper cppunit gr-osmosdr
   ] ++ stdenv.lib.optionals pythonSupport [ python swig ];
 
   postInstall = ''

@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     description = "Manipulating CPC dsk images and files";
     homepage = "https://github.com/cpcsdk/idsk" ;
     license = licenses.mit;
-    maintainers = [ ];
+    maintainers = [ maintainers.genesis ];
     platforms = platforms.linux;
   };
 }

@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "pg_hll";
-  version = "2.15.1";
+  version = "2.14";
 
   buildInputs = [ postgresql ];
 
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     owner  = "citusdata";
     repo   = "postgresql-hll";
     rev    = "refs/tags/v${version}";
-    sha256 = "17lg05rw7299fvfhdzvznr692c21s5qar1wzzvgwfv7afv6xzr3y";
+    sha256 = "13vphxkc9pn4bkpgab560bgdbl99li2b3p1n2rm5a78wswlsbsps";
   };
 
   installPhase = ''
@@ -23,8 +23,7 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "HyperLogLog for PostgreSQL";
-    homepage    = "https://github.com/citusdata/postgresql-hll";
-    changelog   = "https://github.com/citusdata/postgresql-hll/blob/v${version}/CHANGELOG.md";
+    homepage    = "https://www.citusdata.com/";
     maintainers = with maintainers; [ thoughtpolice ];
     platforms   = postgresql.meta.platforms;
     license     = licenses.asl20;

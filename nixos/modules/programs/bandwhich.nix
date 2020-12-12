@@ -4,7 +4,7 @@ with lib;
 
 let cfg = config.programs.bandwhich;
 in {
-  meta.maintainers = with maintainers; [ Br1ght0ne ];
+  meta.maintainers = with maintainers; [ filalex77 ];
 
   options = {
     programs.bandwhich = {

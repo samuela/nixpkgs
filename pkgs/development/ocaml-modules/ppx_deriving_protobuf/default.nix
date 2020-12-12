@@ -1,9 +1,5 @@
-{ lib, fetchFromGitHub, buildDunePackage, ocaml, cppo, ppx_tools, ppx_deriving
+{ stdenv, fetchFromGitHub, buildDunePackage, cppo, ppx_tools, ppx_deriving
 , ppxfind }:
-
-if lib.versionAtLeast ocaml.version "4.11"
-then throw "ppx_deriving_protobuf is not available for OCaml ${ocaml.version}"
-else
 
 buildDunePackage rec {
   pname = "ppx_deriving_protobuf";
@@ -18,7 +14,7 @@ buildDunePackage rec {
 
   buildInputs = [ cppo ppx_tools ppxfind ppx_deriving ];
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     homepage = "https://github.com/ocaml-ppx/ppx_deriving_protobuf";
     description = "A Protocol Buffers codec generator for OCaml";
     license = licenses.mit;

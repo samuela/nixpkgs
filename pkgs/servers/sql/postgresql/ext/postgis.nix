@@ -11,17 +11,16 @@
 , file
 , protobufc
 , libiconv
-, nixosTests
 }:
 stdenv.mkDerivation rec {
   pname = "postgis";
-  version = "3.0.3";
+  version = "3.0.2";
 
   outputs = [ "out" "doc" ];
 
   src = fetchurl {
     url = "https://download.osgeo.org/postgis/source/postgis-${version}.tar.gz";
-    sha256 = "05s8cx1rlysiq7dd44kf7cid0la61a4p895j9g95bvfb8v8dpzh7";
+    sha256 = "1jmji8i2wjabkrzqil683lypnmimigdmn64a10j3kj3kzlfn98d3";
   };
 
   buildInputs = [ libxml2 postgresql geos proj gdal json_c protobufc ]
@@ -65,8 +64,6 @@ stdenv.mkDerivation rec {
     mkdir -p $doc/share/doc/postgis
     mv doc/* $doc/share/doc/postgis/
   '';
-
-  passthru.tests.postgis = nixosTests.postgis;
 
   meta = with stdenv.lib; {
     description = "Geographic Objects for PostgreSQL";

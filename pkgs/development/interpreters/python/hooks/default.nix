@@ -1,15 +1,14 @@
 # Hooks for building Python packages.
 { python
 , lib
+, callPackage
 , makeSetupHook
 , disabledIf
 , isPy3k
 , ensureNewerSourcesForZipFilesHook
-, findutils
 }:
 
 let
-  callPackage = python.pythonForBuild.pkgs.callPackage;
   pythonInterpreter = python.pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
   pythonCheckInterpreter = python.interpreter;
@@ -95,7 +94,7 @@ in rec {
     makeSetupHook {
       name = "python-namespaces-hook.sh";
       substitutions = {
-        inherit pythonSitePackages findutils;
+        inherit pythonSitePackages;
       };
     } ./python-namespaces-hook.sh) {};
 

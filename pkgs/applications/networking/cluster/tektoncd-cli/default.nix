@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   pname = "tektoncd-cli";
-  version = "0.14.0";
+  version = "0.13.1";
 
   src = fetchFromGitHub {
     owner = "tektoncd";
     repo = "cli";
     rev = "v${version}";
-    sha256 = "1mkbwh4cmhx9in928vlvs7xjjklpsxbv5niv8jmsbnifflg1an8p";
+    sha256 = "0cjih8h64wwdp022pn70xqxafdk34z2y2ipxb86dlf2zdrf9xv53";
   };
 
   vendorSha256 = null;
@@ -27,10 +27,10 @@ buildGoModule rec {
     mkdir -p "$out/share/man/man1"
     cp docs/man/man1/* "$out/share/man/man1"
 
-    installShellCompletion --cmd tkn \
-      --bash <($out/bin/tkn completion bash) \
-      --fish <($out/bin/tkn completion fish) \
-      --zsh <($out/bin/tkn completion zsh)
+    # TODO: Move to enhanced installShellCompletion when merged: PR #83630
+    $out/bin/tkn completion bash > tkn.bash
+    $out/bin/tkn completion zsh  > _tkn
+    installShellCompletion tkn.bash --zsh _tkn
   '';
 
   meta = with lib; {

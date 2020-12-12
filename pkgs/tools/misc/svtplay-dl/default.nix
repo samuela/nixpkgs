@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, makeWrapper, python3Packages, perl, zip
-, gitMinimal, ffmpeg }:
+, gitMinimal }:
 
 let
 
@@ -8,13 +8,13 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "svtplay-dl";
-  version = "2.8";
+  version = "2.7";
 
   src = fetchFromGitHub {
     owner = "spaam";
     repo = "svtplay-dl";
     rev = version;
-    sha256 = "1977xyxi9jfj7qra1sz7c9lk885cadpci66jvbzvnwm6d60m05lb";
+    sha256 = "0gcw7hwbr9jniwvqix37vvd2fiplsz70qab9w45d21i8jrfnhxb5";
   };
 
   pythonPaths = [ pycrypto pyyaml requests ];
@@ -33,7 +33,6 @@ in stdenv.mkDerivation rec {
 
   postInstall = ''
     wrapProgram "$out/bin/svtplay-dl" \
-      --prefix PATH : "${ffmpeg}" \
       --prefix PYTHONPATH : "$PYTHONPATH"
   '';
 
@@ -46,7 +45,7 @@ in stdenv.mkDerivation rec {
     homepage = "https://github.com/spaam/svtplay-dl";
     description = "Command-line tool to download videos from svtplay.se and other sites";
     license = licenses.mit;
-    platforms = stdenv.lib.platforms.unix;
+    platforms = stdenv.lib.platforms.linux;
     maintainers = [ maintainers.rycee ];
   };
 }

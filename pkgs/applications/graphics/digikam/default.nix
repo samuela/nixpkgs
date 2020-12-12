@@ -39,7 +39,7 @@
 , marble
 , libGL
 , libGLU
-, opencv
+, opencv3
 , pcre
 , threadweaver
 , x265
@@ -83,7 +83,7 @@ mkDerivation rec {
     libusb1
     libGL
     libGLU
-    opencv
+    opencv3
     pcre
     x265
 

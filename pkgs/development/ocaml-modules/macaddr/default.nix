@@ -6,8 +6,6 @@ buildDunePackage rec {
   pname = "macaddr";
   version = "5.0.1";
 
-  useDune2 = true;
-
   minimumOCamlVersion = "4.04";
 
   src = fetchurl {

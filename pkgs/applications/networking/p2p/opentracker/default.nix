@@ -11,11 +11,6 @@ stdenv.mkDerivation {
 
   buildInputs = [ libowfat zlib ];
 
-  makeFlags = [
-    "LIBOWFAT_HEADERS=${libowfat}/include/libowfat"
-    "LIBOWFAT_LIBRARY=${libowfat}/lib"
-  ];
-
   installPhase = ''
     runHook preInstall
     install -D opentracker $out/bin/opentracker

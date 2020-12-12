@@ -15,7 +15,7 @@
 , libtiff
 , psmisc
 , sharutils
-, util-linux
+, utillinux
 , zlib
 ## optional packages (using `null` disables some functionality)
 , jbigkit ? null
@@ -76,7 +76,7 @@ stdenv.mkDerivation {
     libtiff
     psmisc  # for `fuser` command
     sharutils  # for `uuencode` command
-    util-linux  # for `agetty` command
+    utillinux  # for `agetty` command
     zlib
     jbigkit  # optional
     lcms2  # optional

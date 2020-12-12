@@ -1,9 +1,8 @@
-{ lib, buildPythonPackage, fetchPypi, isPy3k }:
+{ lib, buildPythonPackage, fetchPypi }:
 
 buildPythonPackage rec {
   pname = "tmdb3";
   version = "0.7.2";
-  disabled = isPy3k; # Upstream has not received any updates since 2015, and importing from python3 does not work.
 
   src = fetchPypi {
     inherit pname version;
@@ -12,8 +11,6 @@ buildPythonPackage rec {
 
   # no tests implemented
   doCheck = false;
-
-  pythonImportsCheck = [ "tmdb3" ];
 
   meta = with lib; {
     description = "Python implementation of the v3 API for TheMovieDB.org, allowing access to movie and cast information";

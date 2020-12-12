@@ -1,41 +1,50 @@
-{ stdenv, fetchFromGitHub, cmake, alsaLib, espeak, glibc, gpsd
+{ stdenv, fetchFromGitHub
+, alsaLib, espeak, glibc, gpsd
 , hamlib, perl, python, udev }:
 
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
   pname = "direwolf";
-  version = "1.6";
+  version = "1.5";
 
   src = fetchFromGitHub {
     owner = "wb2osz";
     repo = "direwolf";
     rev = version;
-    sha256 = "0xmz64m02knbrpasfij4rrq53ksxna5idxwgabcw4n2b1ig7pyx5";
+    sha256 = "1w55dv9xqgc9mpincsj017838vmvdy972fhis3ddskyfvhhzgcsk";
   };
-
-  nativeBuildInputs = [ cmake ];
 
   buildInputs = [
     espeak gpsd hamlib perl python
   ] ++ (optionals stdenv.isLinux [alsaLib udev]);
 
-  patches = [
-    ./udev-fix.patch
-  ];
+  makeFlags = [ "DESTDIR=$(out)" ];
 
   postPatch = ''
-    substituteInPlace src/symbols.c \
+    substituteInPlace symbols.c \
       --replace /usr/share/direwolf/symbols-new.txt $out/share/direwolf/symbols-new.txt \
       --replace /opt/local/share/direwolf/symbols-new.txt $out/share/direwolf/symbols-new.txt
-    substituteInPlace src/decode_aprs.c \
+    substituteInPlace decode_aprs.c \
       --replace /usr/share/direwolf/tocalls.txt $out/share/direwolf/tocalls.txt \
       --replace /opt/local/share/direwolf/tocalls.txt $out/share/direwolf/tocalls.txt
-    substituteInPlace scripts/dwespeak.sh \
+    substituteInPlace dwespeak.sh \
       --replace espeak ${espeak}/bin/espeak
-    substituteInPlace cmake/cpack/direwolf.desktop.in \
-      --replace 'Terminal=false' 'Terminal=true' \
-      --replace 'Exec=@APPLICATION_DESKTOP_EXEC@' 'Exec=direwolf' \
+  '' + (optionalString stdenv.isLinux ''
+    substituteInPlace Makefile.linux \
+      --replace /usr/include/pthread.h ${stdenv.glibc.dev}/include/pthread.h \
+      --replace /usr/include/alsa ${alsaLib.dev}/include/alsa \
+      --replace /usr/include/gps.h ${gpsd}/include/gps.h \
+      --replace /usr/include/hamlib ${hamlib}/include/hamlib \
+      --replace /usr/include/libudev.h ${udev.dev}/include/libudev.h \
+      --replace /etc/udev $out/etc/udev \
+      --replace 'Exec=xterm -hold -title \"Dire Wolf\" -bg white -e \"$(DESTDIR)/bin/direwolf\"' "Exec=$out/bin/direwolf" \
+      --replace '#Terminal=true' 'Terminal=true' \
+      --replace 'Path=$(HOME)' '#Path='
+  '');
+
+  preInstall = ''
+    mkdir -p $out/bin
   '';
 
   meta = {

@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     description = ''Routines for fast arithmetic in GF(2)[x]'';
     homepage = "http://gf2x.gforge.inria.fr";
     license = licenses.gpl2Plus;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ raskin timokau ];
     platforms = platforms.unix;
   };
 }

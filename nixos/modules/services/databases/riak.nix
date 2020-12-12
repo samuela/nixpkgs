@@ -118,7 +118,7 @@ in
       after = [ "network.target" ];
 
       path = [
-        pkgs.util-linux # for `logger`
+        pkgs.utillinux # for `logger`
         pkgs.bash
       ];
 

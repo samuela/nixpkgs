@@ -21,11 +21,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gstreamer-vaapi";
-  version = "1.18.1";
+  version = "1.18.0";
 
   src = fetchurl {
     url = "${meta.homepage}/src/${pname}/${pname}-${version}.tar.xz";
-    sha256 = "1sm6x2qa7ng78w0w8q4mjs7pbpbbk8qkfgzhdmbb8l0bh513q3a0";
+    sha256 = "0ccyzv15jzf0pi0ndrmfww016cn4c0y4265bacdvnxbgff6fpvy6";
   };
 
   outputs = [

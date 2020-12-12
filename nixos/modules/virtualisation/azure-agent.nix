@@ -22,7 +22,7 @@ let
                     nettools # for hostname
                     procps # for pidof
                     shadow # for useradd, usermod
-                    util-linux # for (u)mount, fdisk, sfdisk, mkswap
+                    utillinux # for (u)mount, fdisk, sfdisk, mkswap
                     parted
                   ];
     pythonPath = [ pythonPackages.pyasn1 ];

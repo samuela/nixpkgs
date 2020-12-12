@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, cmake, pkgconfig, boost, gnuradio
-, pythonSupport ? true, python, swig, limesuite, log4cpp
+, pythonSupport ? true, python, swig, limesuite
 } :
 
 assert pythonSupport -> python != null && swig != null;
@@ -24,7 +24,7 @@ in stdenv.mkDerivation {
   ] ++ stdenv.lib.optionals pythonSupport [ swig ];
 
   buildInputs = [
-    boost gnuradio limesuite log4cpp
+    boost gnuradio limesuite
   ] ++ stdenv.lib.optionals pythonSupport [ python ];
 
 

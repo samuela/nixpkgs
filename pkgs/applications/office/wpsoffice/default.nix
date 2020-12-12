@@ -12,7 +12,7 @@
 , cups
 , dbus
 , expat
-, ffmpeg
+, ffmpeg_3
 , fontconfig
 , freetype
 , gdk-pixbuf
@@ -38,11 +38,11 @@
 
 stdenv.mkDerivation rec {
   pname = "wpsoffice";
-  version = "11.1.0.9615";
+  version = "11.1.0.9505";
 
   src = fetchurl {
-    url = "http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9615/wps-office_11.1.0.9615.XA_amd64.deb";
-    sha256 = "0dpd4njpizclllps3qagipycfws935rhj9k5gmdhjfgsk0ns188w";
+    url = "http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9505/wps-office_11.1.0.9505.XA_amd64.deb";
+    sha256 = "1bvaxwd3npw3kswk7k1p6mcbfg37x0ym4sp6xis6ykz870qivqk5";
   };
   unpackCmd = "dpkg -x $src .";
   sourceRoot = ".";
@@ -71,7 +71,7 @@ stdenv.mkDerivation rec {
     cairo
     dbus.lib
     expat
-    ffmpeg
+    ffmpeg_3
     fontconfig
     freetype
     gdk-pixbuf

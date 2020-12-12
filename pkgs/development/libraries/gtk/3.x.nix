@@ -30,8 +30,6 @@
 , gnome3
 , gsettings-desktop-schemas
 , sassc
-, trackerSupport ? stdenv.isLinux
-, tracker
 , x11Support ? stdenv.isLinux
 , waylandSupport ? stdenv.isLinux
 , mesa
@@ -93,7 +91,6 @@ stdenv.mkDerivation rec {
   mesonFlags = [
     "-Dgtk_doc=${boolToString withGtkDoc}"
     "-Dtests=false"
-    "-Dtracker3=${boolToString trackerSupport}"
   ];
 
   # These are the defines that'd you'd get with --enable-debug=minimum (default).
@@ -140,7 +137,6 @@ stdenv.mkDerivation rec {
     isocodes
   ]
   ++ optional stdenv.isDarwin AppKit
-  ++ optional trackerSupport tracker
   ;
 
   propagatedBuildInputs = with xorg; [

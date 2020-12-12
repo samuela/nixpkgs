@@ -55,15 +55,15 @@ let
       darwin = pkgs.darwin.network_cmds;
     };
     col = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.text_cmds;
     };
     column = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.netbsd.column;
     };
     eject = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
     };
     getconf = {
       linux = if stdenv.hostPlatform.libc == "glibc" then pkgs.stdenv.cc.libc
@@ -76,19 +76,19 @@ let
       darwin = pkgs.netbsd.getent;
     };
     getopt = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.getopt;
     };
     fdisk = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.diskdev_cmds;
     };
     fsck = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.diskdev_cmds;
     };
     hexdump = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.shell_cmds;
     };
     hostname = {
@@ -108,14 +108,14 @@ let
       darwin = pkgs.netbsd.locale;
     };
     logger = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
     };
     more = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = more_compat;
     };
     mount = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.diskdev_cmds;
     };
     netstat = {
@@ -139,7 +139,7 @@ let
       darwin = pkgs.darwin.network_cmds;
     };
     script = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.shell_cmds;
     };
     sysctl = {
@@ -151,15 +151,15 @@ let
       darwin = pkgs.darwin.top;
     };
     umount = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.diskdev_cmds;
     };
     whereis = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.shell_cmds;
     };
     wall = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
     };
     watch = {
       linux = pkgs.procps;
@@ -169,7 +169,7 @@ let
       darwin = pkgs.callPackage ../os-specific/linux/procps-ng {};
     };
     write = {
-      linux = pkgs.util-linux;
+      linux = pkgs.utillinux;
       darwin = pkgs.darwin.basic_cmds;
     };
     xxd = {
@@ -188,7 +188,7 @@ let
   # Provided for old usage of these commands.
   compat = with bins; lib.mapAttrs makeCompat {
     procps = [ ps sysctl top watch ];
-    util-linux = [ fsck fdisk getopt hexdump mount
+    utillinux = [ fsck fdisk getopt hexdump mount
                   script umount whereis write col column ];
     nettools = [ arp hostname ifconfig netstat route ];
   };

@@ -14,7 +14,6 @@ let
 
     nodes = {
       server = { config, pkgs, ... }: {
-        virtualisation.memorySize = 2048;
         services.gitea = {
           enable = true;
           database = { inherit type; };

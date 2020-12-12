@@ -1,19 +1,4 @@
-{ stdenv
-, libXScrnSaver
-, makeWrapper
-, fetchurl
-, wrapGAppsHook
-, glib
-, gtk3
-, unzip
-, atomEnv
-, libuuid
-, at-spi2-atk
-, at-spi2-core
-, libdrm
-, mesa
-, libxkbcommon
-}:
+{ stdenv, libXScrnSaver, makeWrapper, fetchurl, wrapGAppsHook, glib, gtk3, unzip, atomEnv, libuuid, at-spi2-atk, at-spi2-core, libdrm, mesa }:
 
 version: hashes:
 let
@@ -33,11 +18,6 @@ let
     sha256 = hash;
   };
 
-  headersFetcher = vers: hash: fetchurl {
-    url = "https://atom.io/download/electron/v${vers}/node-v${vers}-headers.tar.gz";
-    sha256 = hash;
-  };
-
   tags = {
     i686-linux = "linux-ia32";
     x86_64-linux = "linux-x64";
@@ -52,14 +32,9 @@ let
   common = platform: {
     inherit name version meta;
     src = fetcher version (get tags platform) (get hashes platform);
-    passthru.headers = headersFetcher version hashes.headers;
   };
 
-  electronLibPath = with stdenv.lib; makeLibraryPath (
-    [ libuuid at-spi2-atk at-spi2-core ]
-    ++ optionals (! versionOlder version "9.0.0") [ libdrm mesa ]
-    ++ optionals (! versionOlder version "11.0.0") [ libxkbcommon ]
-  );
+  electronLibPath = with stdenv.lib; makeLibraryPath ([ libuuid at-spi2-atk at-spi2-core ] ++ optionals (! versionOlder version "9.0.0") [ libdrm mesa ]);
 
   linux = {
     buildInputs = [ glib gtk3 ];

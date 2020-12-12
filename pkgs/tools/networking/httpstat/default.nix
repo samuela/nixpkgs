@@ -2,12 +2,12 @@
 
 pythonPackages.buildPythonApplication rec {
   pname = "httpstat";
-  version = "1.3.0";
+  version = "1.2.1";
   src = fetchFromGitHub {
     owner = "reorx";
     repo = pname;
     rev = version;
-    sha256 = "18k2glnyzxlmry19ijmndim2vqqn3c86smd7xc3haw6k7qafifx1";
+    sha256 = "1vriibcsq4j1hvm5yigbbmmv21dc40y5c9gvd31dg9qkaz26hml6";
   };
   doCheck = false; # No tests
   buildInputs = [ glibcLocales ];

@@ -1,21 +1,17 @@
-{ stdenv, buildPythonApplication, fetchFromGitHub, pyxdg, pytest }:
+{ stdenv, buildPythonApplication, fetchFromGitHub, pyxdg }:
 
 buildPythonApplication rec {
   pname   = "pass-git-helper";
-  version = "1.1.0";
+  version = "0.4";
 
   src = fetchFromGitHub {
     owner  = "languitar";
     repo   = "pass-git-helper";
-    rev    = "v${version}";
-    sha256 = "18nvwlp0w4aqj268wly60rnjzqw2d8jl0hbs6bkwp3hpzzz5g6yd";
+    rev    = version;
+    sha256 = "1zccbmq5l6asl9qm1f90vg9467y3spmv3ayrw07qizrj43yfd9ap";
   };
 
   propagatedBuildInputs = [ pyxdg ];
-  checkInputs = [ pytest ];
-  preCheck = ''
-    export HOME=$(mktemp -d)
-  '';
 
   meta = with stdenv.lib; {
     homepage = "https://github.com/languitar/pass-git-helper";

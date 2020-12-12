@@ -1,12 +1,12 @@
 { stdenv, fetchurl, fetchpatch }:
 
 stdenv.mkDerivation rec {
-  version = "0.3.112";
+  version = "0.3.111";
   pname = "libaio";
 
   src = fetchurl {
     url = "https://pagure.io/libaio/archive/${pname}-${version}/${pname}-${pname}-${version}.tar.gz";
-    sha256 = "0wi2myh191sja13qj3claxhpfkngvy10x30f78hm9cxzkfr97kxp";
+    sha256 = "1fih2y2js0dl9qshpyb14m0nnxlms2527shgcxg0hnbflv5igg76";
   };
 
   postPatch = ''

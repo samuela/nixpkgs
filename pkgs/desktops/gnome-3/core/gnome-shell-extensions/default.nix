@@ -3,11 +3,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extensions";
-  version = "3.38.2";
+  version = "3.38.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-shell-extensions/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "0hzn975v49rv3nsqp8m0mzv8gcm7nyvn54gj3zsml8ahlxwl592p";
+    sha256 = "150c0jgjhbb59wf7lzcnp1f22lvrigw95mg5ad3jh15qzwqqd8wx";
   };
 
   passthru = {

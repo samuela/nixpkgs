@@ -1,6 +1,5 @@
 { stdenv
 , fetchFromGitHub
-, unstableGitUpdater
 , cmake
 , callPackage
 
@@ -47,9 +46,8 @@ stdenv.mkDerivation rec {
   preConfigure = "cd dev";
   enableParallelBuilding = true;
 
-  passthru = {
-    tests.can-run-hello-world = callPackage ./test-can-run-hello-world.nix {};
-    updateScript = unstableGitUpdater { };
+  passthru.tests = {
+    can-run-hello-world = callPackage ./test-can-run-hello-world.nix {};
   };
 
   meta = with stdenv.lib; {
@@ -65,3 +63,4 @@ stdenv.mkDerivation rec {
     platforms = platforms.all;
   };
 }
+

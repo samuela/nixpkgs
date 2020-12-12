@@ -1,7 +1,7 @@
 { fetchFromGitHub, stdenv, pkgconfig, autoreconfHook
 , openssl, db48, boost, zlib, miniupnpc
 , qrencode, glib, protobuf, yasm, libevent
-, util-linux
+, utillinux
 , enable_Upnp ? false
 , disable_Wallet ? false
 , disable_Daemon ? false }:
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
   buildInputs = [ glib openssl db48 yasm boost zlib libevent
-                  miniupnpc protobuf qrencode util-linux ];
+                  miniupnpc protobuf qrencode utillinux ];
 
 
   configureFlags = [ "--with-boost-libdir=${boost.out}/lib --with-gui=no" ]

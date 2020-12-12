@@ -11,20 +11,10 @@ let
     }
     ''
       mkdir -p $out/bin
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (command: value:
-      let
-        opts = if builtins.isAttrs value
-        then value
-        else { executable = value; profile = null; extraArgs = []; };
-        args = lib.escapeShellArgs (
-          (optional (opts.profile != null) "--profile=${toString opts.profile}")
-          ++ opts.extraArgs
-          );
-      in
-      ''
+      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (command: binary: ''
         cat <<_EOF >$out/bin/${command}
         #! ${pkgs.runtimeShell} -e
-        exec /run/wrappers/bin/firejail ${args} -- ${toString opts.executable} "\$@"
+        exec /run/wrappers/bin/firejail ${binary} "\$@"
         _EOF
         chmod 0755 $out/bin/${command}
       '') cfg.wrappedBinaries)}
@@ -35,38 +25,12 @@ in {
     enable = mkEnableOption "firejail";
 
     wrappedBinaries = mkOption {
-      type = types.attrsOf (types.either types.path (types.submodule {
-        options = {
-          executable = mkOption {
-            type = types.path;
-            description = "Executable to run sandboxed";
-            example = literalExample "''${lib.getBin pkgs.firefox}/bin/firefox";
-          };
-          profile = mkOption {
-            type = types.nullOr types.path;
-            default = null;
-            description = "Profile to use";
-            example = literalExample "''${pkgs.firejail}/etc/firejail/firefox.profile";
-          };
-          extraArgs = mkOption {
-            type = types.listOf types.str;
-            default = [];
-            description = "Extra arguments to pass to firejail";
-            example = [ "--private=~/.firejail_home" ];
-          };
-        };
-      }));
+      type = types.attrsOf types.path;
       default = {};
       example = literalExample ''
         {
-          firefox = {
-            executable = "''${lib.getBin pkgs.firefox}/bin/firefox";
-            profile = "''${pkgs.firejail}/etc/firejail/firefox.profile";
-          };
-          mpv = {
-            executable = "''${lib.getBin pkgs.mpv}/bin/mpv";
-            profile = "''${pkgs.firejail}/etc/firejail/mpv.profile";
-          };
+          firefox = "''${lib.getBin pkgs.firefox}/bin/firefox";
+          mpv = "''${lib.getBin pkgs.mpv}/bin/mpv";
         }
       '';
       description = ''

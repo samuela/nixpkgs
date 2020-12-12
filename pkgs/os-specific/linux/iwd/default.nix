@@ -13,15 +13,15 @@
 
 stdenv.mkDerivation rec {
   pname = "iwd";
-  version = "1.10";
+  version = "1.9";
 
   src = fetchgit {
     url = "https://git.kernel.org/pub/scm/network/wireless/iwd.git";
     rev = version;
-    sha256 = "0gzpdgfwzlqj2n3amf2zhi2hlpa412878yphgx79y6b5gn1y1lm2";
+    sha256 = "193wa13i2prfz1zr7nvwbgrxgacms57zj1n7x28yy5hmm3nnwbrd";
   };
 
-  outputs = [ "out" "man" "test" ];
+  outputs = [ "out" "man" ];
 
   nativeBuildInputs = [
     autoreconfHook
@@ -61,8 +61,7 @@ stdenv.mkDerivation rec {
   doCheck = true;
 
   postInstall = ''
-    mkdir -p $test/bin
-    cp -a test/* $test/bin/
+    cp -a test/* $out/bin/
     mkdir -p $out/share
     cp -a doc $out/share/
     cp -a README AUTHORS TODO $out/share/doc/

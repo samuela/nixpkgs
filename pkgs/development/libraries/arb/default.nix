@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     description = ''A library for arbitrary-precision interval arithmetic'';
     homepage = "http://arblib.org/";
     license = stdenv.lib.licenses.lgpl21Plus;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ raskin timokau ];
     platforms = stdenv.lib.platforms.unix;
   };
 }

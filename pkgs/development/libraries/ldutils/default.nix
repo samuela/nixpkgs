@@ -1,6 +1,7 @@
 { mkDerivation
 , lib
 , fetchFromGitLab
+, qtbase
 , qtcharts
 , qtsvg
 , qmake
@@ -8,16 +9,17 @@
 
 mkDerivation rec {
   pname = "ldutils";
-  version = "1.03";
+  version = "1.01";
 
   src = fetchFromGitLab {
     owner = "ldutils-projects";
     repo = pname;
     rev = "v_${version}";
-    sha256 = "0pi05py71hh5vlhl0kjh9wxmd7yixw10s0kr2wb4l4c0abqxr82j";
+    sha256 = "09k2d5wj70xfr3sb4s9ajczq0lh65705pggs54zqqqjxazivbmgk";
   };
 
   buildInputs = [
+    qtbase
     qtcharts
     qtsvg
   ];

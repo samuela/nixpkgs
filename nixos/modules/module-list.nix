@@ -147,7 +147,6 @@
   ./programs/npm.nix
   ./programs/oblogout.nix
   ./programs/plotinus.nix
-  ./programs/proxychains.nix
   ./programs/qt5ct.nix
   ./programs/screen.nix
   ./programs/sedutil.nix
@@ -397,7 +396,6 @@
   ./services/logging/rsyslogd.nix
   ./services/logging/syslog-ng.nix
   ./services/logging/syslogd.nix
-  ./services/logging/vector.nix
   ./services/mail/clamsmtp.nix
   ./services/mail/davmail.nix
   ./services/mail/dkimproxy-out.nix
@@ -482,7 +480,6 @@
   ./services/misc/mediatomb.nix
   ./services/misc/metabase.nix
   ./services/misc/mwlib.nix
-  ./services/misc/n8n.nix
   ./services/misc/nix-daemon.nix
   ./services/misc/nix-gc.nix
   ./services/misc/nix-optimise.nix
@@ -586,7 +583,6 @@
   ./services/network-filesystems/orangefs/client.nix
   ./services/network-filesystems/rsyncd.nix
   ./services/network-filesystems/samba.nix
-  ./services/network-filesystems/samba-wsdd.nix
   ./services/network-filesystems/tahoe.nix
   ./services/network-filesystems/diod.nix
   ./services/network-filesystems/u9fs.nix
@@ -860,6 +856,7 @@
   ./services/web-apps/documize.nix
   ./services/web-apps/dokuwiki.nix
   ./services/web-apps/engelsystem.nix
+  ./services/web-apps/frab.nix
   ./services/web-apps/gerrit.nix
   ./services/web-apps/gotify-server.nix
   ./services/web-apps/grocy.nix

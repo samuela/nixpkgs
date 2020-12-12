@@ -1,15 +1,14 @@
-{ fetchFromGitHub, stdenv, boost, cmake, libX11, libGL, libGLU }:
+{ fetchFromGitHub, stdenv, boost, cmake, libGL, libGLU }:
 
 stdenv.mkDerivation rec {
   pname = "coin";
-  version = "2020-12-07-unstable";
+  version = "4.0.0";
 
   src = fetchFromGitHub {
     owner = "coin3d";
     repo = "coin";
-    # rev = "Coin-${version}";
-    rev = "d5539998aff272b349590fe74d068659682ecd0d";
-    sha256 = "11jaz8p9nn8jpd6dsgwgkldwr7z829gyf64g014qyyh8l6p7jzzd";
+    rev = "Coin-${version}";
+    sha256 = "1ayg0hl8wanhadahm5xbghghxw1qjwqbrs3dl3ngnff027hsyf8p";
   };
 
   postPatch = ''
@@ -17,7 +16,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ boost libX11 libGL libGLU ];
+  buildInputs = [ boost libGL libGLU ];
 
   meta = with stdenv.lib; {
     homepage = "https://github.com/coin3d/coin";

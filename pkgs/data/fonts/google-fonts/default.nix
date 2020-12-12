@@ -4,8 +4,6 @@ stdenv.mkDerivation {
   pname = "google-fonts";
   version = "2019-07-14";
 
-  outputs = [ "out" "adobeBlank" ];
-
   src = fetchFromGitHub {
     owner = "google";
     repo = "fonts";
@@ -41,9 +39,6 @@ stdenv.mkDerivation {
   '';
 
   installPhase = ''
-    adobeBlankDest=$adobeBlank/share/fonts/truetype
-    install -m 444 -Dt $adobeBlankDest ofl/adobeblank/AdobeBlank-Regular.ttf
-    rm -r ofl/adobeblank
     dest=$out/share/fonts/truetype
     find . -name '*.ttf' -exec install -m 444 -Dt $dest '{}' +
   '';

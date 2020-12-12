@@ -9,7 +9,7 @@ let cfg = config.services.cloud-init;
       nettools
       openssh
       shadow
-      util-linux
+      utillinux
     ] ++ optional cfg.btrfs.enable btrfs-progs
       ++ optional cfg.ext4.enable e2fsprogs
     ;

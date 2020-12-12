@@ -1,12 +1,12 @@
-{ stdenv, rustPlatform, fetchFromGitHub, fetchzip, androidenv, makeWrapper }:
+{stdenv, rustPlatform, fetchFromGitHub, fetchzip, androidenv, substituteAll}:
 let
-version = "2.5";
+version = "2.4";
 apk = stdenv.mkDerivation {
   pname = "gnirehtet.apk";
   inherit version;
   src = fetchzip {
     url = "https://github.com/Genymobile/gnirehtet/releases/download/v${version}/gnirehtet-rust-linux64-v${version}.zip";
-    sha256 = "1db0gkg5z8lighhkyqfsr9jiacrck89zmfnmp74vj865hhxgjzgq";
+    sha256 = "13gsh5982v961j86j5y71pgas94g2d1v1fgnbslbqw4h69fbf48g";
   };
   installPhase = ''
     mkdir $out
@@ -22,18 +22,19 @@ rustPlatform.buildRustPackage {
       owner = "Genymobile";
       repo = "gnirehtet";
       rev = "v${version}";
-      sha256 = "0wk6n082gnj9xk46n542h1012h8gyhldca23bs7vl73g0534g878";
+      sha256 = "1c99d6zpjxa8xlrg0n1825am20d2pjiicfcjwv8iay9ylfdnvygl";
   };
   sourceRoot = "source/relay-rust";
-  cargoSha256 = "0i7f52r697gjw30m8k60hd3y6wsn5lpz419r083a1rhpbinzd26q";
+  cargoSha256 = "0rb5xcqg5ikgrxpmzrql5n298j50aqgkkp45znbfv2x2n40dywad";
 
-  nativeBuildInputs = [ makeWrapper ];
-
-  postInstall = ''
-    wrapProgram $out/bin/gnirehtet \
-    --set GNIREHTET_APK ${apk}/gnirehtet.apk \
-    --set ADB ${androidenv.androidPkgs_9_0.platform-tools}/bin/adb
-  '';
+  patchFlags = [ "-p2" ];
+  patches = [
+    (substituteAll {
+      src = ./paths.patch;
+      adb = "${androidenv.androidPkgs_9_0.platform-tools}/bin/adb";
+      inherit apk;
+    })
+  ];
 
   meta = with stdenv.lib; {
     description = "Reverse tethering over adb for Android";

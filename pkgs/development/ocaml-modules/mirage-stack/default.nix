@@ -3,7 +3,6 @@
 buildDunePackage rec {
   pname = "mirage-stack";
   version = "2.2.0";
-  useDune2 = true;
 
   src = fetchurl {
     url = "https://github.com/mirage/mirage-stack/releases/download/v${version}/mirage-stack-v${version}.tbz";

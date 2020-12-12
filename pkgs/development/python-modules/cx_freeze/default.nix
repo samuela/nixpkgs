@@ -1,20 +1,17 @@
-{ stdenv, buildPythonPackage, pythonOlder, fetchPypi, ncurses, importlib-metadata }:
+{ stdenv, buildPythonPackage, pythonOlder, fetchPypi, ncurses }:
 
 buildPythonPackage rec {
   pname = "cx_Freeze";
-  version = "6.4.1";
+  version = "6.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "043513b85e33038e38cc0571cea1f3ee8044ec083891c9a5dad1d436894424ea";
+    sha256 = "44bbbcea3196b79da77cc22637cb28a825b51182d32209e8a3f6cd4042edc247";
   };
 
   disabled = pythonOlder "3.5";
 
-  propagatedBuildInputs = [
-    importlib-metadata # upstream has this for 3.8 as well
-    ncurses
-  ];
+  propagatedBuildInputs = [ ncurses ];
 
   # timestamp need to come after 1980 for zipfiles and nix store is set to epoch
   prePatch = ''

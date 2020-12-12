@@ -1,7 +1,6 @@
 { lib
 , buildPythonPackage
 , fetchPypi
-, isPy27
 , zope_interface
 , zope_location
 , zope_schema
@@ -19,7 +18,6 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ zope_interface ];
 
-  doCheck = !isPy27; # namespace conflicts
   checkInputs = [ zope_location zope_schema ];
 
   checkPhase = ''

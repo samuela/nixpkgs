@@ -9,7 +9,7 @@
 , miniupnpc
 , libevent
 , protobuf
-, util-linux
+, utillinux
 }:
 
 stdenv.mkDerivation rec {
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
-  buildInputs = [ openssl db5 openssl util-linux
+  buildInputs = [ openssl db5 openssl utillinux
                   protobuf boost zlib miniupnpc libevent ];
 
   configureFlags = [ "--with-incompatible-bdb"

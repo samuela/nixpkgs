@@ -1,17 +1,17 @@
 { lib, buildPythonPackage, fetchFromGitHub, pythonOlder
 , voluptuous, aiohttp, async-timeout, python-didl-lite, defusedxml
-, pytest_6, pytest-asyncio }:
+, pytest, pytest-asyncio }:
 
 buildPythonPackage rec {
   pname = "async-upnp-client";
-  version = "0.14.15";
+  version = "0.14.14";
   disabled = pythonOlder "3.5";
 
   src = fetchFromGitHub {
     owner = "StevenLooman";
     repo = "async_upnp_client";
     rev = version;
-    sha256 = "1mr65msdc51wq7326z3q41x79yi9dsmcjrmyzkgj9h9vgpxdk2nw";
+    sha256 = "1ysj72l4z78h427ar95x7af0jw0xq1cbca0k8b34vqyyhgs8wc6y";
   };
 
   propagatedBuildInputs = [
@@ -23,7 +23,7 @@ buildPythonPackage rec {
   ];
 
   checkInputs = [
-    pytest_6
+    pytest
     pytest-asyncio
   ];
 

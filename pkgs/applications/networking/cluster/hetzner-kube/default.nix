@@ -1,4 +1,4 @@
-{ lib, buildGoModule, fetchFromGitHub, installShellFiles }:
+{ lib, buildGoModule, fetchFromGitHub }:
 
 buildGoModule rec {
   pname = "hetzner-kube";
@@ -18,17 +18,6 @@ buildGoModule rec {
   buildFlagsArray = ''
     -ldflags=
     -X github.com/xetys/hetzner-kube/cmd.version=${version}
-  '';
-
-  nativeBuildInputs = [
-    installShellFiles
-  ];
-
-  postInstall = ''
-    $out/bin/hetzner-kube completion bash > hetzner-kube
-    $out/bin/hetzner-kube completion zsh > _hetzner-kube
-    installShellCompletion --zsh _hetzner-kube
-    installShellCompletion --bash hetzner-kube
   '';
 
   meta = {

@@ -22,10 +22,12 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig makeWrapper ];
 
   buildInputs =
-    [ fuse libpcap zlib python ];
+    [ fuse libpcap zlib ];
 
   postInstall = ''
     substituteInPlace $out/sbin/mfscgiserv --replace "datapath=\"$out" "datapath=\""
+    wrapProgram $out/sbin/mfscgiserv \
+        --prefix PATH ":" "${python}/bin"
   '';
 
   meta = with stdenv.lib; {

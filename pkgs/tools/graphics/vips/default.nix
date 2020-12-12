@@ -13,7 +13,6 @@
 , libgsf
 , libexif
 , libheif
-, librsvg
 , ApplicationServices
 , python27
 , libpng
@@ -64,7 +63,6 @@ stdenv.mkDerivation rec {
     libexif
     libheif
     libpng
-    librsvg
     python27
     libpng
     expat

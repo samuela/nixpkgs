@@ -5,16 +5,15 @@
 
 mkDerivation rec {
   pname = "kde2-decoration";
-  version = "1.1";
+  version = "1.0";
 
   src = fetchFromGitHub {
     owner = "repos-holder";
     repo = "kdecoration2-kde2";
     rev = version;
-    sha256 = "y2q1j36EURJc7k1huqhEH1Z82PnVSKlfx20bpQWY28c=";
+    sha256 = "1766z9wscybcqvr828xih93b3rab3hb0ghsf818iflhp1xy0js08";
   };
 
-  outputs = [ "out" "dev" ];
   enableParallelBuilding = true;
 
   nativeBuildInputs = [ cmake extra-cmake-modules ];

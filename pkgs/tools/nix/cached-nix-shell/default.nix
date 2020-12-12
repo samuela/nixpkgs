@@ -10,16 +10,16 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "cached-nix-shell";
-  version = "0.1.4";
+  version = "0.1.3";
 
   src = fetchFromGitHub {
     owner = "xzfc";
     repo = pname;
     rev = "v${version}";
-    sha256 = "0w6khry1ncyqy5h6996xw1f6viw4wdrfji5m8lz9gm487xlq5v0b";
+    sha256 = "1ni671wr2lrvyz6myaz3v4llrjvq4jc1ygw1m7rvnadzyf3va3lw";
   };
 
-  cargoSha256 = "0d4fz0rhqy1n30wfl2pmf76zpp21agr3h0hswp3r5bfnxqp6i54h";
+  cargoSha256 = "19i39b1yqdf81ql4psr3nfah6ci2mw3ljkv740clqmz088j2av8g";
 
   # The BLAKE3 C library is intended to be built by the project depending on it
   # rather than as a standalone library.
@@ -29,11 +29,14 @@ in rustPlatform.buildRustPackage rec {
   nativeBuildInputs = [ ronn ];
 
   postBuild = ''
-    make -f nix/Makefile post-build
+    ronn -r cached-nix-shell.1.md
   '';
 
   postInstall = ''
-    make -f nix/Makefile post-install
+    mkdir -p $out/lib $out/share/cached-nix-shell $out/share/man/man1 $out/var/empty
+    cp $releaseDir/build/cached-nix-shell-*/out/trace-nix.so $out/lib
+    cp rcfile.sh $out/share/cached-nix-shell/rcfile.sh
+    cp cached-nix-shell.1 $out/share/man/man1
   '';
 
   meta = with stdenv.lib; {

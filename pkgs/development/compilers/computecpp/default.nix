@@ -3,23 +3,24 @@
 , pkg-config
 , autoPatchelfHook
 , installShellFiles
+, ncurses5
 , ocl-icd
 , zlib
 }:
 
 stdenv.mkDerivation rec {
   pname = "computecpp";
-  version = "2.2.1";
+  version = "1.3.0";
 
   src = fetchzip {
-    url = "https://computecpp.codeplay.com/downloads/computecpp-ce/${version}/x86_64-linux-gnu.tar.gz";
-    hash = "sha256-niXNWbkXjd35col6dS66HdxFurXfJw/Xb2c5njukxcg=";
+    url = "https://computecpp.codeplay.com/downloads/computecpp-ce/${version}/ubuntu-16.04-64bit.tar.gz";
+    sha256 = "1q6gqjpzz4a260gsd6mm1iv4z8ar3vxaypmgdwl8pb4i7kg6ykaz";
     stripRoot = true;
   };
 
   dontStrip = true;
 
-  buildInputs = [ stdenv.cc.cc.lib ocl-icd zlib ];
+  buildInputs = [ stdenv.cc.cc.lib ncurses5 ocl-icd zlib ];
   nativeBuildInputs = [ autoPatchelfHook pkg-config installShellFiles ];
 
   installPhase = ''

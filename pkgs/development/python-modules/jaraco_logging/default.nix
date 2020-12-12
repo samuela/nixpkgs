@@ -11,8 +11,6 @@ buildPythonPackage rec {
     sha256 = "31716fe84d3d5df39d95572942513bd4bf8ae0a478f64031eff4c2ea9e83434e";
   };
 
-  pythonNamespaces = [ "jaraco" ];
-
   nativeBuildInputs = [ setuptools_scm ];
   propagatedBuildInputs = [ tempora six ];
 

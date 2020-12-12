@@ -5,11 +5,11 @@
 
 buildPythonPackage rec {
   pname = "ntplib";
-  version = "0.3.4";
+  version = "0.3.3";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "9fc99f71b14641b31698e4ced3d5f974eec225bfbae089ebe44b5808ba890f71";
+    sha256 = "c4621b64d50be9461d9bd9a71ba0b4af06fbbf818bbd483752d95c1a4e273ede";
   };
 
   # Require networking

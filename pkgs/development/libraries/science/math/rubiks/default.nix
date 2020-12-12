@@ -75,7 +75,7 @@ stdenv.mkDerivation rec {
       gpl2 # Michael Reid's and Eric Dietz software
       mit # Dik T. Winter's software
     ];
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms = platforms.unix;
   };
 }

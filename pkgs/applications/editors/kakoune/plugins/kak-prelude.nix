@@ -12,7 +12,7 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/share/kak/autoload/plugins
-    cp -r rc $out/share/kak/autoload/plugins/prelude
+    cp -r rc $out/share/kak/autoload/plugins/auto-pairs
   '';
 
   meta = with stdenv.lib;

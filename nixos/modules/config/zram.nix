@@ -80,15 +80,6 @@ in
         '';
       };
 
-      memoryMax = mkOption {
-        default = null;
-        type = with types; nullOr int;
-        description = ''
-          Maximum total amount of memory (in bytes) that can be used by the zram
-          swap devices.
-        '';
-      };
-
       priority = mkOption {
         default = 5;
         type = types.int;
@@ -155,16 +146,11 @@ in
 
               # Calculate memory to use for zram
               mem=$(${pkgs.gawk}/bin/awk '/MemTotal: / {
-                  value=int($2*${toString cfg.memoryPercent}/100.0/${toString devicesCount}*1024);
-                    ${lib.optionalString (cfg.memoryMax != null) ''
-                      memory_max=int(${toString cfg.memoryMax}/${toString devicesCount});
-                      if (value > memory_max) { value = memory_max }
-                    ''}
-                  print value
+                  print int($2*${toString cfg.memoryPercent}/100.0/${toString devicesCount}*1024)
               }' /proc/meminfo)
 
-              ${pkgs.util-linux}/sbin/zramctl --size $mem --algorithm ${cfg.algorithm} /dev/${dev}
-              ${pkgs.util-linux}/sbin/mkswap /dev/${dev}
+              ${pkgs.utillinux}/sbin/zramctl --size $mem --algorithm ${cfg.algorithm} /dev/${dev}
+              ${pkgs.utillinux}/sbin/mkswap /dev/${dev}
             '';
             restartIfChanged = false;
           };

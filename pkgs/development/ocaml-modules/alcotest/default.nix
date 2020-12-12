@@ -1,21 +1,17 @@
 { lib, buildDunePackage, fetchurl
-, astring, cmdliner, fmt, uuidm, re, stdlib-shims, uutf
+, astring, cmdliner, fmt, uuidm, re, stdlib-shims
 }:
 
 buildDunePackage rec {
   pname = "alcotest";
-  version = "1.2.3";
-
-  useDune2 = true;
+  version = "1.0.1";
 
   src = fetchurl {
-    url = "https://github.com/mirage/alcotest/releases/download/${version}/alcotest-mirage-${version}.tbz";
-    sha256 = "1bmjcivbmd4vib15v4chycgd1gl8js9dk94vzxkdg06zxqd4hp08";
+    url = "https://github.com/mirage/alcotest/releases/download/${version}/alcotest-${version}.tbz";
+    sha256 = "1xlklxb83gamqbg8j5dzm5jk4mvcwkspxajh93p6vpw9ia1li1qc";
   };
 
-  propagatedBuildInputs = [ astring cmdliner fmt uuidm re stdlib-shims uutf ];
-
-  doCheck = true;
+  propagatedBuildInputs = [ astring cmdliner fmt uuidm re stdlib-shims ];
 
   meta = with lib; {
     homepage = "https://github.com/mirage/alcotest";

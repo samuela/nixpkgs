@@ -7,7 +7,7 @@
 , bash
 , vmTools
 , gawk
-, util-linux
+, utillinux
 , runtimeShell
 , e2fsprogs }:
 
@@ -47,7 +47,7 @@ rec {
         runScriptFile = shellScript "run-script.sh" runScript;
         result = vmTools.runInLinuxVM (
           runCommand "singularity-image-${name}.img" {
-            buildInputs = [ singularity e2fsprogs util-linux gawk ];
+            buildInputs = [ singularity e2fsprogs utillinux gawk ];
             layerClosure = writeReferencesToFile layer;
             preVM = vmTools.createEmptyImage {
               size = diskSize;

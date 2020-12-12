@@ -21,7 +21,7 @@ buildGoModule rec {
     description = "A third-party, open-source ProtonMail bridge";
     homepage = "https://github.com/emersion/hydroxide";
     license = licenses.mit;
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
     platforms = platforms.unix;
   };
 }

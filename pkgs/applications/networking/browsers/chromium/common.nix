@@ -9,7 +9,7 @@
 
 , python2Packages, perl, pkgconfig
 , nspr, systemd, kerberos
-, util-linux, alsaLib
+, utillinux, alsaLib
 , bison, gperf
 , glib, gtk3, dbus-glib
 , glibc
@@ -18,14 +18,20 @@
 , ffmpeg, libxslt, libxml2, at-spi2-core
 , jre8
 , pipewire_0_2
-, libva
 
 # optional dependencies
 , libgcrypt ? null # gnomeSupport || cupsSupport
+, libva ? null # useVaapi
 , libdrm ? null, wayland ? null, mesa ? null, libxkbcommon ? null # useOzone
 
 # package customization
-, useOzone ? true
+, useOzone ? false
+, useVaapi ? !(useOzone || stdenv.isAarch64) # Built if supported, but disabled in the wrapper
+# VA-API TODOs:
+# - Ozone: M81 fails to build due to "ozone_platform_gbm = false"
+#   - Possible solutions: Write a patch to fix the build (wrong gn dependencies)
+#     or build with minigbm
+# - AArch64: Causes serious regressions (https://github.com/NixOS/nixpkgs/pull/85253#issuecomment-614405879)
 , gnomeSupport ? false, gnome ? null
 , gnomeKeyringSupport ? false, libgnome-keyring3 ? null
 , proprietaryCodecs ? true
@@ -128,15 +134,15 @@ let
 
     buildInputs = defaultDependencies ++ [
       nspr nss systemd
-      util-linux alsaLib
+      utillinux alsaLib
       bison gperf kerberos
       glib gtk3 dbus-glib
       libXScrnSaver libXcursor libXtst libGLU libGL
       pciutils protobuf speechd libXdamage at-spi2-core
       jre
       pipewire_0_2
-      libva
-    ] ++ optional gnomeKeyringSupport libgnome-keyring3
+    ] ++ optional useVaapi libva
+      ++ optional gnomeKeyringSupport libgnome-keyring3
       ++ optionals gnomeSupport [ gnome.GConf libgcrypt ]
       ++ optionals cupsSupport [ libgcrypt cups ]
       ++ optional pulseSupport libpulseaudio
@@ -146,6 +152,9 @@ let
       ./patches/no-build-timestamps.patch # Optional patch to use SOURCE_DATE_EPOCH in compute_build_timestamp.py (should be upstreamed)
       ./patches/widevine-79.patch # For bundling Widevine (DRM), might be replaceable via bundle_widevine_cdm=true in gnFlags
       # ++ optional (versionRange "68" "72") ( githubPatch "<patch>" "0000000000000000000000000000000000000000000000000000000000000000" )
+    ] ++ optionals (useVaapi && versionRange "86" "87") [
+      # Check for enable-accelerated-video-decode on Linux:
+      (githubPatch "54deb9811ca9bd2327def5c05ba6987b8c7a0897" "11jvxjlkzz1hm0pvfyr88j7z3zbwzplyl5idkx92l2lzv4459c8d")
     ];
 
     postPatch = ''
@@ -214,8 +223,9 @@ let
       custom_toolchain = "//build/toolchain/linux/unbundle:default";
       host_toolchain = "//build/toolchain/linux/unbundle:default";
       is_official_build = true;
+      is_debug = false;
 
-      use_vaapi = !stdenv.isAarch64; # TODO: Remove once M88 is released
+      proprietary_codecs = false;
       use_sysroot = false;
       use_gnome_keyring = gnomeKeyringSupport;
       use_gio = gnomeSupport;
@@ -231,6 +241,7 @@ let
       rtc_use_pipewire = true;
 
       treat_warnings_as_errors = false;
+      is_clang = stdenv.cc.isClang;
       clang_use_chrome_plugins = false;
       blink_symbol_level = 0;
       symbol_level = 0;
@@ -248,11 +259,14 @@ let
       proprietary_codecs = true;
       enable_hangout_services_extension = true;
       ffmpeg_branding = "Chrome";
+    } // optionalAttrs useVaapi {
+      use_vaapi = true;
     } // optionalAttrs pulseSupport {
       use_pulseaudio = true;
       link_pulseaudio = true;
     } // optionalAttrs useOzone {
       use_ozone = true;
+      ozone_platform_gbm = false;
       use_xkbcommon = true;
       use_glib = true;
       use_gtk = true;

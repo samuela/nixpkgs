@@ -48,8 +48,6 @@ buildPythonPackage rec {
   # 'runner' scripts.
   dontWrapPythonPrograms = true;
 
-  doCheck = false;
-
   meta = {
     homepage = "https://www.gnu.org/software/mailman/";
     description = "Free software for managing electronic mail discussion and newsletter lists";

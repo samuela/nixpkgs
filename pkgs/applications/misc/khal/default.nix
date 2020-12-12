@@ -57,9 +57,7 @@ with python3.pkgs; buildPythonApplication rec {
   doCheck = !stdenv.isAarch64;
 
   checkPhase = ''
-    py.test -k "not test_vertical_month_abbr_fr and not test_vertical_month_unicode_weekdeays_gr \
-      and not test_event_different_timezones and not test_default_calendar and not test_birthdays \
-      and not test_birthdays_no_year"
+    py.test
   '';
 
   meta = with stdenv.lib; {

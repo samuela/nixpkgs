@@ -34,7 +34,7 @@ buildPythonPackage rec {
   meta = with stdenv.lib; {
     description = "OpenID library for Python";
     license = licenses.asl20;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     homepage = "https://github.com/openid/python-openid/";
   };
 }

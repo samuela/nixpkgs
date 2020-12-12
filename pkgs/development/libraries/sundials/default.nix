@@ -7,8 +7,9 @@
 , gfortran
 , suitesparse
 , lapackSupport ? true
-, kluSupport ? true
-}:
+, kluSupport ? true }:
+
+assert (!blas.isILP64) && (!lapack.isILP64);
 
 stdenv.mkDerivation rec {
   pname = "sundials";
@@ -16,14 +17,11 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     python
+  ] ++ stdenv.lib.optionals (lapackSupport) [
+    gfortran
+    blas
+    lapack
   ]
-    ++ stdenv.lib.optionals (lapackSupport)
-    # Check that the same index size is used for both libraries
-    (assert (blas.isILP64 == lapack.isILP64); [
-      gfortran
-      blas
-      lapack
-    ])
   # KLU support is based on Suitesparse.
   # It is tested upstream according to the section 1.1.4 of
   # [INSTALL_GUIDE.pdf](https://raw.githubusercontent.com/LLNL/sundials/master/INSTALL_GUIDE.pdf)
@@ -49,22 +47,17 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DEXAMPLES_INSTALL_PATH=${placeholder "out"}/share/examples"
   ] ++ stdenv.lib.optionals (lapackSupport) [
+    "-DSUNDIALS_INDEX_TYPE=int32_t"
     "-DLAPACK_ENABLE=ON"
     "-DLAPACK_LIBRARIES=${lapack}/lib/liblapack${stdenv.hostPlatform.extensions.sharedLibrary}"
   ] ++ stdenv.lib.optionals (kluSupport) [
     "-DKLU_ENABLE=ON"
     "-DKLU_INCLUDE_DIR=${suitesparse.dev}/include"
     "-DKLU_LIBRARY_DIR=${suitesparse}/lib"
-  ] ++ stdenv.lib.optionals (lapackSupport && !lapack.isILP64) [
-    # Use the correct index type according to lapack which is supposed to be
-    # the same index type compatible with blas, thanks to the assertion of
-    # buildInputs
-    "-DSUNDIALS_INDEX_TYPE=int32_t"
-  ]
-  ;
+  ];
 
   doCheck = true;
-  checkTarget = "test";
+  checkPhase = "make test";
 
   meta = with stdenv.lib; {
     description = "Suite of nonlinear differential/algebraic equation solvers";

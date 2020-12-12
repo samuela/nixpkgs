@@ -70,12 +70,12 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  meta = with stdenv.lib; {
+  meta = {
     inherit version;
     description = "C++ library for exact, high-performance linear algebra";
-    license = licenses.lgpl21Plus;
-    maintainers = teams.sage.members;
-    platforms = platforms.unix;
+    license = stdenv.lib.licenses.lgpl21Plus;
+    maintainers = [stdenv.lib.maintainers.timokau];
+    platforms = stdenv.lib.platforms.unix;
     homepage = "https://linalg.org/";
   };
 }

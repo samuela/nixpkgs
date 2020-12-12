@@ -1,4 +1,4 @@
-{ lib, mkDerivation, callPackage, fetchFromGitHub,
+{ lib, mkDerivation, callPackage, fetchurl, fetchpatch,
   guile_1_8, qtbase, xmodmap, which, freetype,
   libjpeg,
   sqlite,
@@ -16,7 +16,7 @@
 
 let
   pname = "TeXmacs";
-  version = "1.99.15";
+  version = "1.99.14";
   common = callPackage ./common.nix {
     inherit tex extraFonts chineseFonts japaneseFonts koreanFonts;
   };
@@ -24,11 +24,9 @@ in
 mkDerivation {
   name = "${pname}-${version}";
 
-  src = fetchFromGitHub {
-    owner = "texmacs";
-    repo = "texmacs";
-    rev = "v${version}";
-    sha256 = "04585hdh98fvyhj4wsxf69xal2wvfa6lg76gad8pr6ww9abi5105";
+  src = fetchurl {
+    url = "https://www.texmacs.org/Download/ftp/tmftp/source/TeXmacs-${version}-src.tar.gz";
+    sha256 = "1zbl1ddhppgnn3j213jl1b9mn8zmwnknxiqswm25p4llj0mqcgna";
   };
 
   enableParallelBuilding = true;

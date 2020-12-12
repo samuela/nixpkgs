@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, boost, cmake, cpp-hocon, curl, leatherman, libwhereami, libyamlcpp, openssl, ruby, util-linux }:
+{ stdenv, fetchFromGitHub, boost, cmake, cpp-hocon, curl, leatherman, libwhereami, libyamlcpp, openssl, ruby, utillinux }:
 
 stdenv.mkDerivation rec {
   pname = "facter";
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ boost cpp-hocon curl leatherman libwhereami libyamlcpp openssl ruby util-linux ];
+  buildInputs = [ boost cpp-hocon curl leatherman libwhereami libyamlcpp openssl ruby utillinux ];
 
   enableParallelBuilding = true;
 

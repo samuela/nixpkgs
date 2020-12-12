@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchgit, python, gyp, util-linux }:
+{ stdenv, lib, fetchgit, python, gyp, utillinux }:
 
 stdenv.mkDerivation {
   pname = "bud";
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
 
   buildInputs = [
     python gyp
-  ] ++ lib.optional stdenv.isLinux util-linux;
+  ] ++ lib.optional stdenv.isLinux utillinux;
 
   buildPhase = ''
     python ./gyp_bud -f make

@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "ifuse";
-  version = "1.1.4";
+  version = "2018-10-08";
 
   src = fetchFromGitHub {
     owner = "libimobiledevice";
     repo = pname;
-    rev = version;
-    sha256 = "1r12y3h1j7ikkwk874h9969kr4ksyamvrwywx19ml6rsr01arw84";
+    rev = "e75d32c34d0e8b80320f0a007d5ecbb3f55ef7f0";
+    sha256 = "1b9w2i0sliswlkkb890l9i0rxrf631xywxf8ihygfmjdsfw47h1m";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig fuse usbmuxd libimobiledevice ];

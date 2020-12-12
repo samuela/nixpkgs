@@ -28,7 +28,7 @@
 # Helper function for building a derivation for Franz and forks.
 
 { pname, name, version, src, meta }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   inherit pname version src meta;
 
   # Don't remove runtime deps.
@@ -65,7 +65,7 @@ stdenv.mkDerivation rec {
     expat
     stdenv.cc.cc
   ];
-  runtimeDependencies = [ stdenv.cc.cc.lib (lib.getLib udev) libnotify ];
+  runtimeDependencies = [ (lib.getLib udev) libnotify ];
 
   unpackPhase = "dpkg-deb -x $src .";
 
@@ -84,7 +84,6 @@ stdenv.mkDerivation rec {
 
   postFixup = ''
     wrapProgram $out/opt/${name}/${pname} \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath runtimeDependencies}" \
       --prefix PATH : ${xdg_utils}/bin \
       "''${gappsWrapperArgs[@]}"
   '';

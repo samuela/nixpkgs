@@ -72,6 +72,5 @@ buildPythonPackage rec {
     homepage = "https://github.com/MagicStack/uvloop";
     license = licenses.mit;
     maintainers = with maintainers; [ costrouc ];
-    broken = pythonAtLeast "3.9"; # see: https://github.com/MagicStack/uvloop/issues/365
   };
 }

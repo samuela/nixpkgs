@@ -37,7 +37,7 @@ in
 stdenv.mkDerivation {
   name = "tarball";
   builder = ./make-system-tarball.sh;
-  nativeBuildInputs = extraInputs;
+  buildInputs = extraInputs;
 
   inherit fileName extraArgs extraCommands compressCommand;
 

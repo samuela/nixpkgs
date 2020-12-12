@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, unzip, jre, makeDesktopItem, copyDesktopItems }:
+{ stdenv, fetchurl, unzip, jre, makeDesktopItem }:
 
 let
   desktopItem = makeDesktopItem {
@@ -18,12 +18,11 @@ stdenv.mkDerivation {
     sha256 = "0d5mzkwsbh9s9b1vyvpaawqc09b0q41l2a7pmwf7386b1fsx6d58";
   };
 
-  nativeBuildInputs = [ copyDesktopItems ];
   buildInputs = [ unzip ];
   inherit jre;
 
   installPhase = ''
-    runHook preInstall
+    source $stdenv/setup
 
     unzip $src
 
@@ -39,10 +38,8 @@ stdenv.mkDerivation {
     EOF
     chmod +x $out/bin/jdiskreport
 
-    runHook postInstall
+    ${desktopItem.buildCommand}
   '';
-
-  desktopItems = [ desktopItem ];
 
   meta = with stdenv.lib; {
     homepage = "http://www.jgoodies.com/freeware/jdiskreport/";

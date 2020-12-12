@@ -5,21 +5,9 @@ let
 in pkgs.stdenv.mkDerivation {
   name = "nixpkgs-manual";
 
-  nativeBuildInputs = with pkgs; [
-    pandoc
-    graphviz
-    libxml2
-    libxslt
-    zip
-    jing
-    xmlformat
-  ];
+  buildInputs = with pkgs; [ pandoc libxml2 libxslt zip jing  xmlformat ];
 
   src = ./.;
-
-  makeFlags = [
-    "PANDOC_LUA_FILTERS_DIR=${pkgs.pandoc-lua-filters}/share/pandoc/filters"
-  ];
 
   postPatch = ''
     ln -s ${doc-support} ./doc-support/result

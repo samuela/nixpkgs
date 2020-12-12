@@ -1,6 +1,4 @@
 { stdenv
-, mkDerivation
-, lib
 , fetchurl
 # native
 , autoreconfHook
@@ -30,13 +28,13 @@
 , fftw
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "saga";
-  version = "7.8.1";
+  version = "7.7.0";
 
   src = fetchurl {
-    url = "https://sourceforge.net/projects/saga-gis/files/SAGA%20-%20${lib.versions.major version}/SAGA%20-%20${version}/saga-${version}.tar.gz";
-    sha256 = "qwjuimeoadwf254bwJ7h2vSKaELkcaJdFrGj1WtvnbM=";
+    url = "https://sourceforge.net/projects/saga-gis/files/SAGA%20-%20${stdenv.lib.versions.major version}/SAGA%20-%20${version}/saga-${version}.tar.gz";
+    sha256 = "1nmvrlcpcm2pas9pnav13iydnym9d8yqqnwq47lm0j6b0a2wy9zk";
   };
 
   nativeBuildInputs = [
@@ -70,7 +68,7 @@ mkDerivation rec {
   ]
   # See https://groups.google.com/forum/#!topic/nix-devel/h_vSzEJAPXs
   # for why the have additional buildInputs on darwin
-  ++ lib.optionals stdenv.isDarwin [
+  ++ stdenv.lib.optionals stdenv.isDarwin [
     Cocoa
     unixODBC
     poppler
@@ -78,11 +76,16 @@ mkDerivation rec {
     sqlite
   ];
 
+  patches = [
+    # See https://sourceforge.net/p/saga-gis/bugs/280/
+    ./opencv4.patch
+  ];
+
   enableParallelBuilding = true;
 
-  CXXFLAGS = lib.optionalString stdenv.cc.isClang "-std=c++11 -Wno-narrowing";
+  CXXFLAGS = stdenv.lib.optionalString stdenv.cc.isClang "-std=c++11 -Wno-narrowing";
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "System for Automated Geoscientific Analyses";
     homepage = "http://www.saga-gis.org";
     license = licenses.gpl2Plus;

@@ -18,7 +18,7 @@ mkDerivation rec {
   propagatedBuildInputs = [ kconfig kcrash kinit kparts kiconthemes ];
 
   meta = with lib; {
-    homepage = "https://invent.kde.org/sdk/kdiff3";
+    homepage = "http://kdiff3.sourceforge.net/";
     license = licenses.gpl2Plus;
     description = "Compares and merges 2 or 3 files or directories";
     maintainers = with maintainers; [ peterhoeg ];

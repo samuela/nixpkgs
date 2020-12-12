@@ -9,36 +9,24 @@
 , requests_ntlm
 , websockets
   # Visualization inputs
-, withVisualization ? false
-, ipython
+, ipykernel
 , ipyvuetify
 , ipywidgets
 , matplotlib
+, nbconvert
+, nbformat
 , plotly
 , pyperclip
 , seaborn
   # check inputs
 , pytestCheckHook
-, nbconvert
-, nbformat
 , pproxy
 , vcrpy
 }:
 
-let
-  visualizationPackages = [
-    ipython
-    ipyvuetify
-    ipywidgets
-    matplotlib
-    plotly
-    pyperclip
-    seaborn
-  ];
-in
 buildPythonPackage rec {
   pname = "qiskit-ibmq-provider";
-  version = "0.11.1";
+  version = "0.8.0";
 
   disabled = pythonOlder "3.6";
 
@@ -46,7 +34,7 @@ buildPythonPackage rec {
     owner = "Qiskit";
     repo = pname;
     rev = version;
-    sha256 = "0b5mnq8f5844idnsmp84lpkvlpszfwwi998yvggcgaayw1dbk53h";
+    sha256 = "0rrpwr4a82j69j5ibl2g0nw8wbpg201cfz6f234k2v6pj500x9nl";
   };
 
   propagatedBuildInputs = [
@@ -56,16 +44,31 @@ buildPythonPackage rec {
     requests
     requests_ntlm
     websockets
-  ] ++ lib.optionals withVisualization visualizationPackages;
+    # Visualization/Jupyter inputs
+    ipykernel
+    ipyvuetify
+    ipywidgets
+    matplotlib
+    nbconvert
+    nbformat
+    plotly
+    pyperclip
+    seaborn
+  ];
+
+  # websockets seems to be pinned b/c in v8+ it drops py3.5 support. Not an issue here (usually py3.7+, and disabled for older py3.6)
+  postPatch = ''
+    substituteInPlace requirements.txt --replace "websockets>=7,<8" "websockets"
+    substituteInPlace setup.py --replace "websockets>=7,<8" "websockets"
+  '';
 
   # Most tests require credentials to run on IBMQ
   checkInputs = [
     pytestCheckHook
-    nbconvert
-    nbformat
     pproxy
     vcrpy
-  ] ++ lib.optionals (!withVisualization) visualizationPackages;
+  ];
+  dontUseSetuptoolsCheck = true;
 
   pythonImportsCheck = [ "qiskit.providers.ibmq" ];
   # These disabled tests require internet connection, aren't skipped elsewhere
@@ -73,10 +76,6 @@ buildPythonPackage rec {
     "test_old_api_url"
     "test_non_auth_url"
     "test_non_auth_url_with_hub"
-
-    # slow tests
-    "test_websocket_retry_failure"
-    "test_invalid_url"
   ];
 
   # Skip tests that rely on internet access (mostly to IBM Quantum Experience cloud).

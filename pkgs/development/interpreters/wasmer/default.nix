@@ -34,6 +34,6 @@ rustPlatform.buildRustPackage rec {
     '';
     homepage = "https://wasmer.io/";
     license = licenses.mit;
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv, buildPythonPackage, fetchPypi, substituteAll, pythonOlder
+{ stdenv, buildPythonPackage, fetchPypi, substituteAll
 , geos, pytest, cython
 , numpy
 }:
@@ -11,7 +11,6 @@ buildPythonPackage rec {
     inherit pname version;
     sha256 = "0adiz4jwmwxk7k1awqifb1a9bj5x4nx4gglb5dz9liam21674h8n";
   };
-  disabled = pythonOlder "3.5";
 
   nativeBuildInputs = [
     geos # for geos-config

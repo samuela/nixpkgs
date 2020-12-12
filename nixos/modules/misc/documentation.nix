@@ -40,9 +40,9 @@ let
       in scrubbedEval.options;
   };
 
-
-  nixos-help = let
-    helpScript = pkgs.writeShellScriptBin "nixos-help" ''
+  helpScript = pkgs.writeScriptBin "nixos-help"
+    ''
+      #! ${pkgs.runtimeShell} -e
       # Finds first executable browser in a colon-separated list.
       # (see how xdg-open defines BROWSER)
       browser="$(
@@ -59,22 +59,14 @@ let
       exec "$browser" ${manual.manualHTMLIndex}
     '';
 
-    desktopItem = pkgs.makeDesktopItem {
-      name = "nixos-manual";
-      desktopName = "NixOS Manual";
-      genericName = "View NixOS documentation in a web browser";
-      icon = "nix-snowflake";
-      exec = "nixos-help";
-      categories = "System";
-    };
-
-    in pkgs.symlinkJoin {
-      name = "nixos-help";
-      paths = [
-        helpScript
-        desktopItem
-      ];
-    };
+  desktopItem = pkgs.makeDesktopItem {
+    name = "nixos-manual";
+    desktopName = "NixOS Manual";
+    genericName = "View NixOS documentation in a web browser";
+    icon = "nix-snowflake";
+    exec = "${helpScript}/bin/nixos-help";
+    categories = "System";
+  };
 
 in
 
@@ -217,7 +209,7 @@ in
           manualCache = pkgs.runCommandLocal "man-cache" { }
           ''
             echo "MANDB_MAP ${manualPages}/share/man $out" > man.conf
-            ${pkgs.man-db}/bin/mandb -C man.conf -psc >/dev/null 2>&1
+            ${pkgs.man-db}/bin/mandb -C man.conf -psc
           '';
         in
         ''
@@ -258,8 +250,8 @@ in
 
       environment.systemPackages = []
         ++ optional cfg.man.enable manual.manpages
-        ++ optionals cfg.doc.enable ([ manual.manualHTML nixos-help ]
-           ++ optionals config.services.xserver.enable [ pkgs.nixos-icons ]);
+        ++ optionals cfg.doc.enable ([ manual.manualHTML helpScript ]
+           ++ optionals config.services.xserver.enable [ desktopItem pkgs.nixos-icons ]);
 
       services.mingetty.helpLine = mkIf cfg.doc.enable (
           "\nRun 'nixos-help' for the NixOS manual."

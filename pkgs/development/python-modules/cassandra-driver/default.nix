@@ -42,6 +42,5 @@ buildPythonPackage rec {
     description = "A Python client driver for Apache Cassandra";
     homepage = "http://datastax.github.io/python-driver";
     license = licenses.asl20;
-    broken = true; # geomet doesn't exist
   };
 }

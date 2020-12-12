@@ -1,14 +1,12 @@
 { buildDunePackage, containers
-, dune-configurator
 , gen, iter, qcheck
 }:
 
 buildDunePackage {
   pname = "containers-data";
 
-  inherit (containers) src version useDune2;
+  inherit (containers) src version;
 
-  buildInputs = [ dune-configurator ];
   doCheck = true;
   checkInputs = [ gen iter qcheck ];
 

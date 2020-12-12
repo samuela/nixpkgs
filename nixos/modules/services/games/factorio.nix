@@ -49,13 +49,8 @@ in
         default = 34197;
         description = ''
           The port to which the service should bind.
-        '';
-      };
-      openFirewall = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to automatically open the specified UDP port in the firewall.
+
+          This option will also open up the UDP port in the firewall configuration.
         '';
       };
       saveName = mkOption {
@@ -242,6 +237,6 @@ in
       };
     };
 
-    networking.firewall.allowedUDPPorts = if cfg.openFirewall then [ cfg.port ] else [];
+    networking.firewall.allowedUDPPorts = [ cfg.port ];
   };
 }

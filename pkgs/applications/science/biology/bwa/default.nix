@@ -11,12 +11,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ zlib ];
 
-  # Avoid hardcoding gcc to allow environments with a different
-  # C compiler to build
-  preConfigure = ''
-    sed -i '/^CC/d' Makefile
-  '';
-
   # it's unclear which headers are intended to be part of the public interface
   # so we may find ourselves having to add more here over time
   installPhase = ''
@@ -33,6 +27,6 @@ stdenv.mkDerivation rec {
     license     = licenses.gpl3;
     homepage    = "http://bio-bwa.sourceforge.net/";
     maintainers = with maintainers; [ luispedro ];
-    platforms = platforms.x86_64;
+    platforms = [ "x86_64-linux" ];
   };
 }

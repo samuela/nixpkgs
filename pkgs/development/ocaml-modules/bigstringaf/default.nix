@@ -2,9 +2,7 @@
 
 buildDunePackage rec {
   pname = "bigstringaf";
-  version = "0.7.0";
-
-  useDune2 = true;
+  version = "0.6.0";
 
   minimumOCamlVersion = "4.03";
 
@@ -12,7 +10,7 @@ buildDunePackage rec {
     owner = "inhabitedtype";
     repo = pname;
     rev = version;
-    sha256 = "1q1sqxzdnlrpl95ccrhl7lwy3zswgd9rbn19ildclh0lyi2vazbj";
+    sha256 = "04b088vrqzmxsyan9f9nr8721bxip4b930cgvb5zkbbmrw3ylmwc";
   };
 
   checkInputs = [ alcotest ];

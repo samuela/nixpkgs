@@ -17,6 +17,7 @@
 , pythonCatchConflictsHook
 , pythonImportsCheckHook
 , pythonNamespacesHook
+, pythonRecompileBytecodeHook
 , pythonRemoveBinBytecodeHook
 , pythonRemoveTestsDirHook
 , setuptoolsBuildHook
@@ -53,9 +54,7 @@
 , disabled ? false
 
 # Raise an error if two packages are installed with the same name
-# TODO: For cross we probably need a different PYTHONPATH, or not
-# add the runtime deps until after buildPhase.
-, catchConflicts ? (python.stdenv.hostPlatform == python.stdenv.buildPlatform)
+, catchConflicts ? true
 
 # Additional arguments to pass to the makeWrapper function, which wraps
 # generated binaries.
@@ -114,6 +113,7 @@ let
       python
       wrapPython
       ensureNewerSourcesForZipFilesHook  # move to wheel installer (pip) or builder (setuptools, flit, ...)?
+      pythonRecompileBytecodeHook  # Remove when solved https://github.com/NixOS/nixpkgs/issues/81441
       pythonRemoveTestsDirHook
     ] ++ lib.optionals catchConflicts [
       setuptools pythonCatchConflictsHook
@@ -166,6 +166,9 @@ let
 
     # Python packages built through cross-compilation are always for the host platform.
     disallowedReferences = lib.optionals (python.stdenv.hostPlatform != python.stdenv.buildPlatform) [ python.pythonForBuild ];
+
+    # For now, revert recompilation of bytecode.
+    dontUsePythonRecompileBytecode = true;
 
     meta = {
       # default to python's platforms

@@ -5,13 +5,13 @@
 
 stdenv.mkDerivation rec {
   pname = "libirecovery";
-  version = "1.0.0";
+  version = "2020-01-14";
 
   src = fetchFromGitHub {
     owner = "libimobiledevice";
     repo = pname;
-    rev = version;
-    sha256 = "0p9ncqnz5kb7qisw00ynvasw1hax5qx241h9nwppi2g544i9lbnr";
+    rev = "10a1f8dd11a11a0b8980fbf26f11e3ce74e7a923";
+    sha256 = "1v5c9dbbkrsplj1zkcczzm0i31ar3wcx6fpxb0pi4dsgj8846aic";
   };
 
   outputs = [ "out" "dev" ];
@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
     '';
     license = licenses.lgpl21;
     # Upstream description says it works on more platforms, but packager hasn't tried that yet
-    platforms = platforms.linux ++ platforms.darwin;
+    platforms = platforms.linux;
     maintainers = with maintainers; [ nh2 ];
   };
 }

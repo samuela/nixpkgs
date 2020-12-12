@@ -12,11 +12,11 @@
 
 buildPythonPackage rec {
   pname = "bpython";
-  version = "0.20.1";
+  version = "0.20";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "6e7738806013b469be57b0117082b9c4557ed7c92c70ceb79f96d674d89c7503";
+    sha256 = "fec7d97be9912a50d8f5b34ca10d70715c99a33f0cd0b9e4977c1b0f617fa913";
   };
 
   patches = [ (substituteAll {

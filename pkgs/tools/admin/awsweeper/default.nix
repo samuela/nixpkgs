@@ -1,25 +1,29 @@
-{ lib, buildGoModule, fetchFromGitHub }:
+{ lib, buildGoModule, fetchurl, fetchFromGitHub }:
 
 buildGoModule rec {
   pname = "awsweeper";
-  version = "0.10.2";
+  version = "0.7.0";
 
-  src = fetchFromGitHub {
-    owner = "jckuester";
-    repo = pname;
-    rev = "v${version}";
-    sha256 = "1ln4s04n1qd1wv88ahhvvvphlxf6c9krqz9lmbcx3n67sb8xngm5";
+  # Requires go generate to be run with mockgen, but doesn't check in the results.
+  patches = fetchurl {
+    url = "https://raw.githubusercontent.com/c00w/patches/master/awskeeper.patch";
+    sha256 = "0dz553ffxc37m2iwygrbhxf7pm91hxdriic8a1gjf8q3nyn13npl";
   };
 
-  vendorSha256 = "0zlhb84fmrnwq71d0h83p28aqlfclcydndl0z2j9nx2skjlxax2i";
+  src = fetchFromGitHub {
+    owner = "cloudetc";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "1ybrrpnp6rh7rcwihww43cvhfhzzyy51rdk1hwy9ljpkg37k4y28";
+  };
 
-  buildFlagsArray = [ "-ldflags=-s -w -X github.com/jckuester/awsweeper/internal.version=${version} -X github.com/jckuester/awsweeper/internal.commit=${src.rev} -X github.com/jckuester/awsweeper/internal.date=unknown" ];
+  vendorSha256 = "0hnpb1xp135z2qpn1b6xad59739hffhs8dfpr3n5drmrvajpn4xp";
 
   doCheck = false;
 
   meta = with lib; {
     description = "A tool to clean out your AWS account";
-    homepage = "https://github.com/jckuester/awsweeper";
+    homepage = "https://github.com/cloudetc/awsweeper/";
     license = licenses.mpl20;
     maintainers = [ maintainers.marsam ];
   };

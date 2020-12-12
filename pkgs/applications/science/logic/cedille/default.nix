@@ -10,20 +10,16 @@
 }:
 
 stdenv.mkDerivation rec {
-  version = "1.1.2";
+  version = "1.1.1";
   pname = "cedille";
 
   src = fetchFromGitHub {
     owner = "cedille";
     repo = "cedille";
     rev = "v${version}";
-    sha256 = "1j745q9sd32fhcb96wjq6xvyqq1k6imppjnya6x0n99fyfnqzvg9";
+    sha256 = "16pc72wz6kclq9yv2r8hx85mkp0s125h12snrhcjxkbl41xx2ynb";
     fetchSubmodules = true;
   };
-
-  patches = [
-    ./Fix-to-string.agda-to-compile-with-Agda-2.6.1.patch
-  ];
 
   nativeBuildInputs = [ alex happy ];
   buildInputs = [ Agda (ghcWithPackages (ps: [ps.ieee])) ];

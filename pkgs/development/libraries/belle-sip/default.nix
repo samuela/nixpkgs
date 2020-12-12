@@ -2,6 +2,7 @@
 , bctoolbox
 , cmake
 , fetchFromGitLab
+, jre
 , libantlr3c
 , mbedtls
 , stdenv
@@ -10,18 +11,20 @@
 
 stdenv.mkDerivation rec {
   pname = "belle-sip";
-  version = "4.4.13";
+  # Using master branch for linphone-desktop caused a chain reaction that many
+  # of its dependencies needed to use master branch too.
+  version = "unstable-2020-02-18";
 
   src = fetchFromGitLab {
     domain = "gitlab.linphone.org";
     owner = "public";
     group = "BC";
     repo = pname;
-    rev = version;
-    sha256 = "1ad7sqc5y4f3gc8glwmb3rvfzapnvhg981g13x90cg4nzikjvka0";
+    rev = "0dcb13416eae87edf140771b886aedaf6be8cf60";
+    sha256 = "0pzxk8mkkg6zsnmj1bwggbdjv864psx89gglfm51h8s501kg11fv";
   };
 
-  nativeBuildInputs = [ cmake antlr3_4 ];
+  nativeBuildInputs = [ jre cmake ];
 
   buildInputs = [ zlib ];
 
@@ -34,7 +37,10 @@ stdenv.mkDerivation rec {
     "-Wno-error=cast-function-type"
   ];
 
-  propagatedBuildInputs = [ libantlr3c mbedtls bctoolbox ];
+  propagatedBuildInputs = [ antlr3_4 libantlr3c mbedtls bctoolbox ];
+
+  # Fails to build with lots of parallel jobs
+  enableParallelBuilding = false;
 
   meta = with stdenv.lib; {
     homepage = "https://linphone.org/technical-corner/belle-sip";

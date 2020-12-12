@@ -20,23 +20,31 @@
 , gobject-introspection
 , doCheck ? false
 , makeWrapper
+, fetchpatch
 , lib
 }:
 
 stdenv.mkDerivation rec {
   pname = "gdk-pixbuf";
-  version = "2.42.0";
+  version = "2.40.0";
 
   outputs = [ "out" "dev" "man" "devdoc" "installedTests" ];
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "1ixfmmamgv67is7snzighfr7c9y2maq3q4a075xdq0d9s4w16i3k";
+    sha256 = "1rnlx9yfw970maxi2x6niaxmih5la11q1ilr7gzshz2kk585k0hm";
   };
 
   patches = [
     # Move installed tests to a separate output
     ./installed-tests-path.patch
+
+    # Temporary until the fix is released.
+    (fetchpatch {
+      name = "tests-circular-table.patch";
+      url = "https://gitlab.gnome.org/GNOME/gdk-pixbuf/merge_requests/59.diff";
+      sha256 = "0kaflac3mrh6031hwxk7j9fhli775hc503818h8zfl6b28zyn93f";
+    })
   ];
 
   nativeBuildInputs = [
@@ -63,8 +71,9 @@ stdenv.mkDerivation rec {
   ];
 
   mesonFlags = [
-    "-Dgtk_doc=true"
-    "-Dintrospection=${if gobject-introspection != null then "enabled" else "disabled"}"
+    "-Ddocs=true"
+    "-Dx11=false" # use gdk-pixbuf-xlib
+    "-Dgir=${lib.boolToString (gobject-introspection != null)}"
     "-Dgio_sniffing=false"
   ];
 
@@ -126,7 +135,7 @@ stdenv.mkDerivation rec {
     description = "A library for image loading and manipulation";
     homepage = "https://gitlab.gnome.org/GNOME/gdk-pixbuf";
     maintainers = [ maintainers.eelco ] ++ teams.gnome.members;
-    license = licenses.lgpl21Plus;
+    license = licenses.lgpl21;
     platforms = platforms.unix;
   };
 }

@@ -3,7 +3,7 @@
 , cmake
 , ninja
 , pkg-config
-, opencv
+, opencv3
 , openexr
 , graphicsmagick
 , fftw
@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   pname = "gmic";
-  version = "2.9.4";
+  version = "2.9.2";
 
   outputs = [ "out" "lib" "dev" "man" ];
 
   src = fetchurl {
     url = "https://gmic.eu/files/source/gmic_${version}.tar.gz";
-    sha256 = "1ixcdq16gmgh1brrb6mgdibypq9lvh8gnz86b5mmyxlnyi4fw2vr";
+    sha256 = "14acph914a8lp6qqfmp319ggqjg3i3hmalmnpk3mp07m7vpv2p9q";
   };
 
   nativeBuildInputs = [
@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
     libjpeg
     libtiff
     libpng
-    opencv
+    opencv3
     openexr
     graphicsmagick
   ];

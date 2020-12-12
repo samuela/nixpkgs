@@ -4,25 +4,26 @@
 , setuptools_scm
 , docutils
 , pyparsing
-, pytestCheckHook
 }:
 
 buildPythonPackage rec {
   pname = "amply";
-  version = "0.1.4";
+  version = "0.1.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "cb12dcb49d16b168c02be128a1527ecde50211e4bd94af76ff4e67707f5a2d38";
+    sha256 = "1j2dqdz1y1nbyw33qq89v0f5rkmqfbga72d9hax909vpcapm6pbf";
   };
 
-  nativeBuildInputs = [ setuptools_scm ];
+  buildInputs = [ setuptools_scm ];
   propagatedBuildInputs = [
     docutils
     pyparsing
   ];
-  checkInputs = [ pytestCheckHook ];
 
+  checkPhase = ''
+    python tests/test_amply.py
+  '';
   pythonImportsCheck = [ "amply" ];
 
   meta = with stdenv.lib; {

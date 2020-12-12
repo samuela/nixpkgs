@@ -1,38 +1,28 @@
-{ stdenv, lib, fetchurl, autoPatchelfHook, dpkg, awscli, unzip }:
-let
-  ver = "1.2.7.0";
-  source = if stdenv.isDarwin then {
-    url =
-      "https://s3.amazonaws.com/session-manager-downloads/plugin/${ver}/mac/sessionmanager-bundle.zip";
-    sha256 = "sha256-HP+opNjS53zR9eUxpNUHGD9rZN1z7lDc6+nONR8fa/s=";
-  } else {
-    url =
-      "https://s3.amazonaws.com/session-manager-downloads/plugin/${ver}/ubuntu_64bit/session-manager-plugin.deb";
-    sha256 = "sha256-EZ9ncj1YYlod1RLfXOpZFijnKjLYWYVBb+C6yd42l34=";
-  };
-  platformBuildInput = if stdenv.isDarwin then [ unzip ] else [ dpkg ];
-  unpackCmd = if stdenv.isDarwin then "unzip $src" else "dpkg-deb -x $src .";
-  archivePath = if stdenv.isDarwin then "sessionmanager-bundle" else "usr/local/sessionmanagerplugin";
-in
+{ stdenv, lib, fetchurl, autoPatchelfHook, dpkg, awscli }:
 stdenv.mkDerivation rec {
   pname = "ssm-session-manager-plugin";
-  version = ver;
+  version = "1.1.61.0";
 
-  src = fetchurl source;
+  src = fetchurl {
+    url =
+      "https://s3.amazonaws.com/session-manager-downloads/plugin/${version}/ubuntu_64bit/session-manager-plugin.deb";
+    sha256 = "0z59irrpwhjjhn379454xyraqs590hij2n6n6k25w5hh8ak7imfl";
+  };
 
-  nativeBuildInputs = [ autoPatchelfHook ] ++ platformBuildInput;
+  nativeBuildInputs = [ autoPatchelfHook dpkg ];
 
   buildInputs = [ awscli ];
 
-  unpackPhase = unpackCmd;
+  unpackPhase = "dpkg-deb -x $src .";
 
-  installPhase = "install -m755 -D ${archivePath}/bin/session-manager-plugin $out/bin/session-manager-plugin";
+  installPhase =
+    "install -m755 -D usr/local/sessionmanagerplugin/bin/session-manager-plugin $out/bin/session-manager-plugin";
 
   meta = with lib; {
     homepage =
       "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html";
     description = "Amazon SSM Session Manager Plugin";
-    platforms = [ "x86_64-linux" "x86_64-darwin" ];
+    platforms = [ "x86_64-linux" ];
     license = licenses.unfree;
     maintainers = with maintainers; [ mbaillie ];
   };

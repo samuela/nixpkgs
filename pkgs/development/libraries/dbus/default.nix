@@ -5,8 +5,6 @@
 , expat
 , enableSystemd ? stdenv.isLinux && !stdenv.hostPlatform.isMusl
 , systemd
-, audit
-, libapparmor
 , libX11 ? null
 , libICE ? null
 , libSM ? null
@@ -32,13 +30,7 @@ stdenv.mkDerivation rec {
     sha256 = "1zp5gpx61v1cpqf2zwb1cidhp9xylvw49d3zydkxqk6b1qa20xpp";
   };
 
-  patches = [
-    # 'generate.consistent.ids=1' ensures reproducible docs, for further details see
-    # http://docbook.sourceforge.net/release/xsl/current/doc/html/generate.consistent.ids.html
-    # Also applied upstream in https://gitlab.freedesktop.org/dbus/dbus/-/merge_requests/189,
-    # expected in version 1.14
-    ./docs-reproducible-ids.patch
-  ] ++ (lib.optional stdenv.isSunOS ./implement-getgrouplist.patch);
+  patches = lib.optional stdenv.isSunOS ./implement-getgrouplist.patch;
 
   postPatch = ''
     substituteInPlace tools/Makefile.in \
@@ -72,8 +64,7 @@ stdenv.mkDerivation rec {
       libX11
       libICE
       libSM
-    ] ++ lib.optional enableSystemd systemd
-    ++ lib.optionals (!stdenv.isDarwin) [ audit libapparmor ];
+    ] ++ lib.optional enableSystemd systemd;
   # ToDo: optional selinux?
 
   configureFlags = [
@@ -89,8 +80,7 @@ stdenv.mkDerivation rec {
     "--with-system-socket=/run/dbus/system_bus_socket"
     "--with-systemdsystemunitdir=${placeholder ''out''}/etc/systemd/system"
     "--with-systemduserunitdir=${placeholder ''out''}/etc/systemd/user"
-  ] ++ lib.optional (!x11Support) "--without-x"
-  ++ lib.optionals (!stdenv.isDarwin) [ "--enable-apparmor" "--enable-libaudit" ];
+  ] ++ lib.optional (!x11Support) "--without-x";
 
   # Enable X11 autolaunch support in libdbus. This doesn't actually depend on X11
   # (it just execs dbus-launch in dbus.tools), contrary to what the configure script demands.

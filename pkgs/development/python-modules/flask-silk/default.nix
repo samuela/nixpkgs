@@ -24,7 +24,7 @@ buildPythonPackage {
   meta = with stdenv.lib; {
     description = "Adds silk icons to your Flask application or module, or extension";
     license = licenses.bsd3;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     homepage = "https://github.com/sublee/flask-silk";
   };
 }

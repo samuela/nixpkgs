@@ -1,13 +1,11 @@
-{ stdenv
+{ stdenv 
 , fetchFromGitHub
-, fetchpatch
 , qttools
 , qtmultimedia
 , liblo
 , gst_all_1
 , qmake
 , pkgconfig
-, wrapQtAppsHook
 }:
 
 with stdenv;
@@ -27,7 +25,6 @@ mkDerivation rec {
   nativeBuildInputs = [
     qmake
     pkgconfig
-    wrapQtAppsHook
   ];
 
   buildInputs = [
@@ -38,14 +35,6 @@ mkDerivation rec {
     gst_all_1.gstreamermm
     gst_all_1.gst-libav
     gst_all_1.gst-vaapi
-  ];
-
-  patches = [
-    (fetchpatch {
-      name = "message-handler-segfault.patch";
-      url = "https://github.com/mapmapteam/mapmap/pull/519/commits/22eeee59ba7de6de7b73ecec3b0ea93bdc7f04e8.patch";
-      sha256 = "0is905a4lf9vvl5b1n4ky6shrnbs5kz9mlwfk78hrl4zabfmcl5l";
-    })
   ];
 
   installPhase = ''
@@ -68,6 +57,8 @@ mkDerivation rec {
     license = licenses.gpl3;
     maintainers = [ maintainers.erictapen ];
     platforms = platforms.linux;
+    # binary segfaults at the moment
+    broken = true;
   };
 
 }

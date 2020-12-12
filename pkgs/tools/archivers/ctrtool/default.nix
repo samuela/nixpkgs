@@ -2,23 +2,22 @@
 
 stdenv.mkDerivation rec {
   pname = "ctrtool";
-  version = "0.7";
+  version = "0.16";
 
   src = fetchFromGitHub {
     owner  = "jakcron";
     repo   = "Project_CTR";
-    rev    = "ctrtool-v${version}";
-    sha256 = "07aayck82w5xcp3si35d7ghybmrbqw91fqqvmbpjrjcixc6m42z7";
+    rev    = "v${version}";
+    sha256 = "1n3j3fd1bqd39v5bdl9mhq4qdrcl1k4ib1yzl3qfckaz3y8bkrap";
   };
 
   sourceRoot = "source/ctrtool";
 
-  makeFlags = [ "CC=${stdenv.cc.targetPrefix}cc" "CXX=${stdenv.cc.targetPrefix}c++"];
   enableParallelBuilding = true;
 
   installPhase = "
     mkdir $out/bin -p
-    cp ctrtool${stdenv.hostPlatform.extensions.executable} $out/bin/
+    cp ctrtool $out/bin/ctrtool
   ";
 
   meta = with stdenv.lib; {

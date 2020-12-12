@@ -1,13 +1,15 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, makeWrapper, coreutils
+{ stdenv, lib, buildEnv, buildGoPackage, fetchFromGitHub, makeWrapper, coreutils
 , runCommand, runtimeShell, writeText, terraform-providers, fetchpatch }:
 
 let
-  generic = { version, sha256, vendorSha256 ? null, ... }@attrs:
-    let attrs' = builtins.removeAttrs attrs [ "version" "sha256" "vendorSha256" ];
-    in buildGoModule ({
+  goPackagePath = "github.com/hashicorp/terraform";
+
+  generic = { version, sha256, ... }@attrs:
+    let attrs' = builtins.removeAttrs attrs [ "version" "sha256" ];
+    in buildGoPackage ({
       name = "terraform-${version}";
 
-      inherit vendorSha256;
+      inherit goPackagePath;
 
       src = fetchFromGitHub {
         owner = "hashicorp";
@@ -16,7 +18,7 @@ let
         inherit sha256;
       };
 
-      postConfigure = ''
+      postPatch = ''
         # speakeasy hardcodes /bin/stty https://github.com/bgentry/speakeasy/issues/22
         substituteInPlace vendor/github.com/bgentry/speakeasy/speakeasy_unix.go \
           --replace "/bin/stty" "${coreutils}/bin/stty"
@@ -32,17 +34,13 @@ let
       '';
 
       preCheck = ''
-        export HOME=$TMPDIR
-        export TF_SKIP_REMOTE_TESTS=1
+        export HOME=$TMP
       '';
-
-      subPackages = [ "." ];
 
       meta = with stdenv.lib; {
         description =
           "Tool for building, changing, and versioning infrastructure";
         homepage = "https://www.terraform.io/";
-        changelog = "https://github.com/hashicorp/terraform/blob/v${version}/CHANGELOG.md";
         license = licenses.mpl20;
         maintainers = with maintainers; [
           Chili-Man
@@ -136,6 +134,15 @@ let
     "recurseForDerivations"
   ];
 in rec {
+  terraform_0_11 = pluggable (generic {
+    version = "0.11.14";
+    sha256 = "1bzz5wy13gh8j47mxxp6ij6yh20xmxd9n5lidaln3mf1bil19dmc";
+    patches = [ ./provider-path.patch ];
+    passthru = { inherit plugins; };
+  });
+
+  terraform_0_11-full = terraform_0_11.full;
+
   terraform_0_12 = pluggable (generic {
     version = "0.12.29";
     sha256 = "18i7vkvnvfybwzhww8d84cyh93xfbwswcnwfrgvcny1qwm8rsaj8";
@@ -156,14 +163,6 @@ in rec {
     passthru = { inherit plugins; };
   });
 
-  terraform_0_14 = pluggable (generic {
-    version = "0.14.2";
-    sha256 = "0j09bjdl1z836y3zdlgjcdah11wlnvsd5hmsagjsz9am04qlyfya";
-    vendorSha256 = "1iifjrnc79f4liyy4pgjbnarv2fx6vwlaqcv75crmyji40xv0w9s";
-    patches = [ ./provider-path.patch ];
-    passthru = { inherit plugins; };
-  });
-
   # Tests that the plugins are being used. Terraform looks at the specific
   # file pattern and if the plugin is not found it will try to download it
   # from the Internet. With sandboxing enable this test will fail if that is
@@ -172,7 +171,7 @@ in rec {
     mainTf = writeText "main.tf" ''
       resource "random_id" "test" {}
     '';
-    terraform = terraform_0_12.withPlugins (p: [ p.random ]);
+    terraform = terraform_0_11.withPlugins (p: [ p.random ]);
     test =
       runCommand "terraform-plugin-test" { buildInputs = [ terraform ]; } ''
         set -e

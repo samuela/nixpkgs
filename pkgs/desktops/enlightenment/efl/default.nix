@@ -46,7 +46,7 @@
 , python3Packages
 , systemd
 , udev
-, util-linux
+, utillinux
 , wayland
 , wayland-protocols
 , writeText
@@ -125,7 +125,7 @@ stdenv.mkDerivation rec {
     mint-x-icons # Mint-X is a parent icon theme of Enlightenment-X
     openjpeg
     poppler
-    util-linux
+    utillinux
     wayland
     xorg.libXScrnSaver
     xorg.libXcomposite

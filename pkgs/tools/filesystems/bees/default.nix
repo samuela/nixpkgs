@@ -1,21 +1,24 @@
-{ stdenv, runCommand, fetchFromGitHub, bash, btrfs-progs, coreutils, python3Packages, util-linux }:
+{ stdenv, runCommand, fetchFromGitHub, bash, btrfs-progs, coreutils, python3Packages, utillinux }:
 
 let
 
-  bees = stdenv.mkDerivation rec {
+  version = "0.6.2";
+  sha256 = "05niv9rivd3j3cwcx3n3vjr85wr0l5i76giq9n54d2vdwmn8qjib";
+
+  bees = stdenv.mkDerivation {
     pname = "bees";
-    version = "0.6.3";
+    inherit version;
 
     src = fetchFromGitHub {
       owner = "Zygo";
       repo = "bees";
       rev = "v${version}";
-      sha256 = "sha256-brEjr7lhmKDCIDeLq+XP+ZTxv1RvwoUlszMSEYygxv8=";
+      inherit sha256;
     };
 
     buildInputs = [
       btrfs-progs               # for btrfs/ioctl.h
-      util-linux                 # for uuid.h
+      utillinux                 # for uuid.h
     ];
 
     nativeBuildInputs = [
@@ -55,9 +58,8 @@ let
 
 in
 
-runCommand "bees-service" {
-  inherit bash bees coreutils;
-  utillinux = util-linux; # needs to be a valid shell variable name
+runCommand "bees-service-${version}" {
+  inherit bash bees coreutils utillinux;
   btrfsProgs = btrfs-progs; # needs to be a valid shell variable name
 } ''
   mkdir -p -- "$out/bin"

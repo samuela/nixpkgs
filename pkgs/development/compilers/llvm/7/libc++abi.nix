@@ -1,5 +1,4 @@
 { stdenv, cmake, fetch, libcxx, llvm, version
-, standalone ? false
   # on musl the shared objects don't build
 , enableShared ? ! stdenv.hostPlatform.isMusl }:
 
@@ -21,9 +20,7 @@ stdenv.mkDerivation {
     patch -p1 -d $(ls -d libcxx-*) -i ${../libcxx-0001-musl-hacks.patch}
   '';
 
-  cmakeFlags =
-     stdenv.lib.optional standalone "-DLLVM_ENABLE_LIBCXX=ON" ++
-     stdenv.lib.optional (!enableShared) "-DLIBCXXABI_ENABLE_SHARED=OFF";
+  cmakeFlags = stdenv.lib.optional (!enableShared) "-DLIBCXXABI_ENABLE_SHARED=OFF";
 
   installPhase = if stdenv.isDarwin
     then ''

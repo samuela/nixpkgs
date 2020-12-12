@@ -14,11 +14,11 @@
 
 buildPythonPackage rec {
   pname = "hwi";
-  version = "1.2.1";
+  version = "1.1.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "d0d220a4967d7f106b828b12a98b78c220d609d7cc6c811898e24fcf1a6f04f3";
+    sha256 = "eec460a51eb556500c1eca92015be246d5714cd53171407a76da71e4346048ae";
   };
 
   propagatedBuildInputs = [

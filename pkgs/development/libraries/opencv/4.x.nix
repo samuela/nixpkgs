@@ -34,6 +34,8 @@
 , AVFoundation, Cocoa, VideoDecodeAcceleration, CoreMedia, MediaToolbox, bzip2
 }:
 
+assert blas.implementation == "openblas" && lapack.implementation == "openblas";
+
 let
   version = "4.3.0";
 

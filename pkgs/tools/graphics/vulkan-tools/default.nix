@@ -30,13 +30,8 @@ stdenv.mkDerivation rec {
   ];
 
   meta = with stdenv.lib; {
-    description = "Khronos official Vulkan Tools and Utilities";
-    longDescription = ''
-      This project provides Vulkan tools and utilities that can assist
-      development by enabling developers to verify their applications correct
-      use of the Vulkan API.
-    '';
-    homepage    = "https://github.com/KhronosGroup/Vulkan-Tools";
+    description = "LunarG Vulkan loader";
+    homepage    = "https://www.lunarg.com";
     platforms   = platforms.linux;
     license     = licenses.asl20;
     maintainers = [ maintainers.ralith ];

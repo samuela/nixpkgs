@@ -6,12 +6,12 @@
 buildDunePackage rec {
   minimumOCamlVersion = "4.08";
 
-  version = "0.12.8";
+  version = "0.12.6";
   pname = "tls";
 
   src = fetchurl {
     url = "https://github.com/mirleft/ocaml-tls/releases/download/v${version}/tls-v${version}.tbz";
-    sha256 = "0sgppvfnamfnsglw1cl801i1xqkxbs33g40kwmmqj2vqjcarm26a";
+    sha256 = "14b2289nhb65qm8wrw51y8qgz5ysn8hcbrj5plznd1pdzl46zxc9";
   };
 
   useDune2 = true;

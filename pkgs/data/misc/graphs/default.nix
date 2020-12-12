@@ -20,6 +20,6 @@ stdenv.mkDerivation rec {
     description = "A database of graphs";
     license = licenses.gpl2;
     platforms = platforms.all;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
   };
 }

@@ -1,21 +1,23 @@
-{ stdenv, buildPythonPackage, fetchFromGitHub
-, setuptools, funcparserlib, pillow, webcolors, reportlab, docutils
+{ stdenv, fetchurl, buildPythonPackage, pep8, nose, unittest2, docutils
+, pillow, webcolors, funcparserlib
 }:
 
 buildPythonPackage rec {
   pname = "blockdiag";
-  version = "2.0.1";
+  version = "1.5.3";
 
-  src = fetchFromGitHub {
-    owner = "blockdiag";
-    repo = "blockdiag";
-    rev = version;
-    sha256 = "1cvcl66kf4wdh2n4fdk37zk59lp58wd2fhf84n7pbn0lilyksk5x";
+  src = fetchurl {
+    url = "https://bitbucket.org/blockdiag/blockdiag/get/${version}.tar.bz2";
+    sha256 = "0r0qbmv0ijnqidsgm2rqs162y9aixmnkmzgnzgk52hiy7ydm4k8f";
   };
 
-  propagatedBuildInputs = [ setuptools funcparserlib pillow webcolors reportlab docutils ];
+  buildInputs = [ pep8 nose unittest2 docutils ];
 
-  # require network and fail
+  propagatedBuildInputs = [ pillow webcolors funcparserlib ];
+
+  # One test fails:
+  #   ...
+  #   FAIL: test_auto_font_detection (blockdiag.tests.test_boot_params.TestBootParams)
   doCheck = false;
 
   meta = with stdenv.lib; {
@@ -23,6 +25,6 @@ buildPythonPackage rec {
     homepage = "http://blockdiag.com/";
     license = licenses.asl20;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ bjornfor SuperSandro2000 ];
+    maintainers = with maintainers; [ bjornfor ];
   };
 }

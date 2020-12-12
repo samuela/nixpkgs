@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "theme-jade1";
-  version = "1.10";
+  version = "1.9";
 
   src = fetchurl {
     url = "https://github.com/madmaxms/theme-jade-1/releases/download/v${version}/jade-1-theme.tar.xz";
-    sha256 = "17s4r8yjhnz9wrnrma6m8qjp02r47xkjk062sdb8s91dxhh7l8q2";
+    sha256 = "11fzd44ysy76iwyiwkshpf0vf6m3i3hcxyyihl0lg68nb3cv0g9y";
   };
 
   sourceRoot = ".";

@@ -1,7 +1,7 @@
 { lib, stdenv, fetchFromGitHub
 , dbus, cmake, pkgconfig
 , glib, udev, polkit, libmodule
-, pcre, libXdmcp, util-linux, libpthreadstubs
+, pcre, libXdmcp, utillinux, libpthreadstubs
 , enableDdc ? true, ddcutil
 , enableDpms ? true, libXext
 , enableGamma ? true, libXrandr
@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
 
     pcre
     libXdmcp
-    util-linux
+    utillinux
     libpthreadstubs
   ] ++ optional enableDdc ddcutil
     ++ optional enableDpms libXext

@@ -96,7 +96,7 @@ in
 
   boot.initrd.extraUtilsCommands =
     ''
-      copy_bin_and_libs ${pkgs.util-linux}/sbin/hwclock
+      copy_bin_and_libs ${pkgs.utillinux}/sbin/hwclock
     '';
 
   boot.initrd.postDeviceCommands =

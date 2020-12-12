@@ -155,12 +155,8 @@ runCommand
     for prog in $emacs/bin/*; do # */
       local progname=$(basename "$prog")
       rm -f "$out/bin/$progname"
-
-      substitute ${./wrapper.sh} $out/bin/$progname \
-        --subst-var-by bash ${emacs.stdenv.shell} \
-        --subst-var-by wrapperSiteLisp "$deps/share/emacs/site-lisp" \
-        --subst-var prog
-      chmod +x $out/bin/$progname
+      makeWrapper "$prog" "$out/bin/$progname" \
+        --suffix EMACSLOADPATH ":" "$deps/share/emacs/site-lisp:"
     done
 
     # Wrap MacOS app
@@ -172,12 +168,8 @@ runCommand
             $emacs/Applications/Emacs.app/Contents/PkgInfo \
             $emacs/Applications/Emacs.app/Contents/Resources \
             $out/Applications/Emacs.app/Contents
-
-      substitute ${./wrapper.sh} $out/Applications/Emacs.app/Contents/MacOS/Emacs \
-        --subst-var-by bash ${emacs.stdenv.shell} \
-        --subst-var-by wrapperSiteLisp "$emacs/Applications/Emacs.app/Contents/MacOS/Emacs" \
-        --subst-var prog
-      chmod +x $out/bin/$progname
+      makeWrapper $emacs/Applications/Emacs.app/Contents/MacOS/Emacs $out/Applications/Emacs.app/Contents/MacOS/Emacs \
+        --suffix EMACSLOADPATH ":" "$deps/share/emacs/site-lisp:"
     fi
 
     mkdir -p $out/share

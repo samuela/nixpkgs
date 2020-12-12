@@ -1,72 +1,42 @@
-{ stdenv, lib
-, buildPythonPackage, fetchPypi, pythonOlder, setuptools_scm, pytestCheckHook
-, aiohttp
-, aiohttp-cors
-, appdirs
-, attrs
-, click
-, dataclasses
-, mypy-extensions
-, pathspec
-, regex
-, toml
-, typed-ast
-, typing-extensions }:
+{ stdenv, buildPythonPackage, fetchPypi, pythonOlder
+, attrs, click, toml, appdirs, aiohttp, aiohttp-cors
+, glibcLocales, typed-ast, pathspec, regex
+, setuptools_scm, pytest }:
 
 buildPythonPackage rec {
   pname = "black";
-  version = "20.8b1";
+  version = "19.10b0";
 
   disabled = pythonOlder "3.6";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1spv6sldp3mcxr740dh3ywp25lly9s8qlvs946fin44rl1x5a0hw";
+    sha256 = "0f8mr0yzj78q1dx7v6ggbgfir2wv0n5z2shfbbvfdq7910xbgvf2";
   };
 
   nativeBuildInputs = [ setuptools_scm ];
+  checkInputs =  [ pytest glibcLocales ];
 
   # Necessary for the tests to pass on Darwin with sandbox enabled.
   # Black starts a local server and needs to bind a local address.
   __darwinAllowLocalNetworking = true;
 
-  checkInputs =  [ pytestCheckHook ];
-
-  preCheck = ''
-    export PATH="$PATH:$out/bin"
+  # Don't know why these tests fails
+  # Disable test_expression_diff, because it fails on darwin
+  checkPhase = ''
+    LC_ALL="en_US.UTF-8" pytest \
+      --deselect tests/test_black.py::BlackTestCase::test_expression_diff \
+      --deselect tests/test_black.py::BlackTestCase::test_cache_multiple_files \
+      --deselect tests/test_black.py::BlackTestCase::test_failed_formatting_does_not_get_cached
   '';
 
-  disabledTests = [
-    # Don't know why these tests fails
-    "test_cache_multiple_files"
-    "test_failed_formatting_does_not_get_cached"
-    # requires network access
-    "test_gen_check_output"
-    "test_process_queue"
-  ] ++ lib.optionals stdenv.isDarwin [
-    # fails on darwin
-    "test_expression_diff"
-  ];
+  propagatedBuildInputs = [ attrs appdirs click toml aiohttp aiohttp-cors pathspec regex typed-ast ];
 
-  propagatedBuildInputs = [
-    aiohttp
-    aiohttp-cors
-    appdirs
-    attrs
-    click
-    mypy-extensions
-    pathspec
-    regex
-    toml
-    typed-ast
-    typing-extensions
-  ] ++ lib.optional (pythonOlder "3.7") dataclasses;
-
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "The uncompromising Python code formatter";
     homepage    = "https://github.com/psf/black";
-    changelog   = "https://github.com/psf/black/blob/${version}/CHANGES.md";
     license     = licenses.mit;
     maintainers = with maintainers; [ sveitser ];
   };
+
 }

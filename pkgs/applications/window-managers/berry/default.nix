@@ -1,32 +1,18 @@
-{ stdenv
-, fetchFromGitHub
-, libX11
-, libXext
-, libXft
-, libXinerama
-, fontconfig
-, freetype
-}:
+{ stdenv, fetchFromGitHub
+, libX11, libXft, libXinerama, fontconfig, freetype }:
 
 stdenv.mkDerivation rec {
   pname = "berry";
-  version = "0.1.7";
+  version = "0.1.5";
 
   src = fetchFromGitHub {
     owner = "JLErvin";
-    repo = pname;
+    repo = "berry";
     rev = version;
-    sha256 = "sha256-2kFVOE5l1KQvDb5KDL7y0p4M7awJLrxJF871cyc0YZ8=";
+    sha256 = "1wxbjzpwqb9x7vd7kb095fiqj271rki980dnwcxjxpqlmmrmjzyl";
   };
 
-  buildInputs =[
-    libX11
-    libXext
-    libXft
-    libXinerama
-    fontconfig
-    freetype
-  ];
+  buildInputs = [ libX11 libXft libXinerama fontconfig freetype ];
 
   preBuild = ''
     makeFlagsArray+=( PREFIX="${placeholder "out"}"

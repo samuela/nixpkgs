@@ -5,11 +5,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-mahjongg";
-  version = "3.38.3";
+  version = "3.38.2";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-mahjongg/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "144ia3zn9rhwa1xbdkvsz6m0dsysl6mxvqw9bnrlh845hmyy9cfj";
+    sha256 = "1wslwhr782pdzrvca7wa6smvyid5yr42kjlra6qd9ji5qss0i1wj";
   };
 
   nativeBuildInputs = [
@@ -22,6 +22,10 @@ stdenv.mkDerivation rec {
     glib
     gtk3
     librsvg
+  ];
+
+  mesonFlags = [
+    "-Dcompile-schemas=enabled"
   ];
 
   passthru = {

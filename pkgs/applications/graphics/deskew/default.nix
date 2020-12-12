@@ -1,13 +1,13 @@
-{ stdenv, fetchFromGitHub, libtiff, fpc }:
+{ stdenv, fetchFromBitbucket, libtiff, fpc }:
 
 stdenv.mkDerivation rec {
 
   pname = "deskew";
   version = "1.25";
 
-  src = fetchFromGitHub {
+  src = fetchFromBitbucket {
     owner = "galfar";
-    repo = pname;
+    repo = "app-deskew";
     rev = "v${version}";
     sha256 = "0zjjj66qhgqkmfxl3q7p78dv4xl4ci918pgl4d5259pqdj1bfgc8";
   };

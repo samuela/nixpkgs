@@ -4,7 +4,7 @@
 , bash
 , bashInteractive
 , systemd
-, util-linux
+, utillinux
 , boto
 , setuptools
 , distro
@@ -31,14 +31,14 @@ buildPythonApplication rec {
       substituteInPlace "$file" \
         --replace /bin/systemctl "/run/current-system/systemd/bin/systemctl" \
         --replace /bin/bash "${bashInteractive}/bin/bash" \
-        --replace /sbin/hwclock "${util-linux}/bin/hwclock"
+        --replace /sbin/hwclock "${utillinux}/bin/hwclock"
       # SELinux tool ???  /sbin/restorecon
     done
 
     substituteInPlace google_config/udev/64-gce-disk-removal.rules \
       --replace /bin/sh "${bash}/bin/sh" \
-      --replace /bin/umount "${util-linux}/bin/umount" \
-      --replace /usr/bin/logger "${util-linux}/bin/logger"
+      --replace /bin/umount "${utillinux}/bin/umount" \
+      --replace /usr/bin/logger "${utillinux}/bin/logger"
   '';
 
   postInstall = ''

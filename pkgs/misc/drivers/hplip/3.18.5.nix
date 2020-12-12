@@ -3,7 +3,7 @@
 , cups, zlib, libjpeg, libusb1, python2Packages, sane-backends
 , dbus, file, ghostscript, usbutils
 , net-snmp, openssl, perl, nettools
-, bash, coreutils, util-linux
+, bash, coreutils, utillinux
 , withQt5 ? true
 , withPlugin ? false
 , withStaticPPDInstall ? false
@@ -212,7 +212,7 @@ python2Packages.buildPythonApplication {
     substituteInPlace $out/etc/udev/rules.d/56-hpmud.rules \
       --replace {,${bash}}/bin/sh \
       --replace /usr/bin/nohup "" \
-      --replace {,${util-linux}/bin/}logger \
+      --replace {,${utillinux}/bin/}logger \
       --replace {/usr,$out}/bin
   '';
 

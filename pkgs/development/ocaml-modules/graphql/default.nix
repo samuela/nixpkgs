@@ -1,13 +1,13 @@
-{ buildDunePackage, alcotest, graphql_parser, rresult, yojson }:
+{ lib, buildDunePackage, alcotest, graphql_parser, rresult, yojson }:
 
 buildDunePackage rec {
   pname = "graphql";
 
-  inherit (graphql_parser) version useDune2 src;
+  inherit (graphql_parser) version src;
 
   propagatedBuildInputs = [ graphql_parser rresult yojson ];
 
-  checkInputs = [ alcotest ];
+  checkInputs = lib.optional doCheck alcotest;
 
   doCheck = true;
 

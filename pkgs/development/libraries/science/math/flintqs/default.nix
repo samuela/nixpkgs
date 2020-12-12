@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/sagemath/FlintQS";
     description = "Highly optimized multi-polynomial quadratic sieve for integer factorization";
     license = with licenses; [ gpl2 ];
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms = platforms.all;
   };
 }

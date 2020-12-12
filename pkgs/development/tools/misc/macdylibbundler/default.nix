@@ -1,4 +1,4 @@
-{ stdenv, makeWrapper, fetchFromGitHub, cctools }:
+{ stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation {
   pname = "macdylibbundler";
@@ -11,14 +11,7 @@ stdenv.mkDerivation {
     sha256 = "149p3dcnap4hs3nhq5rfvr3m70rrb5hbr5xkj1h0gsfp0d7gvxnj";
   };
 
-  buildInputs = [ makeWrapper ];
-
   makeFlags = [ "PREFIX=$(out)" ];
-
-  postInstall = ''
-    wrapProgram $out/bin/dylibbundler \
-      --prefix PATH ":" "${cctools}/bin"
-  '';
 
   meta = with stdenv.lib; {
     description = "Utility to ease bundling libraries into executables for OSX";

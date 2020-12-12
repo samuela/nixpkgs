@@ -4,11 +4,11 @@
 
 buildPythonPackage rec {
   pname = "blessed";
-  version = "1.17.12";
+  version = "1.17.11";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "580429e7e0c6f6a42ea81b0ae5a4993b6205c6ccbb635d034b4277af8175753e";
+    sha256 = "7d4914079a6e8e14fbe080dcaf14dee596a088057cdc598561080e3266123b48";
   };
 
   checkInputs = [ pytest mock glibcLocales ];

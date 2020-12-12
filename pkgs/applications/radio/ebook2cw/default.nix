@@ -1,18 +1,17 @@
-{ stdenv, fetchgit, lame, libvorbis, gettext }:
+{ stdenv, fetchsvn, lame, libvorbis }:
 
 stdenv.mkDerivation rec {
   pname = "ebook2cw";
-  version = "0.8.3";
+  version = "0.8.2";
 
-  src = fetchgit {
-    url = "https://git.fkurz.net/dj1yfk/ebook2cw.git";
-    rev = "${pname}-${version}";
-    sha256 = "0jqmnjblv3wzr0ppqzndzd8wg02nlkvzg1fqw14vyyp76sdjsh46";
+  src = fetchsvn {
+    url = "svn://svn.fkurz.net/ebook2cw/tags/${pname}-${version}";
+    sha256 = "1mvp3nz3k76v757792n9b7fcm5jm3jcwarl1k7cila9fi0c2rsiw";
   };
 
-  buildInputs = [ lame libvorbis gettext ];
+  buildInputs = [ lame libvorbis ];
 
-  patches = [ ./Makefile.patch ];
+  patches = [ ./configfile.patch ];
 
   makeFlags = [ "DESTDIR=$(out)" ];
 

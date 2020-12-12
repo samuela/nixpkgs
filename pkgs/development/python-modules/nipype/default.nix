@@ -1,19 +1,23 @@
 { stdenv
 , buildPythonPackage
 , fetchPypi
-, isPy27
+, isPy3k
+, isPy38
 # python dependencies
 , click
+, configparser ? null
 , dateutil
 , etelemetry
 , filelock
 , funcsigs
 , future
+, futures
 , mock
 , networkx
 , nibabel
 , numpy
 , packaging
+, pathlib2
 , prov
 , psutil
 , pybids
@@ -21,7 +25,6 @@
 , pytest
 , pytest_xdist
 , pytest-forked
-, rdflib
 , scipy
 , simplejson
 , traits
@@ -34,11 +37,9 @@
 , bash
 , glibcLocales
 , callPackage
-# causes Python packaging conflict with any package requiring rdflib,
-# so use the unpatched rdflib by default (disables Nipype provenance tracking);
-# see https://github.com/nipy/nipype/issues/2888:
-, useNeurdflib ? false
 }:
+
+assert !isPy3k -> configparser != null;
 
 let
 
@@ -49,12 +50,11 @@ in
 
 buildPythonPackage rec {
   pname = "nipype";
-  version = "1.6.0";
-  disabled = isPy27;
+  version = "1.5.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "bc56ce63f74c9a9a23c6edeaf77631377e8ad2bea928c898cc89527a47f101cf";
+    sha256 = "3d6aa37186e1d2f90917dfdf1faf5aeff469912554990e5d182ffe8435f250d5";
   };
 
   postPatch = ''
@@ -74,6 +74,7 @@ buildPythonPackage rec {
     funcsigs
     future
     networkx
+    neurdflib
     nibabel
     numpy
     packaging
@@ -84,7 +85,11 @@ buildPythonPackage rec {
     simplejson
     traits
     xvfbwrapper
-  ] ++ [ (if useNeurdflib then neurdflib else rdflib) ];
+  ] ++ stdenv.lib.optionals (!isPy3k) [
+    configparser
+    futures
+    pathlib2 # darwin doesn't receive this transitively, but it is in install_requires
+  ];
 
   checkInputs = [
     pybids

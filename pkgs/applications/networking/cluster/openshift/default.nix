@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, buildGoPackage, which, go-bindata, rsync, util-linux
+{ stdenv, lib, fetchFromGitHub, buildGoPackage, which, go-bindata, rsync, utillinux
 , coreutils, kerberos, ncurses, clang, installShellFiles
 , components ? [
   "cmd/oc"

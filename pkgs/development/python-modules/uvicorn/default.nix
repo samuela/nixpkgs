@@ -1,4 +1,4 @@
-{ stdenv
+{ lib
 , buildPythonPackage
 , fetchFromGitHub
 , click
@@ -40,16 +40,12 @@ buildPythonPackage rec {
   '';
 
   checkInputs = [ pytest requests ];
-
-  doCheck = !stdenv.isDarwin;
-
   # watchgod required the watchgod package, which isn't available in nixpkgs
   checkPhase = ''
-    pytest --ignore=tests/supervisors/test_watchgodreload.py \
-      -k 'not test_supported_upgrade_request and not test_invalid_upgrade[WSProtocol]'
+    pytest --ignore=tests/supervisors/test_watchgodreload.py
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://www.uvicorn.org/";
     description = "The lightning-fast ASGI server";
     license = licenses.bsd3;

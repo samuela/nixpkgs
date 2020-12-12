@@ -1,30 +1,20 @@
-{ stdenv
-, fetchurl
-, pkg-config
-, intltool
-, itstool
-, gtk3
-, libxml2
-}:
+{stdenv, fetchurl, gtk3, pkgconfig, intltool } :
 
 stdenv.mkDerivation rec {
-  pname = "pioneers";
-  version = "15.6";
-
+  name = "pioneers-15.4";
   src = fetchurl {
-    url = "mirror://sourceforge/pio/${pname}-${version}.tar.gz";
-    sha256 = "07b3xdd81n8ybsb4fzc5lx0813y9crzp1hj69khncf4faj48sdcs";
+    url = "mirror://sourceforge/pio/${name}.tar.gz";
+    sha256 = "1p1d18hrfmqcnghip3shkzcs5qkz6j99jvkdkqfi7pqdvjc323cs";
   };
 
-  nativeBuildInputs = [ pkg-config intltool itstool ];
+  nativeBuildInputs = [ pkgconfig intltool ];
+  buildInputs = [ gtk3 ];
 
-  buildInputs = [ gtk3 libxml2 ];
-
-  meta = with stdenv.lib; {
+  meta = {
+    homepage = "http://pio.sourceforge.net/";
+    license = stdenv.lib.licenses.gpl2Plus;
     description = "Addicting game based on The Settlers of Catan";
-    homepage = "http://pio.sourceforge.net/";  # https does not work
-    license = licenses.gpl2Plus;
-    maintainers = with maintainers; [ viric ];
-    platforms = platforms.linux;
+    maintainers = with stdenv.lib.maintainers; [viric];
+    platforms = with stdenv.lib.platforms; linux;
   };
 }

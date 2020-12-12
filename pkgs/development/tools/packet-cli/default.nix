@@ -23,6 +23,6 @@ buildGoModule rec {
     description = "Official Packet CLI";
     homepage = "https://github.com/packethost/packet-cli";
     license = licenses.mit;
-    maintainers = with maintainers; [ Br1ght0ne ];
+    maintainers = with maintainers; [ filalex77 ];
   };
 }

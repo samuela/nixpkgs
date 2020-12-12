@@ -11,18 +11,17 @@
 , pango
 , gdk-pixbuf
 , gobject-introspection
-, xvfb_run
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "gtg";
-  version = "unstable-2020-10-22";
+  version = "unstable-2020-09-16";
 
   src = fetchFromGitHub {
     owner = "getting-things-gnome";
     repo = "gtg";
-    rev = "144814c16723fa9d00e17e047df5d79ab443fc5f";
-    sha256 = "1lpanfbj8y8b6cqp92lgbvfs8irrc5bsdffzcjcycazv19qm7z2n";
+    rev = "1be991c6d7f7b2e4b8ac16f82e8a07f9dce4272f";
+    sha256 = "1f5acpjwnp08c78dds7xm22qjzcfnx2qs121yvm3rswkh27s4n23";
   };
 
 
@@ -46,6 +45,7 @@ python3Packages.buildPythonApplication rec {
     pycairo
     pygobject3
     lxml
+    dbus-python
     gst-python
     liblarch
   ];
@@ -53,13 +53,12 @@ python3Packages.buildPythonApplication rec {
   checkInputs = with python3Packages; [
     nose
     mock
-    xvfb_run
   ];
 
   format = "other";
   strictDeps = false; # gobject-introspection does not run with strictDeps (https://github.com/NixOS/nixpkgs/issues/56943)
 
-  checkPhase = "xvfb-run python3 ../run-tests";
+  checkPhase = "python3 ../run-tests";
 
   meta = with stdenv.lib; {
     description = " A personal tasks and TODO-list items organizer";

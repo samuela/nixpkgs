@@ -1,5 +1,5 @@
 { go, govers, lib, fetchgit, fetchhg, fetchbzr, rsync
-, fetchFromGitHub, stdenv }:
+, removeReferencesTo, fetchFromGitHub, stdenv }:
 
 { buildInputs ? []
 , nativeBuildInputs ? []
@@ -44,6 +44,10 @@
 with builtins;
 
 let
+  removeReferences = [ ] ++ lib.optional (!allowGoReference) go;
+
+  removeExpr = refs: ''remove-references-to ${lib.concatMapStrings (ref: " -t ${ref}") refs}'';
+
   dep2src = goDep:
     {
       inherit (goDep) goPackagePath;
@@ -74,7 +78,7 @@ let
   package = stdenv.mkDerivation (
     (builtins.removeAttrs args [ "goPackageAliases" "disabled" "extraSrcs"]) // {
 
-    nativeBuildInputs = [ go ]
+    nativeBuildInputs = [ removeReferencesTo go ]
       ++ (lib.optional (!dontRenameImports) govers) ++ nativeBuildInputs;
     buildInputs = buildInputs;
 
@@ -84,7 +88,6 @@ let
     GOHOSTOS = go.GOHOSTOS or null;
 
     GO111MODULE = "off";
-    GOFLAGS = lib.optionals (!allowGoReference) [ "-trimpath" ];
 
     GOARM = toString (stdenv.lib.intersectLists [(stdenv.hostPlatform.parsed.cpu.version or "")] ["5" "6" "7"]);
 
@@ -220,6 +223,10 @@ let
       [ -e "$dir" ] && cp -r $dir $out
 
       runHook postInstall
+    '';
+
+    preFixup = preFixup + ''
+      find $out/{bin,libexec,lib} -type f 2>/dev/null | xargs -r ${removeExpr removeReferences} || true
     '';
 
     strictDeps = true;

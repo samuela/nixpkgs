@@ -5,21 +5,18 @@
 , matplotlib
 , nose
 , pillow
-, pytestCheckHook
 }:
 
 buildPythonPackage rec {
   pname = "pytest-mpl";
-  version = "0.12";
+  version = "0.11";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "4a223909e5148c99bd18891848c7871457729322c752c9c470bd8dd6bdf9f940";
+    sha256 = "26c5a47a8fdbc04652f18b65c587da642c6cc0354680ee44b16c161d9800a2ce";
   };
 
-  buildInputs = [
-    pytest
-  ];
+  buildInputs = [ pytest ];
 
   propagatedBuildInputs = [
     matplotlib
@@ -28,20 +25,16 @@ buildPythonPackage rec {
   ];
 
   checkInputs = [
-    pytestCheckHook
+    pytest
   ];
 
-  # Broken since b6e98f18950c2b5dbdc725c1181df2ad1be19fee
-  disabledTests = [
-    "test_hash_fails"
-    "test_hash_missing"
-  ];
-
-  preCheck = ''
+  checkPhase = ''
     export HOME=$(mktemp -d)
     mkdir -p $HOME/.config/matplotlib
     echo "backend: ps" > $HOME/.config/matplotlib/matplotlibrc
     ln -s $HOME/.config/matplotlib $HOME/.matplotlib
+
+    pytest
   '';
 
   meta = with stdenv.lib; {

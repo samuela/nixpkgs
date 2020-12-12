@@ -4,7 +4,6 @@ buildDunePackage rec {
   minimumOCamlVersion = "4.03";
   pname = "eqaf";
   version = "0.7";
-  useDune2 = true;
 
   src = fetchurl {
     url = "https://github.com/mirage/eqaf/releases/download/v${version}/eqaf-v${version}.tbz";

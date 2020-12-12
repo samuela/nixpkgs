@@ -36,7 +36,6 @@ pythonPackages.buildPythonPackage rec {
     description = "Torrent client";
     license = licenses.gpl3Plus;
     maintainers = with maintainers; [ domenkozar ebzzry ];
-    broken = stdenv.isDarwin;
     platforms = platforms.all;
   };
 }

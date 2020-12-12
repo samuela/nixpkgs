@@ -1,17 +1,15 @@
 { buildPythonPackage, fetchPypi, lib, pytorch, contextlib2
-, graphviz, networkx, six, opt-einsum, tqdm, pyro-api }:
-
+, graphviz, networkx, six, opt-einsum, tqdm }:
 buildPythonPackage rec {
-  version = "1.5.1";
+  version = "1.4.0";
   pname = "pyro-ppl";
 
   src = fetchPypi {
     inherit version pname;
-    sha256 = "00mprgf8pf9jq3kanxjldj00cg3nbfkb5yg0mdfbdi0b1rx3vnsa";
+    sha256 = "e863321bee141fb8d20d621aedc5925c472e06c08988447490115f54a31487ad";
   };
 
   propagatedBuildInputs = [
-    pyro-api
     pytorch
     contextlib2
     # TODO(tom): graphviz pulls in a lot of dependencies - make
@@ -24,19 +22,18 @@ buildPythonPackage rec {
   ];
 
   # pyro not shipping tests do simple smoke test instead
-  pythonImportsCheck = [
-    "pyro"
-    "pyro.distributions"
-    "pyro.infer"
-    "pyro.optim"
-  ];
-
-  doCheck = false;
+  checkPhase = ''
+    python -c "import pyro"
+    python -c "import pyro.distributions"
+    python -c "import pyro.infer"
+    python -c "import pyro.optim"
+  '';
 
   meta = {
     description = "A Python library for probabilistic modeling and inference";
     homepage = "http://pyro.ai";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ teh georgewhewell ];
+    maintainers = with lib.maintainers; [ teh ];
+    broken = true;
   };
 }

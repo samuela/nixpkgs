@@ -72,15 +72,13 @@ stdenv.mkDerivation rec {
   makeFlags =
     let
       arch = head (splitString "-" stdenv.system);
-      march = {
-        x86_64 = stdenv.hostPlatform.platform.gcc.arch or "x86-64";
-        i686 = "pentium4";
-        aarch64 = "armv8-a";
-      }.${arch}
+      march = { x86_64 = stdenv.hostPlatform.platform.gcc.arch or "x86-64"; i686 = "pentium4"; }.${arch}
               or (throw "unsupported architecture: ${arch}");
       # Julia requires Pentium 4 (SSE2) or better
-      cpuTarget = { x86_64 = "x86-64"; i686 = "pentium4"; aarch64 = "generic"; }.${arch}
+      cpuTarget = { x86_64 = "x86-64"; i686 = "pentium4"; }.${arch}
                   or (throw "unsupported architecture: ${arch}");
+      # Julia applies a lot of patches to its dependencies, so for now do not use the system LLVM
+      # https://github.com/JuliaLang/julia/tree/master/deps/patches
     in [
       "ARCH=${arch}"
       "MARCH=${march}"
@@ -121,8 +119,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  # Other versions of Julia pass the tests, but we are not sure why these fail.
-  doCheck = false;
+  doCheck = !stdenv.isDarwin;
   checkTarget = "testall";
   # Julia's tests require read/write access to $HOME
   preCheck = ''

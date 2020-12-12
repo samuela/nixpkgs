@@ -1,28 +1,24 @@
-{ stdenv, buildPythonPackage, fetchPypi, dnspython, pycountry, nose, setuptools_scm, six, isPy27 }:
+{ stdenv, buildPythonPackage, fetchPypi, dnspython, pycountry, nose }:
 
 buildPythonPackage rec {
   pname = "FormEncode";
-  version = "2.0.0";
-
-  disabled = isPy27;
+  version = "1.3.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "049pm276140h30xgzwylhpii24xcln1qfdlfmbj69sqpfhlr5szj";
+    sha256 = "1xm77h2mds2prlaz0z4nzkx13g61rx5c2v3vpgjq9d5ij8bzb8md";
   };
 
-  postPatch = ''
-    sed -i 's/setuptools_scm_git_archive//' setup.py
-    sed -i 's/use_scm_version=.*,/version="${version}",/' setup.py
+  buildInputs = [ dnspython pycountry nose ];
+
+  patchPhase = ''
+    # dnspython3 has been superseded, see its PyPI page
+    substituteInPlace setup.py --replace dnspython3 dnspython
   '';
 
-  nativeBuildInputs = [ setuptools_scm ];
-  propagatedBuildInputs = [ six ];
-
-  checkInputs = [ dnspython pycountry nose ];
-
   preCheck = ''
-    # requires dns resolving
+    # two tests require dns resolving
+    sed -i 's/test_cyrillic_email/noop/' formencode/tests/test_email.py
     sed -i 's/test_unicode_ascii_subgroup/noop/' formencode/tests/test_email.py
   '';
 

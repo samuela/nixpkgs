@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   };
 
   preConfigure = ''
-    configureFlags="--with-bash-completion-dir=$out/share/bash-completion/completions"
+    configureFlags="--with-bash-completion-dir=$out/etc/bash_completion.d"
   '';
 
   patchPhase = ''

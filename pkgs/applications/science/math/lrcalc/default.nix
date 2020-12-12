@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     description = "Littlewood-Richardson calculator";
     homepage = "http://math.rutgers.edu/~asbuch/lrcalc/";
     license = licenses.gpl2Plus;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     platforms = platforms.unix;
   };
 }

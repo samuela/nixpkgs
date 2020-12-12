@@ -21,7 +21,6 @@ mkDerivation rec {
   ];
 
   cmakeFlags = [
-    "-DMUSESCORE_BUILD_CONFIG=release"
     "-DUSE_SYSTEM_FREETYPE=ON"
   ];
 

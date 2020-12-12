@@ -1,8 +1,8 @@
 diff --git a/src/common/ConfigReader.cpp b/src/common/ConfigReader.cpp
-index 041e5ed..efb1324 100644
+index 4b5983c..911c511 100644
 --- a/src/common/ConfigReader.cpp
 +++ b/src/common/ConfigReader.cpp
-@@ -148,17 +148,14 @@ namespace SDDM {
+@@ -147,16 +147,13 @@ namespace SDDM {
          // * m_path (classic fallback /etc/sddm.conf)
  
          QStringList files;
@@ -13,20 +13,18 @@ index 041e5ed..efb1324 100644
              QDir dir(m_sysConfigDir);
              if (dir.exists()) {
 -                latestModificationTime = std::max(latestModificationTime,  QFileInfo(m_sysConfigDir).lastModified());
-                 const auto dirFiles = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
-                 for (const QFileInfo &file : dirFiles) {
+                 foreach (const QFileInfo &file, dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware)) {
                      files << (file.absoluteFilePath());
 -                    latestModificationTime = std::max(latestModificationTime, file.lastModified());
                  }
              }
          }
-@@ -166,22 +163,15 @@ namespace SDDM {
+@@ -164,21 +161,14 @@ namespace SDDM {
              //include the configDir in modification time so we also reload on any files added/removed
              QDir dir(m_configDir);
              if (dir.exists()) {
 -                latestModificationTime = std::max(latestModificationTime,  QFileInfo(m_configDir).lastModified());
-                 const auto dirFiles = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
-                 for (const QFileInfo &file : dirFiles) {
+                 foreach (const QFileInfo &file, dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware)) {
                      files << (file.absoluteFilePath());
 -                    latestModificationTime = std::max(latestModificationTime, file.lastModified());
                  }
@@ -40,6 +38,6 @@ index 041e5ed..efb1324 100644
 -        }
 -        m_fileModificationTime = latestModificationTime;
 -
-         for (const QString &filepath : qAsConst(files)) {
+         foreach (const QString &filepath, files) {
              loadInternal(filepath);
          }

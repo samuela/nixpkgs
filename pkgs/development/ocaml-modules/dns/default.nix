@@ -6,7 +6,6 @@ buildDunePackage rec {
   pname = "dns";
   version = "4.6.2";
 
-  useDune2 = true;
   minimumOCamlVersion = "4.07";
 
   src = fetchurl {

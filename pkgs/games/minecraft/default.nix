@@ -1,7 +1,5 @@
 { stdenv
 , fetchurl
-, nixosTests
-, copyDesktopItems
 , makeDesktopItem
 , makeWrapper
 , wrapGAppsHook
@@ -88,11 +86,11 @@ in
 stdenv.mkDerivation rec {
   pname = "minecraft-launcher";
 
-  version = "2.2.909";
+  version = "2.1.17785";
 
   src = fetchurl {
     url = "https://launcher.mojang.com/download/linux/x86_64/minecraft-launcher_${version}.tar.gz";
-    sha256 = "15x2imr8c4m2bjfs9y1l34fpvixxdf09gqls4bqb4rdvj1vhdrh2";
+    sha256 = "1r70myf6hqcnkd6v2m2r8cpj060vsjdyp4rfw6d93vwsyqi90jkc";
   };
 
   icon = fetchurl {
@@ -100,7 +98,7 @@ stdenv.mkDerivation rec {
     sha256 = "0w8z21ml79kblv20wh5lz037g130pxkgs8ll9s3bi94zn2pbrhim";
   };
 
-  nativeBuildInputs = [ makeWrapper wrapGAppsHook copyDesktopItems ];
+  nativeBuildInputs = [ makeWrapper wrapGAppsHook ];
   buildInputs = [ gobject-introspection ];
 
   sourceRoot = ".";
@@ -110,14 +108,11 @@ stdenv.mkDerivation rec {
   dontBuild = true;
 
   installPhase = ''
-    runHook preInstall
-
     mkdir -p $out/opt
     mv minecraft-launcher $out/opt
 
+    ${desktopItem.buildCommand}
     install -D $icon $out/share/icons/hicolor/symbolic/apps/minecraft-launcher.svg
-
-    runHook postInstall
   '';
 
   preFixup = ''
@@ -138,12 +133,10 @@ stdenv.mkDerivation rec {
     makeWrapper $out/opt/minecraft-launcher/minecraft-launcher $out/bin/minecraft-launcher \
       --prefix LD_LIBRARY_PATH : ${envLibPath} \
       --prefix PATH : ${stdenv.lib.makeBinPath [ jre ]} \
-      --set JAVA_HOME ${stdenv.lib.getBin jre} \
+      --set JAVA_HOME ${stdenv.lib.makeBinPath [ jre ]} \
       --run "cd /tmp" \
       "''${gappsWrapperArgs[@]}"
   '';
-
-  desktopItems = [ desktopItem ];
 
   meta = with stdenv.lib; {
     description = "Official launcher for Minecraft, a sandbox-building game";
@@ -153,8 +146,5 @@ stdenv.mkDerivation rec {
     platforms = [ "x86_64-linux" ];
   };
 
-  passthru = {
-    tests = { inherit (nixosTests) minecraft; };
-    updateScript = ./update.sh;
-  };
+  passthru.updateScript = ./update.sh;
 }

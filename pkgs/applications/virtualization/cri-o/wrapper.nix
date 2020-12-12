@@ -7,7 +7,7 @@
 , runc # Default container runtime
 , crun # Container runtime (default with cgroups v2 for podman/buildah)
 , conmon # Container runtime monitor
-, util-linux # nsenter
+, utillinux # nsenter
 , cni-plugins # not added to path
 , iptables
 }:
@@ -19,7 +19,7 @@ let
     runc
     crun
     conmon
-    util-linux
+    utillinux
     iptables
   ] ++ extraPackages);
 

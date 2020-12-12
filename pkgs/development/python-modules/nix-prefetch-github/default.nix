@@ -1,38 +1,42 @@
-{ fetchFromGitHub
+{ fetchPypi
 , lib
 , buildPythonPackage
+, pythonOlder
 , attrs
 , click
 , effect
+, jinja2
 , git
 , pytestCheckHook
+, pytest-black
 , pytestcov
-, pythonOlder
+, pytest-isort
 }:
 
 buildPythonPackage rec {
   pname = "nix-prefetch-github";
-  version = "4.0.3";
+  version = "4.0.1";
 
-  disabled = pythonOlder "3.7";
-
-  src = fetchFromGitHub {
-    owner = "seppeljordan";
-    repo = "nix-prefetch-github";
-    rev = "v${version}";
-    sha256 = "CLcmwobPrL6NiI/nw+/Dwho/r15owV16Jmt5OcfFqvo=";
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "asfRohjOgYxMV/wprKvxUD328GVJQkAYnuAkE09kKgs=";
   };
 
   propagatedBuildInputs = [
     attrs
     click
     effect
+    jinja2
   ];
 
-  checkInputs = [ pytestCheckHook pytestcov git ];
+  checkInputs = [ pytestCheckHook pytest-black pytestcov pytest-isort git ];
+  checkPhase = ''
+    pytest -m 'not network'
+  '';
 
+  # latest version of isort will cause tests to fail
   # ignore tests which are impure
-  disabledTests = [ "network" "requires_nix_build" ];
+  disabledTests = [ "isort" "life" "outputs" "fetch_submodules" ];
 
   meta = with lib; {
     description = "Prefetch sources from github";

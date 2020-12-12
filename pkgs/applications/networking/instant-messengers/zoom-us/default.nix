@@ -6,9 +6,8 @@
 , qtquickcontrols2, qtscript, qtsvg , qttools, qtwayland, qtwebchannel
 , qtwebengine
 # Runtime
-, coreutils, faac, pciutils, procps, util-linux
+, coreutils, faac, pciutils, procps, utillinux
 , pulseaudioSupport ? true, libpulseaudio ? null
-, alsaSupport ? stdenv.isLinux, alsaLib ? null
 }:
 
 assert pulseaudioSupport -> libpulseaudio != null;
@@ -46,8 +45,7 @@ in mkDerivation {
     qtscript qtwebchannel qtwebengine qtimageformats qtsvg qttools qtwayland
   ];
 
-  runtimeDependencies = optional pulseaudioSupport libpulseaudio
-    ++ optional alsaSupport alsaLib;
+  runtimeDependencies = optional pulseaudioSupport libpulseaudio;
 
   installPhase =
     let
@@ -105,7 +103,7 @@ in mkDerivation {
   dontWrapQtApps = true;
 
   qtWrapperArgs = [
-    ''--prefix PATH : ${makeBinPath [ coreutils glib.dev pciutils procps qttools.dev util-linux ]}''
+    ''--prefix PATH : ${makeBinPath [ coreutils glib.dev pciutils procps qttools.dev utillinux ]}''
     # --run "cd ${placeholder "out"}/share/zoom-us"
     # ^^ unfortunately, breaks run arg into multiple array elements, due to
     # some bad array propagation. We'll do that in bash below

@@ -4,13 +4,13 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   pname = "nnn";
-  version = "3.5";
+  version = "3.4";
 
   src = fetchFromGitHub {
     owner = "jarun";
     repo = pname;
     rev = "v${version}";
-    sha256 = "1fa7cmwrzn6kx87kms8i98p9azdlwyh2gnif29l340syl9hkr5qy";
+    sha256 = "0lyrpyhzzs2bdgx3ifq1c5dq3s2v30xdiaq0j8zjc64s6bghfxnd";
   };
 
   configFile = optionalString (conf != null) (builtins.toFile "nnn.h" conf);
@@ -33,6 +33,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/jarun/nnn";
     license = licenses.bsd2;
     platforms = platforms.all;
-    maintainers = with maintainers; [ jfrankenau Br1ght0ne ];
+    maintainers = with maintainers; [ jfrankenau filalex77 ];
   };
 }

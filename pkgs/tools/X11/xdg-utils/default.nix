@@ -36,15 +36,17 @@ stdenv.mkDerivation rec {
     cp ${mimisrc}/xdg-open $out/bin/xdg-open
   '' + ''
     sed  '2s#.#\
+    cut()   { ${coreutils}/bin/cut  "$@"; }\
     sed()   { ${gnused}/bin/sed     "$@"; }\
     grep()  { ${gnugrep}/bin/grep   "$@"; }\
     egrep() { ${gnugrep}/bin/egrep  "$@"; }\
     file()  { ${file}/bin/file      "$@"; }\
     awk()   { ${gawk}/bin/awk       "$@"; }\
+    sort()  { ${coreutils}/bin/sort "$@"; }\
     xset()  { ${xset}/bin/xset      "$@"; }\
     perl()  { PERL5LIB=${perlPath} ${perlPackages.perl}/bin/perl "$@"; }\
     mimetype() { ${perlPackages.FileMimeInfo}/bin/mimetype "$@"; }\
-    PATH=$PATH:'$out'/bin:${coreutils}/bin\
+    PATH=$PATH:'"$out"'/bin\
     &#' -i "$out"/bin/*
 
     substituteInPlace $out/bin/xdg-open \
@@ -56,7 +58,7 @@ stdenv.mkDerivation rec {
     substituteInPlace $out/bin/xdg-email \
       --replace "/bin/echo" "${coreutils}/bin/echo"
 
-    sed 's|\bwhich\b|type -P|g' -i "$out"/bin/*
+    sed 's# which # type -P #g' -i "$out"/bin/*
   '';
 
   meta = with stdenv.lib; {

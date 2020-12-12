@@ -1,14 +1,14 @@
-{ stdenv, fetchFromGitHub, util-linux }:
+{ stdenv, fetchFromGitHub, utillinux }:
 
 stdenv.mkDerivation rec {
   pname = "mcelog";
-  version = "173";
+  version = "169";
 
   src = fetchFromGitHub {
     owner  = "andikleen";
     repo   = "mcelog";
     rev    = "v${version}";
-    sha256 = "1ili11kqacn6jkjpk11vhycgygdl92mymgb1sx22lcwq2x0d248m";
+    sha256 = "0ghkwfaky026qwj6hmcvz2w2hm8qqj3ysbkxxi603vslmwj56chv";
   };
 
   postPatch = ''
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     substituteInPlace Makefile --replace '"unknown"' '"${version}"'
 
     for i in triggers/*; do
-      substituteInPlace $i --replace 'logger' '${util-linux}/bin/logger'
+      substituteInPlace $i --replace 'logger' '${utillinux}/bin/logger'
     done
   '';
 

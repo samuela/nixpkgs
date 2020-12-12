@@ -1,17 +1,18 @@
-{ stdenv, fetchFromGitHub, python3Packages }:
+{ stdenv, fetchFromGitHub, python2Packages }:
 
 let
   bName = "check_esxi_hardware";
+  pName = stdenv.lib.replaceStrings [ "_" ] [ "-" ] bName;
 
-in python3Packages.buildPythonApplication rec {
-  pname = stdenv.lib.replaceStrings [ "_" ] [ "-" ] bName;
-  version = "20200710";
+in python2Packages.buildPythonApplication rec {
+  name = "${pName}-${version}";
+  version = "20181001";
 
   src = fetchFromGitHub {
     owner  = "Napsty";
     repo   = bName;
     rev    = version;
-    sha256 = "EC6np/01S+5SA2H9z5psJ9Pq/YoEyGdHL9wHUKKsNas=";
+    sha256 = "0azfacxcnnxxfqzrhh29k8cnjyr88gz35bi6h8fq931fl3plv10l";
   };
 
   dontBuild = true;
@@ -20,13 +21,13 @@ in python3Packages.buildPythonApplication rec {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 ${bName}.py $out/bin/${bName}
-    install -Dm644 -t $out/share/doc/${pname} README.md
+    install -Dm755 -t $out/bin                ${bName}.py
+    install -Dm644 -t $out/share/doc/${pName} README.md
 
     runHook postInstall
   '';
 
-  propagatedBuildInputs = with python3Packages; [ pywbem requests setuptools ];
+  propagatedBuildInputs = with python2Packages; [ pywbem ];
 
   meta = with stdenv.lib; {
     homepage = "https://www.claudiokuenzler.com/nagios-plugins/";

@@ -1,6 +1,5 @@
 { stdenv
 , fetchFromGitHub
-, unstableGitUpdater
 , makeWrapper
 , curl
 , ncurses
@@ -36,8 +35,6 @@ stdenv.mkDerivation {
       --prefix PATH : "${stdenv.lib.makeBinPath [ curl rlwrap ncurses xsel ]}"
   '';
 
-  passthru.updateScript = unstableGitUpdater { };
-
   meta = with stdenv.lib; {
     description = "CLI client for cheat.sh, a community driven cheat sheet";
     license = licenses.mit;
@@ -45,3 +42,4 @@ stdenv.mkDerivation {
     homepage = "https://github.com/chubin/cheat.sh";
   };
 }
+

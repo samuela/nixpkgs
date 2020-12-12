@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
   ];
 
   meta = with stdenv.lib; {
-    homepage = "https://muse-sequencer.github.io/";
+    homepage = "https://www.muse-sequencer.org/";
     description = "MIDI/Audio sequencer with recording and editing capabilities";
     longDescription = ''
       MusE is a MIDI/Audio sequencer with recording and editing capabilities

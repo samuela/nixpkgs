@@ -3,7 +3,6 @@
 , fetchFromGitHub
 , dill
 , filelock
-, multiprocess
 , numpy
 , pandas
 , pyarrow
@@ -14,19 +13,18 @@
 
 buildPythonPackage rec {
   pname = "datasets";
-  version = "1.1.2";
+  version = "1.0.1";
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = pname;
     rev = version;
-    hash = "sha256-upXZ2rOfmjnJbDo6RMGeHv/fe10RQAf/zwDWWKdt6SA=";
+    sha256 = "14f7847b8md5kf631zl8x2f53wy8zbzxypq4wdgzvwsjz4k7v4jn";
   };
 
   propagatedBuildInputs = [
     dill
     filelock
-    multiprocess
     numpy
     pandas
     pyarrow

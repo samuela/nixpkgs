@@ -1,6 +1,6 @@
 { stdenv
 , fetchFromGitLab
-, pkg-config
+, pkgconfig
 , vala
 , glib
 , meson
@@ -18,7 +18,7 @@
 , icu
 , glib-networking
 , libsoup
-, docbook-xsl-nons
+, docbook_xsl
 , docbook_xml_dtd_412
 , gnome3
 , gcr
@@ -30,7 +30,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-online-accounts";
-  version = "3.38.0";
+  version = "3.37.90";
 
   # https://gitlab.gnome.org/GNOME/gnome-online-accounts/issues/87
   src = fetchFromGitLab {
@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
     owner = "GNOME";
     repo = "gnome-online-accounts";
     rev = version;
-    sha256 = "sha256-NRGab/CMJxe31rr20+5wYZF2rOzoSNdztfNVojBd5ag=";
+    sha256 = "05ahib6bjbfyj2gbqjijzg9i7x1q0r67hyph0fbrgnnadlpk2cv8";
   };
 
   outputs = [ "out" "man" "dev" "devdoc" ];
@@ -52,16 +52,16 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [
-    dbus # used for checks and pkg-config to install dbus service/s
+    dbus # used for checks and pkgconfig to install dbus service/s
     docbook_xml_dtd_412
-    docbook-xsl-nons
+    docbook_xsl
     gettext
     gobject-introspection
     gtk-doc
     libxslt
     meson
     ninja
-    pkg-config
+    pkgconfig
     python3
     vala
     wrapGAppsHook

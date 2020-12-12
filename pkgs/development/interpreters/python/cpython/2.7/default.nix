@@ -18,17 +18,12 @@
 , ucsEncoding ? 4
 # For the Python package set
 , packageOverrides ? (self: super: {})
-, pkgsBuildBuild
-, pkgsBuildHost
-, pkgsBuildTarget
-, pkgsHostHost
-, pkgsTargetTarget
+, buildPackages
 , sourceVersion
 , sha256
 , passthruFun
 , static ? false
 , enableOptimizations ? (!stdenv.isDarwin)
-, pythonAttr ? "python${sourceVersion.major}${sourceVersion.minor}"
 }:
 
 assert x11Support -> tcl != null
@@ -39,8 +34,8 @@ assert x11Support -> tcl != null
 with stdenv.lib;
 
 let
-  buildPackages = pkgsBuildHost;
-  inherit (passthru) pythonForBuild;
+
+  pythonForBuild = buildPackages.${"python${sourceVersion.major}${sourceVersion.minor}"};
 
   passthru = passthruFun rec {
     inherit self sourceVersion packageOverrides;
@@ -49,12 +44,7 @@ let
     executable = libPrefix;
     pythonVersion = with sourceVersion; "${major}.${minor}";
     sitePackages = "lib/${libPrefix}/site-packages";
-    inherit hasDistutilsCxxPatch;
-    pythonOnBuildForBuild = pkgsBuildBuild.${pythonAttr};
-    pythonOnBuildForHost = pkgsBuildHost.${pythonAttr};
-    pythonOnBuildForTarget = pkgsBuildTarget.${pythonAttr};
-    pythonOnHostForHost = pkgsHostHost.${pythonAttr};
-    pythonOnTargetForTarget = pkgsTargetTarget.${pythonAttr} or {};
+    inherit hasDistutilsCxxPatch pythonForBuild;
   } // {
     inherit ucsEncoding;
   };

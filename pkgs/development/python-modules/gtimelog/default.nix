@@ -54,7 +54,7 @@ buildPythonPackage rec {
     '';
     homepage = "https://gtimelog.org/";
     license = licenses.gpl2Plus;
-    maintainers = with maintainers; [ oxzi ];
+    maintainers = with maintainers; [ ocharles oxzi ];
     platforms = platforms.unix;
   };
 }

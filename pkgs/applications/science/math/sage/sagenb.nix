@@ -46,7 +46,7 @@ buildPythonPackage rec {
   meta = with stdenv.lib; {
     description = "Sage Notebook";
     license = licenses.gpl3Plus;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
   };
 
   # let sagenb use mathjax

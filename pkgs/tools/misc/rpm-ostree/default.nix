@@ -33,20 +33,20 @@
 , json_c
 , zchunk
 , libmodulemd
-, util-linux
+, utillinux
 , sqlite
 , cppunit
 }:
 
 stdenv.mkDerivation rec {
   pname = "rpm-ostree";
-  version = "2020.8";
+  version = "2020.7";
 
   outputs = [ "out" "dev" "man" "devdoc" ];
 
   src = fetchurl {
     url = "https://github.com/coreos/${pname}/releases/download/v${version}/${pname}-${version}.tar.xz";
-    sha256 = "1iyl6bjkj3drlwds579bh25xcmlwj9lkkbdmcdanq5b3shbmpyhi";
+    sha256 = "1f8ajri6k5ni2rm8c75nydl8wcza0q6bv2bia3aqd0mr7iw31pbm";
   };
 
   nativeBuildInputs = [
@@ -89,7 +89,7 @@ stdenv.mkDerivation rec {
     json_c
     zchunk
     libmodulemd
-    util-linux # for smartcols.pc
+    utillinux # for smartcols.pc
     sqlite
     cppunit
   ];

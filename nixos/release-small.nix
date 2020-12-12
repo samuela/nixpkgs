@@ -28,7 +28,7 @@ let
 in rec {
 
   nixos = {
-    inherit (nixos') channel manual options iso_minimal amazonImage dummy;
+    inherit (nixos') channel manual options iso_minimal dummy;
     tests = {
       inherit (nixos'.tests)
         containers-imperative
@@ -92,7 +92,6 @@ in rec {
       [ "nixos.channel"
         "nixos.dummy.x86_64-linux"
         "nixos.iso_minimal.x86_64-linux"
-        "nixos.amazonImage.x86_64-linux"
         "nixos.manual.x86_64-linux"
         "nixos.tests.boot.biosCdrom.x86_64-linux"
         "nixos.tests.containers-imperative.x86_64-linux"

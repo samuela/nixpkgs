@@ -1,20 +1,17 @@
-{ stdenv, fetchurl, unzip, makeWrapper
-, cairo, fontconfig, freetype, gdk-pixbuf, glib
-, glibc, gtk2, libX11, nspr, nss, pango, gconf
+{ stdenv, fetchurl, cairo, fontconfig, freetype, gdk-pixbuf, glib
+, glibc, gtk2, libX11, makeWrapper, nspr, nss, pango, unzip, gconf
 , libxcb, libXi, libXrender, libXext
 }:
-
 let
-  upstream-info = (stdenv.lib.importJSON ../../../../applications/networking/browsers/chromium/upstream-info.json).stable.chromedriver;
   allSpecs = {
     x86_64-linux = {
       system = "linux64";
-      sha256 = upstream-info.sha256_linux;
+      sha256 = "0absr1fp2h87gpyw6jxj2f08sbhkkh3pf13145hfyzdvajj5rfjy";
     };
 
     x86_64-darwin = {
       system = "mac64";
-      sha256 = upstream-info.sha256_darwin;
+      sha256 = "1p9k92fgyx0xis6r50vhcpx3iws2gaspq3dnpigglv3bj9yg8zvi";
     };
   };
 
@@ -28,10 +25,10 @@ let
     libX11 nspr nss pango libXrender
     gconf libxcb libXext libXi
   ];
-
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   pname = "chromedriver";
-  version = upstream-info.version;
+  version = "85.0.4183.87";
 
   src = fetchurl {
     url = "https://chromedriver.storage.googleapis.com/${version}/chromedriver_${spec.system}.zip";
@@ -50,18 +47,10 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = with stdenv.lib; {
-    homepage = "https://chromedriver.chromium.org/";
+    homepage = "https://sites.google.com/a/chromium.org/chromedriver";
     description = "A WebDriver server for running Selenium tests on Chrome";
-    longDescription = ''
-      WebDriver is an open source tool for automated testing of webapps across
-      many browsers. It provides capabilities for navigating to web pages, user
-      input, JavaScript execution, and more. ChromeDriver is a standalone
-      server that implements the W3C WebDriver standard.
-    '';
     license = licenses.bsd3;
-    maintainers = with maintainers; [ goibhniu marsam primeos ];
-    # Note from primeos: By updating Chromium I also update Google Chrome and
-    # ChromeDriver.
+    maintainers = [ maintainers.goibhniu maintainers.marsam ];
     platforms = attrNames allSpecs;
   };
 }

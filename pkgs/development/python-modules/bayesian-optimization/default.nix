@@ -5,13 +5,11 @@
 , scikitlearn
 , scipy
 , pytest
-, isPy27
 }:
 
 buildPythonPackage rec {
   pname = "bayesian-optimization";
   version = "1.2.0";
-  disabled = isPy27;
 
   src = fetchFromGitHub {
     owner = "fmfn";

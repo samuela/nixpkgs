@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "rdkafka";
-  version = "1.5.2";
+  version = "1.4.4";
 
   src = fetchFromGitHub {
     owner = "edenhill";
     repo = "librdkafka";
     rev = "v${version}";
-    sha256 = "0qm9rvvkqypqh0vpgkrlqgaxkqdvs3finpr5niwxc6ypblc3ir1g";
+    sha256 = "0y4m29wyvhhxb7fap9z07zwgcqlr4ifwynf8a7yp5ldjpzfzxpix";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -28,6 +28,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/edenhill/librdkafka";
     license = licenses.bsd2;
     platforms = platforms.linux ++ platforms.darwin;
-    maintainers = with maintainers; [ commandodev ];
+    maintainers = with maintainers; [ boothead ];
   };
 }

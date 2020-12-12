@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, makeWrapper, lib
-, dnsutils, coreutils, openssl, nettools, util-linux, procps }:
+, dnsutils, coreutils, openssl, nettools, utillinux, procps }:
 
 stdenv.mkDerivation rec {
   pname = "testssl.sh";
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
     nettools  # for hostname
     openssl   # for openssl
     procps    # for ps
-    util-linux # for hexdump
+    utillinux # for hexdump
   ];
 
   postPatch = ''

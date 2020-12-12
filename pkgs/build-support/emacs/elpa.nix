@@ -7,17 +7,8 @@ with lib;
 { pname
 , version
 , src
-, meta ? {}
 , ...
 }@args:
-
-let
-
-  defaultMeta = {
-    homepage = args.src.meta.homepage or "https://elpa.gnu.org/packages/${pname}.html";
-  };
-
-in
 
 import ./generic.nix { inherit lib stdenv emacs texinfo; } ({
 
@@ -32,8 +23,6 @@ import ./generic.nix { inherit lib stdenv emacs texinfo; } ({
 
     runHook postInstall
   '';
-
-  meta = defaultMeta // meta;
 }
 
 // removeAttrs args [ "files" "fileSpecs"

@@ -28,6 +28,5 @@ stdenv.mkDerivation rec {
     license = licenses.gpl2;
     maintainers = with maintainers; [ funfunctor fpletz ];
     platforms = platforms.all;
-    broken = stdenv.isDarwin; # requires DirectHW
   };
 }

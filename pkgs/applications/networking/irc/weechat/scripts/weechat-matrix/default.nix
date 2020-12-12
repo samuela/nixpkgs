@@ -20,17 +20,15 @@ let
     requests
     python_magic
   ]);
-
-  version = "0.2.0";
 in buildPythonPackage {
   pname = "weechat-matrix";
-  inherit version;
+  version = "0.1.0";
 
   src = fetchFromGitHub {
     owner = "poljar";
     repo = "weechat-matrix";
-    rev = version;
-    hash = "sha256-qsTdF9mGHac4rPs53mgoOElcujicRNXbJ7GsoptWSGc=";
+    rev = "65a5db7291439b6132e35e8cc09ed901614fabf6";
+    sha256 = "0m3k5vrv5ab1aw1mjd0r8d71anwqzvncvv9v5zx9xp1i188sdm8x";
   };
 
   propagatedBuildInputs = [

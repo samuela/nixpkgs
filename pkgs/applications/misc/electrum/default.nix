@@ -19,7 +19,15 @@
 }:
 
 let
-  version = "4.0.7";
+  version = "4.0.4";
+
+  # electrum is not compatible with dnspython 2.0.0 yet
+  # use the latest 1.x release instead
+  py = python3.override {
+    packageOverrides = self: super: {
+      dnspython = super.dnspython_1;
+    };
+  };
 
   libsecp256k1_name =
     if stdenv.isLinux then "libsecp256k1.so.0"
@@ -35,7 +43,7 @@ let
     owner = "spesmilo";
     repo = "electrum";
     rev = version;
-    sha256 = "06vcbj9p96d8v4xjlygzr74lqllb9adn8k0racajzq61ijb0imi2";
+    sha256 = "0bzvyfqnd0r0l8syf95hr3nsh8rmmmcs74bvc7v04v0nm5m0fmf1";
 
     extraPostFetch = ''
       mv $out ./all
@@ -44,13 +52,13 @@ let
   };
 in
 
-python3.pkgs.buildPythonApplication {
+py.pkgs.buildPythonApplication {
   pname = "electrum";
   inherit version;
 
   src = fetchurl {
     url = "https://download.electrum.org/${version}/Electrum-${version}.tar.gz";
-    sha256 = "0k5xf97ga3ixd02g1y6v84hbxd8yhvpj5iz2rhxs8wfnkfwibzh4";
+    sha256 = "03dc5jwgp18sism5v4lbqfyn2zljchng8j2yi07yf8i01ivy2mmv";
   };
 
   postUnpack = ''
@@ -60,18 +68,19 @@ python3.pkgs.buildPythonApplication {
 
   nativeBuildInputs = stdenv.lib.optionals enableQt [ wrapQtAppsHook ];
 
-  propagatedBuildInputs = with python3.pkgs; [
+  propagatedBuildInputs = with py.pkgs; [
     aiohttp
     aiohttp-socks
     aiorpcx
     attrs
     bitstring
-    cryptography
     dnspython
+    ecdsa
     jsonrpclib-pelix
     matplotlib
     pbkdf2
     protobuf
+    pycryptodomex
     pysocks
     qrcode
     requests
@@ -112,15 +121,10 @@ python3.pkgs.buildPythonApplication {
     wrapQtApp $out/bin/electrum
   '';
 
-  checkInputs = with python3.pkgs; [ pytestCheckHook pycryptodomex ];
+  checkInputs = with py.pkgs; [ pytest ];
 
-  pytestFlagsArray = [ "electrum/tests" ];
-
-  disabledTests = [
-    "test_loop"  # test tries to bind 127.0.0.1 causing permission error
-  ];
-
-  postCheck = ''
+  checkPhase = ''
+    py.test electrum/tests
     $out/bin/electrum help >/dev/null
   '';
 
@@ -150,6 +154,6 @@ python3.pkgs.buildPythonApplication {
     homepage = "https://electrum.org/";
     license = licenses.mit;
     platforms = platforms.all;
-    maintainers = with maintainers; [ ehmry joachifm np prusnak ];
+    maintainers = with maintainers; [ ehmry joachifm np ];
   };
 }

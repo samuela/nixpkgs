@@ -245,11 +245,7 @@ in {
         Group = "hass";
         Restart = "on-failure";
         ProtectSystem = "strict";
-        ReadWritePaths = let
-          cfgPath = [ "config" "homeassistant" "allowlist_external_dirs" ];
-          value = attrByPath cfgPath [] cfg;
-          allowPaths = if isList value then value else singleton value;
-        in [ "${cfg.configDir}" ] ++ allowPaths;
+        ReadWritePaths = "${cfg.configDir}";
         KillSignal = "SIGINT";
         PrivateTmp = true;
         RemoveIPC = true;

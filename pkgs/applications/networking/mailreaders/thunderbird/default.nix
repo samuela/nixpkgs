@@ -2,7 +2,6 @@
 , bzip2
 , cargo
 , common-updater-scripts
-, copyDesktopItems
 , coreutils
 , curl
 , dbus
@@ -33,7 +32,7 @@
 , nasm
 , nodejs
 , nspr
-, nss_3_53
+, nss
 , pango
 , perl
 , pkgconfig
@@ -71,19 +70,18 @@ assert waylandSupport -> gtk3Support == true;
 
 stdenv.mkDerivation rec {
   pname = "thunderbird";
-  version = "78.5.1";
+  version = "78.4.2";
 
   src = fetchurl {
     url =
       "mirror://mozilla/thunderbird/releases/${version}/source/thunderbird-${version}.source.tar.xz";
     sha512 =
-      "202s2h9fsvg4chy93rgxdf4vlavf3wbp9vqgh0nrgk5wcdhz17144vhw1bmxia8hf99snq2a3ix6haidwl8d2n6l2nfsjzcnphhxd9z";
+      "1bd8z6fm2nky4p3qxc5jh9dca7v7g77i6kdn6p5dzzm4gyadqvk00bfa4nzglzi9nwwyld14r3ydjd6ms012yk07q4aqdsrf51b9k4y";
   };
 
   nativeBuildInputs = [
     autoconf213
     cargo
-    copyDesktopItems
     gnused
     llvmPackages.llvm
     m4
@@ -120,7 +118,7 @@ stdenv.mkDerivation rec {
     libvpx
     libwebp
     nspr
-    nss_3_53
+    nss
     pango
     perl
     sqlite
@@ -144,7 +142,7 @@ stdenv.mkDerivation rec {
 
   NIX_CFLAGS_COMPILE =[
     "-I${glib.dev}/include/gio-unix-2.0"
-    "-I${nss_3_53.dev}/include/nss"
+    "-I${nss.dev}/include/nss"
   ];
 
   patches = [
@@ -259,8 +257,8 @@ stdenv.mkDerivation rec {
 
   doCheck = false;
 
-  desktopItems = [
-    (makeDesktopItem {
+  postInstall = let
+    desktopItem = makeDesktopItem {
       categories = lib.concatStringsSep ";" [ "Application" "Network" ];
       desktopName = "Thunderbird";
       genericName = "Mail Reader";
@@ -280,12 +278,12 @@ stdenv.mkDerivation rec {
         "x-scheme-handler/snews"
         "x-scheme-handler/nntp"
       ];
-    })
-  ];
-
-  postInstall = ''
+    };
+  in ''
     # TODO: Move to a dev output?
     rm -rf $out/include $out/lib/thunderbird-devel-* $out/share/idl
+
+    ${desktopItem.buildCommand}
   '';
 
   preFixup = ''
@@ -323,8 +321,6 @@ stdenv.mkDerivation rec {
       gnugrep curl runtimeShell;
   };
 
-  requiredSystemFeatures = [ "big-parallel" ];
-
   meta = with stdenv.lib; {
     description = "A full-featured e-mail client";
     homepage = "https://www.thunderbird.net";
@@ -336,5 +332,6 @@ stdenv.mkDerivation rec {
     ];
     platforms = platforms.linux;
     license = licenses.mpl20;
+    timeout = 28800; # eight hours
   };
 }

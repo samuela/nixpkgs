@@ -49,8 +49,7 @@ buildPythonPackage rec {
   checkPhase = ''
     py.test -k "not test_load_extern_incommon \
             and not test_load_remote_encoding \
-            and not test_load_external \
-            and not test_conf_syslog"
+            and not test_load_external"
   '';
 
   meta = with stdenv.lib; {

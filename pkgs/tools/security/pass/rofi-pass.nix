@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, pass, rofi, coreutils, util-linux, xdotool, gnugrep
+{ stdenv, fetchFromGitHub, pass, rofi, coreutils, utillinux, xdotool, gnugrep
 , libnotify, pwgen, findutils, gawk, gnused, xclip, makeWrapper
 }:
 
@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
     (pass.withExtensions (ext: [ ext.pass-otp ]))
     pwgen
     rofi
-    util-linux
+    utillinux
     xclip
     xdotool
   ];

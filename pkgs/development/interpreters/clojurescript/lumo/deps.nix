@@ -4,9 +4,9 @@
 let repos = [
       "https://repo.clojars.org/"
       "https://repo1.maven.org/"
-      "https://oss.sonatype.org/content/repositories/releases/"
-      "https://oss.sonatype.org/content/repositories/public/"
-      "https://repo.typesafe.com/typesafe/releases/"
+      "http://oss.sonatype.org/content/repositories/releases/"
+      "http://oss.sonatype.org/content/repositories/public/"
+      "http://repo.typesafe.com/typesafe/releases/"
     ];
 
 in rec {

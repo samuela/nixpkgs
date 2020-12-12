@@ -2,18 +2,16 @@
 
 buildDunePackage rec {
   pname = "ppx_blob";
-  version = "0.7.1";
-
-  useDune2 = true;
+  version = "0.4.0";
 
   src = fetchurl {
     url = "https://github.com/johnwhitington/${pname}/releases/download/${version}/ppx_blob-${version}.tbz";
-    sha256 = "0m616ri6kmawflphiwm6j4djds27v0fjvi8xjz1fq5ydc1sq8d0l";
+    sha256 = "1xmslk1mwdzhy1bydgsjlcb7h544c39hvxa8lywp8w72gaggjl16";
   };
 
-  checkInputs = [ alcotest ];
+  checkInputs = lib.optional doCheck alcotest;
   buildInputs = [ ocaml-migrate-parsetree ];
-  doCheck = lib.versionAtLeast ocaml.version "4.05";
+  doCheck = lib.versionAtLeast ocaml.version "4.03";
 
   meta = with lib; {
     homepage = "https://github.com/johnwhitington/ppx_blob";

@@ -1,42 +1,73 @@
-{ lib, buildGoModule, fetchFromGitHub, pkg-config, libsecret }:
+{ stdenv, fetchurl, lib, qtbase, qtmultimedia, qtsvg, qtdeclarative, qttools, qtgraphicaleffects, qtquickcontrols2, full
+, libsecret, libGL, libpulseaudio, glib, wrapQtAppsHook, mkDerivation }:
 
-buildGoModule rec {
+let
+  version = "1.2.3-1";
+
+  description = ''
+    An application that runs on your computer in the background and seamlessly encrypts
+    and decrypts your mail as it enters and leaves your computer.
+
+    To work, gnome-keyring service must be enabled.
+  '';
+in mkDerivation {
   pname = "protonmail-bridge";
-  version = "1.5.0";
+  inherit version;
 
-  src = fetchFromGitHub {
-    owner = "ProtonMail";
-    repo = "proton-bridge";
-    rev = "br-${version}";
-    sha256 = "lHqwKlFwz9iO7LJMGFTGCauw12z/BKnQte2sVoVkOaY=";
+  src = fetchurl {
+    url = "https://protonmail.com/download/protonmail-bridge_${version}_amd64.deb";
+    sha256 = "032ggk9fvd19fbsqkzwzwh0hpyg8gpkrin71di7zsx6ias5innw1";
   };
 
-  vendorSha256 = "eP+7fqBctX9XLCoHVJDI/qaa5tocgg3F5nfUM6dzNRg=";
+  sourceRoot = ".";
 
-  nativeBuildInputs = [ pkg-config ];
-
-  buildInputs = [ libsecret ];
-
-  buildPhase = ''
-    make BUILD_TIME= build-nogui
+  unpackCmd = ''
+    ar p "$src" data.tar.xz | tar xJ
   '';
 
   installPhase = ''
-    install -Dm555 Desktop-Bridge $out/bin/protonmail-bridge
+    mkdir -p $out/{bin,lib,share}
+
+    cp -r usr/lib/protonmail/bridge/protonmail-bridge $out/lib
+    cp -r usr/share $out
+
+    ln -s $out/lib/protonmail-bridge $out/bin/protonmail-bridge
   '';
 
-  meta = with lib; {
-    homepage = "https://github.com/ProtonMail/proton-bridge";
-    changelog = "https://github.com/ProtonMail/proton-bridge/blob/master/Changelog.md";
-    downloadPage = "https://github.com/ProtonMail/proton-bridge/releases";
-    license = licenses.gpl3;
-    maintainers = with maintainers; [ lightdiscord ];
-    description = "Use your ProtonMail account with your local e-mail client";
-    longDescription = ''
-      An application that runs on your computer in the background and seamlessly encrypts
-      and decrypts your mail as it enters and leaves your computer.
+  postFixup = let
+    rpath = lib.makeLibraryPath [
+      stdenv.cc.cc.lib
+      qtbase
+      qtquickcontrols2
+      qtgraphicaleffects
+      qtmultimedia
+      qtsvg
+      qtdeclarative
+      qttools
+      libGL
+      libsecret
+      libpulseaudio
+      glib
+    ];
+  in ''
+    patchelf \
+      --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+      --set-rpath "${rpath}" \
+      $out/lib/protonmail-bridge
 
-      To work, gnome-keyring service must be enabled.
-    '';
+    substituteInPlace $out/share/applications/ProtonMail_Bridge.desktop \
+      --replace "/usr/" "$out/" \
+      --replace "Exec=protonmail-bridge" "Exec=$out/bin/protonmail-bridge"
+  '';
+
+  buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ];
+
+  meta = with stdenv.lib; {
+    homepage = "https://www.protonmail.com/bridge";
+    license = licenses.mit;
+    platforms = [ "x86_64-linux" ];
+    maintainers = with maintainers; [ lightdiscord ];
+
+    inherit description;
   };
 }

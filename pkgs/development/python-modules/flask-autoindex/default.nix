@@ -32,7 +32,7 @@ buildPythonPackage rec {
       The result is just like mod_autoindex, but the look is more awesome!
     '';
     license = licenses.bsd2;
-    maintainers = teams.sage.members;
+    maintainers = with maintainers; [ timokau ];
     homepage = "https://pythonhosted.org/Flask-AutoIndex/";
   };
 }

@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, fetchpatch
-, autoreconfHook, util-linux, nukeReferences, coreutils
+, autoreconfHook, utillinux, nukeReferences, coreutils
 , perl, buildPackages
 , configFile ? "all"
 
@@ -49,11 +49,13 @@ let
         patchShebangs scripts
         # The arrays must remain the same length, so we repeat a flag that is
         # already part of the command and therefore has no effect.
-        substituteInPlace ./module/os/linux/zfs/zfs_ctldir.c \
-          --replace '"/usr/bin/env", "umount"' '"${util-linux}/bin/umount", "-n"' \
-          --replace '"/usr/bin/env", "mount"'  '"${util-linux}/bin/mount", "-n"'
+        substituteInPlace ./module/${optionalString isUnstable "os/linux/"}zfs/zfs_ctldir.c \
+          --replace '"/usr/bin/env", "umount"' '"${utillinux}/bin/umount", "-n"' \
+          --replace '"/usr/bin/env", "mount"'  '"${utillinux}/bin/mount", "-n"'
       '' + optionalString buildUser ''
-        substituteInPlace ./lib/libshare/os/linux/nfs.c --replace "/usr/sbin/exportfs" "${
+        substituteInPlace ./lib/libzfs/libzfs_mount.c --replace "/bin/umount"             "${utillinux}/bin/umount" \
+                                                      --replace "/bin/mount"              "${utillinux}/bin/mount"
+        substituteInPlace ./lib/libshare/${optionalString isUnstable "os/linux/"}nfs.c --replace "/usr/sbin/exportfs" "${
           # We don't *need* python support, but we set it like this to minimize closure size:
           # If it's disabled by default, no need to enable it, even if we have python enabled
           # And if it's enabled by default, only change that if we explicitly disable python to remove python from the closure
@@ -63,6 +65,7 @@ let
         substituteInPlace ./config/zfs-build.m4       --replace "\$sysconfdir/init.d"     "$out/etc/init.d" \
                                                       --replace "/etc/default"            "$out/etc/default"
         substituteInPlace ./etc/zfs/Makefile.am       --replace "\$(sysconfdir)"          "$out/etc"
+        substituteInPlace ./cmd/zed/Makefile.am       --replace "\$(sysconfdir)"          "$out/etc"
 
         substituteInPlace ./contrib/initramfs/hooks/Makefile.am \
           --replace "/usr/share/initramfs-tools/hooks" "$out/usr/share/initramfs-tools/hooks"
@@ -79,10 +82,15 @@ let
         substituteInPlace ./etc/systemd/system/Makefile.am \
           --replace '$(DESTDIR)$(systemdunitdir)' "$out"'$(DESTDIR)$(systemdunitdir)'
 
+        ${optionalString isUnstable ''
         substituteInPlace ./contrib/initramfs/conf.d/Makefile.am \
           --replace "/usr/share/initramfs-tools/conf.d" "$out/usr/share/initramfs-tools/conf.d"
         substituteInPlace ./contrib/initramfs/conf-hooks.d/Makefile.am \
           --replace "/usr/share/initramfs-tools/conf-hooks.d" "$out/usr/share/initramfs-tools/conf-hooks.d"
+        ''}
+
+        substituteInPlace ./etc/systemd/system/zfs-share.service.in \
+          --replace "/bin/rm " "${coreutils}/bin/rm "
 
         substituteInPlace ./cmd/vdev_id/vdev_id \
           --replace "PATH=/bin:/sbin:/usr/bin:/usr/sbin" \
@@ -134,7 +142,7 @@ let
       postInstall = optionalString buildKernel ''
         # Add reference that cannot be detected due to compressed kernel module
         mkdir -p "$out/nix-support"
-        echo "${util-linux}" >> "$out/nix-support/extra-refs"
+        echo "${utillinux}" >> "$out/nix-support/extra-refs"
       '' + optionalString buildUser ''
         # Remove provided services as they are buggy
         rm $out/etc/systemd/system/zfs-import-*.service
@@ -154,7 +162,7 @@ let
       '';
 
       postFixup = let
-        path = "PATH=${makeBinPath [ coreutils gawk gnused gnugrep util-linux smartmontools sysstat ]}:$PATH";
+        path = "PATH=${makeBinPath [ coreutils gawk gnused gnugrep utillinux smartmontools sysstat ]}:$PATH";
       in ''
         for i in $out/libexec/zfs/zpool.d/*; do
           sed -i '2i${path}' $i
@@ -170,17 +178,12 @@ let
           Copy-On-Write filesystem with data integrity detection and repair,
           snapshotting, cloning, block devices, deduplication, and more.
         '';
-        homepage = "https://github.com/openzfs/zfs";
+        homepage = "https://zfsonlinux.org/";
         license = licenses.cddl;
         platforms = platforms.linux;
-        maintainers = with maintainers; [ hmenke jcumming jonringer wizeman fpletz globin mic92 ];
+        maintainers = with maintainers; [ jcumming wizeman fpletz globin ];
       };
     };
-
-  linux-rt-patch = fetchpatch {
-    url = "https://github.com/openzfs/zfs/commit/ab4fb9b74e9d089fc9a261c4f41e19697ad6a4ca.patch";
-    sha256 = "1nrxmb4rhrkgncav6dzwm66l0700fi72qkkcs0w6pkm850srws36";
-  };
 in {
   # also check if kernel version constraints in
   # ./nixos/modules/tasks/filesystems/zfs.nix needs
@@ -190,11 +193,9 @@ in {
     # incompatibleKernelVersion = "4.20";
 
     # this package should point to the latest release.
-    version = "2.0.0";
+    version = "0.8.5";
 
-    sha256 = "1kriz6pg8wj98izvjc60wp23lgcp4k3mzhpkgj74np73rzgy6v8r";
-
-    extraPatches = [ linux-rt-patch ];
+    sha256 = "0vhd3zs2i83pd59nk0llml4vyk4fc178j6nhg00p6k3f6r0l655b";
   };
 
   zfsUnstable = common {
@@ -202,10 +203,9 @@ in {
     # incompatibleKernelVersion = "4.19";
 
     # this package should point to a version / git revision compatible with the latest kernel release
-    version = "2.0.0";
+    version = "2.0.0-rc6";
 
-    sha256 = "1kriz6pg8wj98izvjc60wp23lgcp4k3mzhpkgj74np73rzgy6v8r";
-
-    extraPatches = [ linux-rt-patch ];
+    sha256 = "0p027x9hsawniwa9h3yayfbcx010anwcfy45rqgkg2r91zr2nfvw";
+    isUnstable = true;
   };
 }

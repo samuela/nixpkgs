@@ -3,7 +3,7 @@
 with lib;
 
 let
-  metadataFetcher = import ./openstack-metadata-fetcher.nix {
+  metadataFetcher = import ./ec2-metadata-fetcher.nix {
     targetRoot = "/";
     wgetExtraOptions = "--retry-connrefused";
   };

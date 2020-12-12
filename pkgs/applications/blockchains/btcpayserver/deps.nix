@@ -21,8 +21,8 @@
   })
   (fetchNuGet {
     name = "BTCPayServer.Lightning.All";
-    version = "1.2.4";
-    sha256 = "1f4wgs8ijk1wmppz5lmas7l6m83szz57jyk6ak0dxhccdld9rdaj";
+    version = "1.2.3";
+    sha256 = "1vx47rb505904pz30n5jzc9x42pcfln695l31q4dv5p4fbf10g4q";
   })
   (fetchNuGet {
     name = "BTCPayServer.Lightning.Charge";
@@ -31,8 +31,8 @@
   })
   (fetchNuGet {
     name = "BTCPayServer.Lightning.CLightning";
-    version = "1.2.1";
-    sha256 = "14km69jzmnyqg19w27g6znml4z0xkm8l4j7rj0x36bw67cjmgahv";
+    version = "1.2.0";
+    sha256 = "0a47fz20ngcz90h2y01isi2h940jljcmnfy6wyknj029sii7i1zs";
   })
   (fetchNuGet {
     name = "BTCPayServer.Lightning.Common";
@@ -706,8 +706,8 @@
   })
   (fetchNuGet {
     name = "NBitcoin.Altcoins";
-    version = "2.0.21";
-    sha256 = "0xmygiwjlia7fbxy63893jb15g6fxggxxr9bbm8znd9bs3jzp2g1";
+    version = "2.0.16";
+    sha256 = "0fsdb96k5lwyq4d7h7yg91qghima08yk0bsw5cvr4h2jsfphk423";
   })
   (fetchNuGet {
     name = "NBitcoin";
@@ -726,8 +726,13 @@
   })
   (fetchNuGet {
     name = "NBitcoin";
-    version = "5.0.60";
-    sha256 = "0pin4ldfz5lfxyd47mj1ypyp8lmj0v5nq5zvygdjna956vphd39v";
+    version = "5.0.45";
+    sha256 = "102vwxwkg367yxv26hycnc7hjxlv2zvsgr8g6adw8dmzsxck5fwk";
+  })
+  (fetchNuGet {
+    name = "NBitcoin";
+    version = "5.0.51";
+    sha256 = "0rg014sl7rqscnranwyfk41xfr5ccjqyx7aidfl5mh0znz44db2g";
   })
   (fetchNuGet {
     name = "NBitpayClient";
@@ -736,8 +741,8 @@
   })
   (fetchNuGet {
     name = "NBXplorer.Client";
-    version = "3.0.19";
-    sha256 = "0nahfxdsryf5snjy87770m51v2jcry02lmb10ilsg4h2ig4pjdk4";
+    version = "3.0.17";
+    sha256 = "0xx2xshgpci9l9883zpqnmgchpizygy0hcq2wp2ch6yf3hbrj9qq";
   })
   (fetchNuGet {
     name = "NETStandard.Library";
@@ -951,8 +956,8 @@
   })
   (fetchNuGet {
     name = "Selenium.WebDriver.ChromeDriver";
-    version = "85.0.4183.8700";
-    sha256 = "0klyqmwa6yc0ibbmci51mzb2vl6n13qlk06chc9w78i0a43fs382";
+    version = "83.0.4103.3900";
+    sha256 = "17j9b637209nm5cs5sgr3vflphkhaxpm8bcjizhgj65r52gn17as";
   })
   (fetchNuGet {
     name = "Selenium.WebDriver";

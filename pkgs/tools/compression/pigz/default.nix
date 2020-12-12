@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, zlib, util-linux }:
+{ stdenv, fetchurl, zlib, utillinux }:
 
 let name = "pigz";
     version = "2.4";
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
 
   enableParallelBuilding = true;
 
-  buildInputs = [zlib] ++ stdenv.lib.optional stdenv.isLinux util-linux;
+  buildInputs = [zlib] ++ stdenv.lib.optional stdenv.isLinux utillinux;
 
   makeFlags = [ "CC=${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc" ];
 

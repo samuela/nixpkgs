@@ -13,14 +13,14 @@
 
 buildPythonPackage rec {
   pname = "csvs-to-sqlite";
-  version = "1.2";
+  version = "1.1";
   disabled = !isPy3k;
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = pname;
     rev = version;
-    sha256 = "0p99cg76d3s7jxvigh5ad04dzhmr6g62qzzh4i6h7x9aiyvdhvk4";
+    sha256 = "1xi9d8l1sf9vixzvqpz8lvhl6yqmz9x5659nvpsxinl317qzmc8m";
   };
 
   postPatch = ''

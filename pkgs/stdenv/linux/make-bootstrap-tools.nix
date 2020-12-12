@@ -47,12 +47,6 @@ in with pkgs; rec {
     stdenv.mkDerivation {
       name = "stdenv-bootstrap-tools";
 
-      meta = {
-        # Increase priority to unblock nixpkgs-unstable
-        # https://github.com/NixOS/nixpkgs/pull/104679#issuecomment-732267288
-        schedulingPriority = 200;
-      };
-
       nativeBuildInputs = [ buildPackages.nukeReferences buildPackages.cpio ];
 
       buildCommand = ''
@@ -158,7 +152,7 @@ in with pkgs; rec {
         # These needed for cross but not native tools because the stdenv
         # GCC has certain things built in statically. See
         # pkgs/stdenv/linux/default.nix for the details.
-        cp -d ${isl_0_20.out}/lib/libisl*.so* $out/lib
+        cp -d ${isl_0_17.out}/lib/libisl*.so* $out/lib
 
       '' + ''
         cp -d ${bzip2.out}/lib/libbz2.so* $out/lib
@@ -204,12 +198,6 @@ in with pkgs; rec {
 
   dist = stdenv.mkDerivation {
     name = "stdenv-bootstrap-tools";
-
-    meta = {
-      # Increase priority to unblock nixpkgs-unstable
-      # https://github.com/NixOS/nixpkgs/pull/104679#issuecomment-732267288
-      schedulingPriority = 200;
-    };
 
     buildCommand = ''
       mkdir -p $out/nix-support

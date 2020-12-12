@@ -1,25 +1,25 @@
-{ lib, fetchFromGitHub, buildGoModule }:
+{ lib, fetchFromGitHub, buildGoPackage }:
 
-buildGoModule rec {
+buildGoPackage rec {
   pname = "github-commenter";
-  version = "0.8.0";
+  version = "0.5.0";
 
   src = fetchFromGitHub {
     owner = "cloudposse";
     repo = pname;
     rev = version;
-    sha256 = "HgiCgyig+49g275G6zZ0kGTxt1TSfFK8kt+SOf4ei74=";
+    sha256 = "0y7yw7x8gqfbkqdfrwd9lffx3rrp62nz1aa86liy2dja97dacpij";
   };
 
-  vendorSha256 = "Gw+cR5sA5MGuclcvur8olmRtK04LDP5vKJ5k7yZO3B0=";
-
   goPackagePath = "github.com/cloudposse/${pname}";
+
+  goDeps = ./deps.nix;
 
   meta = with lib; {
     description = "Command line utility for creating GitHub comments on Commits, Pull Request Reviews or Issues";
     license = licenses.asl20;
     homepage = "https://github.com/cloudposse/github-commenter";
     maintainers = [ maintainers.mmahut ];
-    platforms = platforms.unix;
+    platforms = platforms.linux;
   };
 }

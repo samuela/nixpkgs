@@ -25,7 +25,6 @@
 , libpulseaudio
 , libuuid
 , libxcb
-, libxkbcommon
 , mesa
 , nspr
 , nss
@@ -41,11 +40,11 @@ let
 
   pname = "slack";
 
-  x86_64-darwin-version = "4.11.1";
-  x86_64-darwin-sha256 = "0a5rq8zhgdckwxnyjv6nrgpnj682j1rd9yc4nwvsbvpzv15kmd35";
+  x86_64-darwin-version = "4.10.3";
+  x86_64-darwin-sha256 = "0r77l57vr603xamich4h4gbdd5vdcj0sjs6yjpymfx9s0f98v8bb";
 
-  x86_64-linux-version = "4.11.1";
-  x86_64-linux-sha256 = "1r43g3xnla5aq38l3mpba8jb1gx9m2b6pr84prsclz27nr0rfm6g";
+  x86_64-linux-version = "4.10.3";
+  x86_64-linux-sha256 = "1gnjj2iyk8cwjajg8h9qpmzx10j4qjxjzciq8csg45qfzwkr3drf";
 
   version = {
     x86_64-darwin = x86_64-darwin-version;
@@ -100,7 +99,6 @@ let
       libpulseaudio
       libuuid
       libxcb
-      libxkbcommon
       mesa
       nspr
       nss

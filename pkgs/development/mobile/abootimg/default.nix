@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, coreutils, cpio, findutils, gzip, makeWrapper, util-linux }:
+{ stdenv, fetchFromGitHub, coreutils, cpio, findutils, gzip, makeWrapper, utillinux }:
 
 let
   version = "0.6";
@@ -14,7 +14,7 @@ stdenv.mkDerivation {
     sha256 = "1qgx9fxwhylgnixzkz2mzv2707f65qq7rar2rsqak536vhig1z9a";
   };
 
-  nativeBuildInputs = [ makeWrapper util-linux ];
+  nativeBuildInputs = [ makeWrapper utillinux ];
 
   postPatch = ''
     cat <<EOF > version.h

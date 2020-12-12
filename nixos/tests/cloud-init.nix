@@ -51,31 +51,29 @@ in makeTest {
     networking.hostName = "";
   };
   testScript = ''
-    # To wait until cloud-init terminates its run
-    unnamed.wait_for_unit("cloud-final.service")
-
-    unnamed.succeed("cat /tmp/cloudinit-write-file | grep -q 'cloudinit'")
+    machine.wait_for_unit("cloud-init.service")
+    machine.succeed("cat /tmp/cloudinit-write-file | grep -q 'cloudinit'")
 
     # install snakeoil ssh key and provision .ssh/config file
-    unnamed.succeed("mkdir -p ~/.ssh")
-    unnamed.succeed(
+    machine.succeed("mkdir -p ~/.ssh")
+    machine.succeed(
         "cat ${snakeOilPrivateKey} > ~/.ssh/id_snakeoil"
     )
-    unnamed.succeed("chmod 600 ~/.ssh/id_snakeoil")
+    machine.succeed("chmod 600 ~/.ssh/id_snakeoil")
 
-    unnamed.wait_for_unit("sshd.service")
+    machine.wait_for_unit("sshd.service")
 
     # we should be able to log in as the root user, as well as the created nixos user
-    unnamed.succeed(
+    machine.succeed(
         "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/id_snakeoil root@localhost 'true'"
     )
-    unnamed.succeed(
+    machine.succeed(
         "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/id_snakeoil nixos@localhost 'true'"
     )
 
     # test changing hostname via cloud-init worked
     assert (
-        unnamed.succeed(
+        machine.succeed(
             "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/id_snakeoil nixos@localhost 'hostname'"
         ).strip()
         == "test"

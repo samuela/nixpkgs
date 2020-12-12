@@ -1,11 +1,10 @@
 { stdenv, fetchurl, makeWrapper, pkgconfig, nasm, makeDesktopItem
-, alsaLib, flac, gtk2, libvorbis, libvpx, libGLU, libGL
+, flac, gtk2, libvorbis, libvpx, libGLU, libGL
 , SDL2, SDL2_mixer }:
 
 let
-  version = "20200907";
-  rev = "9257";
-  revExtra = "93f62bbad";
+  version = "20190330";
+  rev = "7470";
 
   desktopItem = makeDesktopItem {
     name = "eduke32";
@@ -23,11 +22,11 @@ in stdenv.mkDerivation {
   inherit version;
 
   src = fetchurl {
-    url = "http://dukeworld.duke4.net/eduke32/synthesis/latest/eduke32_src_${version}-${rev}-${revExtra}.tar.xz";
-    sha256 = "972630059be61ef9564a241b84ef2ee4f69fc85c19ee36ce46052ff2f1ce3bf9";
+    url = "http://dukeworld.duke4.net/eduke32/synthesis/latest/eduke32_src_${version}-${rev}.tar.xz";
+    sha256 = "09a7l23i6sygicc82w1in9hjw0jvivlf7q0vw8kcx9j98lm23mkn";
   };
 
-  buildInputs = [ alsaLib flac gtk2 libvorbis libvpx libGL libGLU SDL2 SDL2_mixer ];
+  buildInputs = [ flac gtk2 libvorbis libvpx libGL libGLU SDL2 SDL2_mixer ];
 
   nativeBuildInputs = [ makeWrapper pkgconfig ]
     ++ stdenv.lib.optional (stdenv.hostPlatform.system == "i686-linux") nasm;

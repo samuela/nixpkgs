@@ -16,6 +16,7 @@
 , enableWideVine ? false
 , enableVaapi ? false # Disabled by default due to unofficial support
 , ungoogled ? true
+, useOzone ? false
 , cupsSupport ? true
 , pulseSupport ? config.pulseaudio or stdenv.isLinux
 , commandLineArgs ? ""
@@ -34,7 +35,7 @@ let
 
     mkChromiumDerivation = callPackage ./common.nix ({
       inherit channel gnome gnomeSupport gnomeKeyringSupport proprietaryCodecs
-              cupsSupport pulseSupport;
+              cupsSupport pulseSupport useOzone;
       inherit ungoogled;
       gnChromium = gn.overrideAttrs (oldAttrs: {
         inherit (upstream-info.deps.gn) version;
@@ -42,6 +43,9 @@ let
           inherit (upstream-info.deps.gn) url rev sha256;
         };
       });
+    } // lib.optionalAttrs (lib.versionAtLeast upstream-info.version "87") {
+      useOzone = true; # YAY: https://chromium-review.googlesource.com/c/chromium/src/+/2382834 \o/
+      useVaapi = !stdenv.isAarch64; # TODO: Might be best to not set use_vaapi anymore (default is fine)
     });
 
     browser = callPackage ./browser.nix { inherit channel enableWideVine; };

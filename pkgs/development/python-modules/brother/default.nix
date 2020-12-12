@@ -4,14 +4,14 @@
 
 buildPythonPackage rec {
   pname = "brother";
-  version = "0.1.18";
+  version = "0.1.17";
   disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "bieniu";
     repo = pname;
     rev = version;
-    sha256 = "14fiwhgcgymgqsl9kcfb0597rcjxvdknhwbakpdf0xp2ph6cj266";
+    sha256 = "03gjcpbq8rwnjzplgwhwr8wb7a1zh940dr6iwnq9srklqzzj691m";
   };
 
   propagatedBuildInputs = [

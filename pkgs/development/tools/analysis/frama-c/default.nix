@@ -7,7 +7,7 @@
 let
   mkocamlpath = p: "${p}/lib/ocaml/${ocamlPackages.ocaml.version}/site-lib";
   runtimeDeps = with ocamlPackages; [
-    apron.dev
+    apron
     biniou
     camlzip
     easy-format
@@ -24,12 +24,12 @@ in
 
 stdenv.mkDerivation rec {
   pname = "frama-c";
-  version = "22.0";
-  slang   = "Titanium";
+  version = "21.1";
+  slang   = "Scandium";
 
   src = fetchurl {
     url    = "http://frama-c.com/download/frama-c-${version}-${slang}.tar.gz";
-    sha256 = "1mq1fijka95ydrla486yr4w6wdl9l7vmp512s1q00b0p6lmfwmkh";
+    sha256 = "0qq0d08dzr0dmdjysiimdqmwlzgnn932vp5kf8lfn3nl45ai09dy";
   };
 
   preConfigure = lib.optionalString stdenv.cc.isClang "configureFlagsArray=(\"--with-cpp=clang -E -C\")";
