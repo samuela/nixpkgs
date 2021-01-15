@@ -1,4 +1,4 @@
-{ channel, pname, version, build, sha256Hash }:
+{ channel, pname, version, build ? null, sha256Hash }:
 
 { alsaLib
 , bash
@@ -41,6 +41,7 @@
 , pkgsi686Linux
 , ps
 , setxkbmap
+, lib
 , stdenv
 , systemd
 , unzip
@@ -53,11 +54,13 @@
 
 let
   drvName = "android-studio-${channel}-${version}";
+  filename = "android-studio-" + (if (build != null) then "ide-${build}" else version) + "-linux.tar.gz";
+
   androidStudio = stdenv.mkDerivation {
     name = "${drvName}-unwrapped";
 
     src = fetchurl {
-      url = "https://dl.google.com/dl/android/studio/ide-zips/${version}/android-studio-ide-${build}-linux.tar.gz";
+      url = "https://dl.google.com/dl/android/studio/ide-zips/${version}/${filename}";
       sha256 = sha256Hash;
     };
 
@@ -180,7 +183,7 @@ in runCommand
     passthru = {
       unwrapped = androidStudio;
     };
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "The Official IDE for Android (${channel} channel)";
       longDescription = ''
         Android Studio is the official IDE for Android app development, based on

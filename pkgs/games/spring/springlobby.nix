@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, cmake, wxGTK30, openal, pkgconfig, curl, libtorrentRasterbar
+{ lib, stdenv, fetchurl, fetchpatch, cmake, wxGTK30, openal, pkgconfig, curl, libtorrent-rasterbar
 , libpng, libX11, gettext, boost, libnotify, gtk2, doxygen, spring
 , makeWrapper, glib, minizip, alure, pcre, jsoncpp }:
 
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake pkgconfig gettext doxygen makeWrapper ];
   buildInputs = [
-    wxGTK30 openal curl libtorrentRasterbar pcre jsoncpp
+    wxGTK30 openal curl libtorrent-rasterbar pcre jsoncpp
     boost libpng libX11 libnotify gtk2 glib minizip alure
   ];
 
@@ -26,15 +26,13 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  enableParallelBuilding = true;
-
   postInstall = ''
     wrapProgram $out/bin/springlobby \
       --prefix PATH : "${spring}/bin" \
       --set SPRING_BUNDLE_DIR "${spring}/lib"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://springlobby.info/";
     repositories.git = "git://github.com/springlobby/springlobby.git";
     description = "Cross-platform lobby client for the Spring RTS project";

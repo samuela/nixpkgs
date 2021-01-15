@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, libsoup, graphicsmagick, json-glib, wrapGAppsHook
+{ lib, stdenv, fetchurl, libsoup, graphicsmagick, json-glib, wrapGAppsHook
 , cairo, cmake, ninja, curl, perl, llvm, desktop-file-utils, exiv2, glib
 , ilmbase, gtk3, intltool, lcms2, lensfun, libX11, libexif, libgphoto2, libjpeg
 , libpng, librsvg, libtiff, openexr, osm-gps-map, pkgconfig, sqlite, libxslt
@@ -7,12 +7,12 @@
 }:
 
 stdenv.mkDerivation rec {
-  version = "3.2.1";
+  version = "3.4.0";
   pname = "darktable";
 
   src = fetchurl {
     url = "https://github.com/darktable-org/darktable/releases/download/release-${version}/darktable-${version}.tar.xz";
-    sha256 = "035rvqmw386hm0jpi14lf4dnpr5rjkalzjkyprqh42nwi3m86dkf";
+    sha256 = "6dd3de1f5ea9f94af92838c0be5ff30fdaa599aa1d737dcb562f9e0b2b2dbdda";
   };
 
   nativeBuildInputs = [ cmake ninja llvm pkgconfig intltool perl desktop-file-utils wrapGAppsHook ];
@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     )
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Virtual lighttable and darkroom for photographers";
     homepage = "https://www.darktable.org";
     license = licenses.gpl3Plus;

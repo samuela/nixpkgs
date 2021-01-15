@@ -11,6 +11,7 @@
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, GSS, ImageIO, m17n_lib, libotf
 , jansson, harfbuzz
+, dontRecurseIntoAttrs ,emacsPackagesFor
 , libgccjit, targetPlatform, makeWrapper # native-comp params
 , systemd ? null
 , withX ? !stdenv.isDarwin
@@ -40,9 +41,12 @@ assert withGTK3 -> !withGTK2 && gtk3-x11 != null;
 assert withXwidgets -> withGTK3 && webkitgtk != null;
 
 
-let
-
-in stdenv.mkDerivation {
+let emacs = stdenv.mkDerivation (lib.optionalAttrs nativeComp {
+  NATIVE_FULL_AOT = "1";
+  LIBRARY_PATH = "${lib.getLib stdenv.cc.libc}/lib";
+} // lib.optionalAttrs stdenv.isDarwin {
+  CFLAGS = "-DMAC_OS_X_VERSION_MAX_ALLOWED=101200";
+} // {
   inherit pname version patches;
 
   src = fetchurl {
@@ -87,10 +91,6 @@ in stdenv.mkDerivation {
     ''))
     ""
   ];
-
-  CFLAGS = "-DMAC_OS_X_VERSION_MAX_ALLOWED=101200";
-
-  LIBRARY_PATH = if nativeComp then "${lib.getLib stdenv.cc.libc}/lib" else "";
 
   nativeBuildInputs = [ pkgconfig makeWrapper ]
     ++ lib.optionals srcRepo [ autoreconfHook texinfo ]
@@ -155,6 +155,11 @@ in stdenv.mkDerivation {
     mv nextstep/Emacs.app $out/Applications
   '' + lib.optionalString (nativeComp && withNS) ''
     ln -snf $out/lib/emacs/*/native-lisp $out/Applications/Emacs.app/Contents/native-lisp
+  '' + lib.optionalString nativeComp ''
+    mkdir -p $out/share/emacs/native-lisp
+    $out/bin/emacs --batch \
+      --eval "(add-to-list 'comp-eln-load-path \"$out/share/emacs/native-lisp\")" \
+      -f batch-native-compile $out/share/emacs/site-lisp/site-start.el
   '';
 
   postFixup = lib.concatStringsSep "\n" [
@@ -169,9 +174,10 @@ in stdenv.mkDerivation {
 
   passthru = {
     inherit nativeComp;
+    pkgs = dontRecurseIntoAttrs (emacsPackagesFor emacs);
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "The extensible, customizable GNU text editor";
     homepage    = "https://www.gnu.org/software/emacs/";
     license     = licenses.gpl3Plus;
@@ -195,4 +201,5 @@ in stdenv.mkDerivation {
       separately.
     '';
   };
-}
+});
+in emacs

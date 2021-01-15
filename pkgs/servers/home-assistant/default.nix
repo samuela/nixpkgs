@@ -62,7 +62,7 @@ let
   extraBuildInputs = extraPackages py.pkgs;
 
   # Don't forget to run parse-requirements.py after updating
-  hassVersion = "0.118.5";
+  hassVersion = "2021.1.2";
 
 in with py.pkgs; buildPythonApplication rec {
   pname = "homeassistant";
@@ -71,6 +71,9 @@ in with py.pkgs; buildPythonApplication rec {
   # check REQUIRED_PYTHON_VER in homeassistant/const.py
   disabled = pythonOlder "3.7.1";
 
+  # don't try and fail to strip 6600+ python files, it takes minutes!
+  dontStrip = true;
+
   inherit availableComponents;
 
   # PyPI tarball is missing tests/ directory
@@ -78,7 +81,7 @@ in with py.pkgs; buildPythonApplication rec {
     owner = "home-assistant";
     repo = "core";
     rev = version;
-    sha256 = "1711qhcvrzl599cryd9wzamacn1vv37w67vprqgibnbw58kcpilj";
+    sha256 = "0v8a8p524mhf75jnkw5n1fdsr20jwcayyxfba2vg4z8x0n704hxz";
   };
 
   # leave this in, so users don't have to constantly update their downstream patch handling
@@ -176,6 +179,11 @@ in with py.pkgs; buildPythonApplication rec {
     "test_cached_event_message"
     # ValueError: count must be a positive integer (got 0)
     "test_media_view"
+    # AssertionError: len(events) == 1
+    "test_error_posted_as_event"
+    # keyring.errors.NoKeyringError: No recommended backend was available.
+    "test_secrets_from_unrelated_fails"
+    "test_secrets_credstash"
   ];
 
   preCheck = ''

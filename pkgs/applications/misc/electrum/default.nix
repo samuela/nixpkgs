@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , fetchurl
 , fetchFromGitHub
 , wrapQtAppsHook
@@ -19,7 +19,7 @@
 }:
 
 let
-  version = "4.0.7";
+  version = "4.0.9";
 
   libsecp256k1_name =
     if stdenv.isLinux then "libsecp256k1.so.0"
@@ -35,7 +35,7 @@ let
     owner = "spesmilo";
     repo = "electrum";
     rev = version;
-    sha256 = "06vcbj9p96d8v4xjlygzr74lqllb9adn8k0racajzq61ijb0imi2";
+    sha256 = "0cmdyfabllw4wnpqpdxp3l6hjnm0cvkwxn0z8ph4x54sf4zq9iz3";
 
     extraPostFetch = ''
       mv $out ./all
@@ -50,7 +50,7 @@ python3.pkgs.buildPythonApplication {
 
   src = fetchurl {
     url = "https://download.electrum.org/${version}/Electrum-${version}.tar.gz";
-    sha256 = "0k5xf97ga3ixd02g1y6v84hbxd8yhvpj5iz2rhxs8wfnkfwibzh4";
+    sha256 = "1fvjiagi78f32nxgr2rx8jas8hxfvpp1c8fpfcalvykmlhdc2gva";
   };
 
   postUnpack = ''
@@ -139,7 +139,7 @@ python3.pkgs.buildPythonApplication {
     ;
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A lightweight Bitcoin wallet";
     longDescription = ''
       An easy-to-use Bitcoin client featuring wallets generated from

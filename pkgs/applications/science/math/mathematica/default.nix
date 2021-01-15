@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , coreutils
 , patchelf
 , requireFile
@@ -12,7 +12,7 @@
 , glib
 , libssh2
 , ncurses
-, opencv2
+, opencv4
 , openssl
 , unixODBC
 , xkeyboard_config
@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
     glib
     libssh2
     ncurses
-    opencv2
+    opencv4
     openssl
     stdenv.cc.cc.lib
     unixODBC
@@ -154,7 +154,7 @@ stdenv.mkDerivation rec {
   # we did this in prefixup already
   dontPatchELF = true;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Wolfram Mathematica computational software system";
     homepage = "http://www.wolfram.com/mathematica/";
     license = licenses.unfree;

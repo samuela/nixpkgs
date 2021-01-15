@@ -16,7 +16,7 @@
 
 stdenv.mkDerivation rec {
   pname = "libfprint";
-  version = "1.90.4";
+  version = "1.90.5";
   outputs = [ "out" "devdoc" ];
 
   src = fetchFromGitLab {
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
     owner = "libfprint";
     repo = pname;
     rev = "v${version}";
-    sha256 = "0grhck0h29i7hm7npvby7pn7wdc446kv0r4mkpbssp46lqbjb96b";
+    sha256 = "1wfwka2ik4hbb5wk5dp533040sqygwswg91c3v5fvpmmixh5qx9j";
   };
 
   nativeBuildInputs = [
@@ -43,6 +43,8 @@ stdenv.mkDerivation rec {
     glib
     nss
   ];
+
+  NIX_CFLAGS_COMPILE = "-Wno-error=array-bounds";
 
   mesonFlags = [
     "-Dudev_rules_dir=${placeholder "out"}/lib/udev/rules.d"

@@ -1,4 +1,4 @@
-{ stdenv, mkDerivation, fetchFromGitHub, pkgconfig
+{ lib, stdenv, mkDerivation, fetchFromGitHub, pkgconfig
 , libXtst, libvorbis, hunspell, lzo, xz, bzip2, libiconv
 , qtbase, qtsvg, qtwebkit, qtx11extras, qttools, qmake
 , withCC ? true, opencc
@@ -10,13 +10,13 @@
 
 mkDerivation rec {
   pname = "goldendict";
-  version = "2020-05-27";
+  version = "2020-12-09";
 
   src = fetchFromGitHub {
     owner = "goldendict";
     repo = pname;
-    rev = "ec40c1dcfde6df1dc7950443b46ae22c283b1e52";
-    sha256 = "1zmnwwnpnrqfyf7vmmh38r95q2fl4cqzbkp69bcwkr0xc80wgyz7";
+    rev = "261e45a5d79f9df2fbc050292410bed0f4ef3132";
+    sha256 = "01pny06d4cmwf998hpqd7xx7mccbbasb8js1bv3rkdi1ljg01f7n";
   };
 
   patches = [
@@ -59,7 +59,7 @@ mkDerivation rec {
     wrapQtApp $out/Applications/GoldenDict.app/Contents/MacOS/GoldenDict
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "http://goldendict.org/";
     description = "A feature-rich dictionary lookup program";
     platforms = with platforms; linux ++ darwin;

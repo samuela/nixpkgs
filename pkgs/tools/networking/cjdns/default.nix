@@ -1,14 +1,14 @@
-{ stdenv, fetchFromGitHub, nodejs, which, python27, util-linux, nixosTests }:
+{ lib, stdenv, fetchFromGitHub, nodejs, which, python27, util-linux, nixosTests }:
 
 stdenv.mkDerivation rec {
   pname = "cjdns";
-  version = "21";
+  version = "21.1";
 
   src = fetchFromGitHub {
     owner = "cjdelisle";
     repo = "cjdns";
     rev = "cjdns-v${version}";
-    sha256 = "1s9d8yrdrj2gviig05jhr0fnzazb88lih0amxfk0av786rvh7ymj";
+    sha256 = "NOmk+vMZ8i0E2MjrUzksk+tkJ9XVVNEXlE5OOTNa+Y0=";
   };
 
   buildInputs = [ which python27 nodejs ] ++
@@ -31,10 +31,10 @@ stdenv.mkDerivation rec {
 
   passthru.tests.basic = nixosTests.cjdns;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://github.com/cjdelisle/cjdns";
     description = "Encrypted networking for regular people";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ ehmry ];
     platforms = platforms.linux;
   };

@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , fetchurl
 , gmp
 , readline
@@ -15,7 +15,8 @@ stdenv.mkDerivation rec {
   version = "2.11.4";
 
   src = fetchurl {
-    url = "https://pari.math.u-bordeaux.fr/pub/pari/unix/${pname}-${version}.tar.gz";
+    # Versions with current majorMinor values are at http://pari.math.u-bordeaux.fr/pub/pari/unix/${pname}-${version}.tar.gz
+    url = "https://pari.math.u-bordeaux.fr/pub/pari/OLD/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.gz";
     sha256 = "sha256-v8iPxPc1L0hA5uNSxy8DacvqikVAOxg0piafNwmXCxw=";
   };
 
@@ -46,7 +47,7 @@ stdenv.mkDerivation rec {
 
   makeFlags = [ "all" ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Computer algebra system for high-performance number theory computations";
     longDescription = ''
        PARI/GP is a widely used computer algebra system designed for fast

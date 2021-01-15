@@ -13,20 +13,29 @@
 , buildPackages
 , newScope, callPackage
 , CoreFoundation, Security
-, llvmPackages
-, pkgsBuildTarget, pkgsBuildBuild
+, pkgsBuildTarget, pkgsBuildBuild, pkgsBuildHost
 , makeRustPlatform
+, llvmPackages_5, llvm_11
 } @ args:
 
 import ./default.nix {
   rustcVersion = "1.48.0";
   rustcSha256 = "0fz4gbb5hp5qalrl9lcl8yw4kk7ai7wx511jb28nypbxninkwxhf";
 
+  llvmSharedForBuild = pkgsBuildBuild.llvm_11.override { enableSharedLibraries = true; };
+  llvmSharedForHost = pkgsBuildHost.llvm_11.override { enableSharedLibraries = true; };
+  llvmSharedForTarget = pkgsBuildTarget.llvm_11.override { enableSharedLibraries = true; };
+
+  llvmBootstrapForDarwin = llvmPackages_5;
+
+  # For use at runtime
+  llvmShared = llvm_11.override { enableSharedLibraries = true; };
+
   # Note: the version MUST be one version prior to the version we're
   # building
   bootstrapVersion = "1.47.0";
 
-  # fetch hashes by running `print-hashes.sh 1.45.2`
+  # fetch hashes by running `print-hashes.sh ${bootstrapVersion}`
   bootstrapHashes = {
     i686-unknown-linux-gnu = "84bf092130ea5216fc701871e633563fc1c01b6528f60cb0767e96cd8eec30bf";
     x86_64-unknown-linux-gnu = "d0e11e1756a072e8e246b05d54593402813d047d12e44df281fbabda91035d96";
@@ -43,4 +52,4 @@ import ./default.nix {
   ];
 }
 
-(builtins.removeAttrs args [ "fetchpatch" ])
+(builtins.removeAttrs args [ "fetchpatch" "pkgsBuildHost" "llvmPackages_5" "llvm_11"])

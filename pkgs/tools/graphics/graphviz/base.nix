@@ -1,6 +1,6 @@
 { rev, sha256, version }:
 
-{ stdenv, fetchFromGitLab, autoreconfHook, pkgconfig, cairo, expat, flex
+{ lib, stdenv, fetchFromGitLab, autoreconfHook, pkgconfig, cairo, expat, flex
 , fontconfig, gd, gettext, gts, libdevil, libjpeg, libpng, libtool, pango
 , yacc, fetchpatch, xorg ? null, ApplicationServices ? null }:
 
@@ -79,7 +79,9 @@ stdenv.mkDerivation {
       --replace /usr/bin/vimdot $out/bin/vimdot \
   '';
 
-  meta = with stdenv.lib; {
+  enableParallelBuilding = true;
+
+  meta = with lib; {
     homepage = "https://graphviz.org";
     description = "Graph visualization tools";
     license = licenses.epl10;
