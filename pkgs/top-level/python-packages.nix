@@ -3706,6 +3706,8 @@ in {
 
   javaproperties = callPackage ../development/python-modules/javaproperties { };
 
+  jaxlib = callPackage ../development/python-modules/jaxlib { };
+
   JayDeBeApi = callPackage ../development/python-modules/JayDeBeApi { };
 
   jc = callPackage ../development/python-modules/jc { };
