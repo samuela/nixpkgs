@@ -3,7 +3,7 @@
 #  * CPU/GPU: https://storage.googleapis.com/jax-releases/jax_releases.html
 #  * TPU: https://storage.googleapis.com/jax-releases/libtpu_releases.html
 
-{ lib, stdenv, fetchPypi, buildPythonPackage, isPy39
+{ autoPatchelfHook, lib, stdenv, fetchPypi, buildPythonPackage, isPy39
 , absl-py, flatbuffers, scipy
 }:
 
@@ -19,7 +19,8 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version format;
-    sha256 = "sha256-pRPXgoYO1n/uFlfGbkUlebYCSjoFvVumhNRKgAld8lA=";
+    # sha256 = "sha256-pRPXgoYO1n/uFlfGbkUlebYCSjoFvVumhNRKgAld8lA="; # macos
+    sha256 = "sha256-mytMTqoavpuRawj52MU5/iFj27SGlm8DaoQ5vd/3bss=";   # linux
     dist = "cp39";
     python = "cp39";
     platform = {
@@ -28,6 +29,11 @@ buildPythonPackage rec {
     }.${stdenv.hostPlatform.system} or (throw "unsupported platform");
   };
 
+  nativeBuildInputs = [ autoPatchelfHook ];
+  # Shared library dependencies
+  buildInputs = [ stdenv.cc.cc ];
+
+  # pip dependencies
   propagatedBuildInputs =
     [
       absl-py
