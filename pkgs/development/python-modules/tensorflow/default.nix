@@ -1,5 +1,5 @@
 { stdenv, bazel_3, buildBazelPackage, isPy3k, lib, fetchFromGitHub, symlinkJoin
-, addOpenGLRunpath, fetchpatch
+, addOpenGLRunpath, fetchpatch, patchelf
 # Python deps
 , buildPythonPackage, pythonOlder, pythonAtLeast, python
 # Python libraries
@@ -403,10 +403,18 @@ in buildPythonPackage {
   nativeBuildInputs = lib.optional cudaSupport addOpenGLRunpath;
 
   postFixup = lib.optionalString cudaSupport ''
+    set -o verbose
+    custom_patchelf=${patchelf}/bin/patchelf
+    $custom_patchelf --version
     find $out -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
       addOpenGLRunpath "$lib"
 
-      patchelf --set-rpath "${cudatoolkit}/lib:${cudatoolkit.lib}/lib:${cudnn}/lib:${nccl}/lib:$(patchelf --print-rpath "$lib")" "$lib"
+      echo
+      echo "processing patchelf"
+      cp "$lib" "$lib.orig"
+      echo "$lib"
+      echo $($custom_patchelf --print-rpath "$lib")
+      $custom_patchelf --set-rpath "${cudatoolkit}/lib:${cudatoolkit.lib}/lib:${cudnn}/lib:${nccl}/lib:$($custom_patchelf --print-rpath "$lib")" "$lib"
     done
   '';
 
