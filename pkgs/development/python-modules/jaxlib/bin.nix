@@ -56,16 +56,8 @@ buildPythonPackage rec {
       sha256 = "151p4vqli8x0iqgrzrr8piqk7d76a2xq2krf23jlb142iam5bw01";
     };
     gpu = fetchurl {
-      # Note that there's also a release targeting cuDNN 8.2, but unfortunately
-      # we don't yet have that packaged at the time of writing (02/03/2022).
-      # Check pkgs/development/libraries/science/math/cudnn/default.nix for more
-      # details.
-      url = "https://storage.googleapis.com/jax-releases/cuda11/jaxlib-${version}+cuda11.cudnn805-cp39-none-manylinux2010_x86_64.whl";
-      sha256 = "0z15rdw3a8sq51rpjmfc41ix1q095aasl79rvlib85ir6f3wh2h8";
-
-      # This is what the cuDNN 8.2 download looks like for future reference:
-      # url = "https://storage.googleapis.com/jax-releases/cuda11/jaxlib-${version}+cuda11.cudnn82-cp39-none-manylinux2010_x86_64.whl";
-      # sha256 = "000mnm2masm3sx3haddcmgw43j4gxa3m4fcm14p9nb8dnncjkgpb";
+      url = "https://storage.googleapis.com/jax-releases/cuda11/jaxlib-${version}+cuda11.cudnn82-cp39-none-manylinux2010_x86_64.whl";
+      sha256 = "1pm2vgnn27zq340wi0s2ikdj5kinidw4k1q0z984799xf1b6ajj3";
     };
   }.${device};
 
