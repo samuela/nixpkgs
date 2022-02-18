@@ -34,7 +34,7 @@
 # we fetch. When updating, try to go for the latest possible versions that are
 # still compatible with the cudatoolkit and cudnn versions available in nixpkgs.
 assert cudaSupport -> lib.versionAtLeast cudatoolkit_11.version "11.1";
-assert cudaSupport -> lib.versionAtLeast cudnn.version "8.0.5";
+assert cudaSupport -> lib.versionAtLeast cudnn.version "8.2";
 
 let
   device = if cudaSupport then "gpu" else "cpu";

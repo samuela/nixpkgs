@@ -4154,8 +4154,8 @@ in {
 
   jaxlib-bin = callPackage ../development/python-modules/jaxlib/bin.nix {
     cudaSupport = pkgs.config.cudaSupport or false;
-    cudatoolkit_11 = pkgs.cudatoolkit_11_4;
-    cudnn = pkgs.cudnn_8_3_cudatoolkit_11_4;
+    cudatoolkit_11 = pkgs.cudatoolkit_11_5;
+    cudnn = pkgs.cudnn_8_3_cudatoolkit_11_5;
   };
 
   jaxlib-build = callPackage ../development/python-modules/jaxlib {
