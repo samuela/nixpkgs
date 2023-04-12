@@ -7,7 +7,8 @@ GEM
     emk-sinatra-url-for (0.2.1)
       sinatra (>= 0.9.1.1)
     ffi (1.10.0)
-    git (1.5.0)
+    git (1.11.0)
+      rchardet (~> 1.8)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -47,6 +48,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rchardet (1.8.0)
     rugged (0.28.1)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
