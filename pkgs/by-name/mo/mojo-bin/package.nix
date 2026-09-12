@@ -48,17 +48,21 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   nativeBuildInputs = [
-    autoPatchelfHook
-    autoAddDriverRunpath
     makeWrapper
     unzip
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
+    autoPatchelfHook
+    autoAddDriverRunpath
   ];
 
   buildInputs = [
+    stdenv.cc.cc.lib
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
     libbsd
     # Upstream LLDB links to the non-wide ncurses, panel, and terminfo ABI.
     libtinfo
-    stdenv.cc.cc.lib
   ];
 
   dontConfigure = true;
@@ -139,7 +143,9 @@ stdenv.mkDerivation (finalAttrs: {
     import os
     import sys
     sys.path[:0] = ["$sitePackages"] + "${python3.pkgs.makePythonPath pythonDependencies}".split(":")
-    os.environ.setdefault("MODULAR_MOJO_MAX_LLDB_PLUGIN_PATH", "$sitePackages/modular/lib/libMojoLLDB.so")
+    os.environ.setdefault("MODULAR_MOJO_MAX_LLDB_PLUGIN_PATH", "$sitePackages/modular/lib/libMojoLLDB.${
+      if stdenv.hostPlatform.isDarwin then "dylib" else "so"
+    }")
     os.environ.setdefault("MODULAR_MOJO_MAX_LLDB_VISUALIZERS_PATH", "$sitePackages/modular/lib/lldb-visualizers")
     from _mojo._entrypoints import exec_lldb_dap
     exec_lldb_dap()
@@ -192,6 +198,7 @@ stdenv.mkDerivation (finalAttrs: {
       samuela
     ];
     platforms = [
+      "aarch64-darwin"
       "aarch64-linux"
       "x86_64-linux"
     ];

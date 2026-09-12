@@ -48,28 +48,38 @@ maxMojoLibs=$(wheel max-mojo-libs "$maxVersion" \
   "max_mojo_libs-$maxVersion-py3-none-any.whl")
 mblack=$(wheel mblack "$mblackVersion" "mblack-$mblackVersion-py3-none-any.whl")
 
-for systemAndTag in x86_64-linux:x86_64 aarch64-linux:aarch64; do
-  system=${systemAndTag%%:*}
-  tag=${systemAndTag#*:}
+for systemAndWheelTag in \
+  x86_64-linux:manylinux_2_34_x86_64 \
+  aarch64-linux:manylinux_2_34_aarch64 \
+  aarch64-darwin:macosx_13_0_arm64
+do
+  system=${systemAndWheelTag%%:*}
+  wheelTag=${systemAndWheelTag#*:}
   maxCore=$(wheel max-core "$maxVersion" \
-    "max_core-$maxVersion-py3-none-manylinux_2_34_$tag.whl")
-  mojo=$(wheel mojo "$version" "mojo-$version-py3-none-manylinux_2_34_$tag.whl")
+    "max_core-$maxVersion-py3-none-$wheelTag.whl")
+  mojo=$(wheel mojo "$version" \
+    "mojo-$version-py3-none-$wheelTag.whl")
   mojoCompiler=$(wheel mojo-compiler "$version" \
-    "mojo_compiler-$version-py3-none-manylinux_2_34_$tag.whl")
+    "mojo_compiler-$version-py3-none-$wheelTag.whl")
   mojoLldbLibs=$(wheel mojo-lldb-libs "$version" \
-    "mojo_lldb_libs-$version-py3-none-manylinux_2_34_$tag.whl")
-  systemJson=$(jq --null-input --compact-output \
+    "mojo_lldb_libs-$version-py3-none-$wheelTag.whl")
     --argjson maxCore "$maxCore" \
     --argjson mojo "$mojo" \
     --argjson mojoCompiler "$mojoCompiler" \
     --argjson mojoLldbLibs "$mojoLldbLibs" \
     '{ $maxCore, $mojo, $mojoCompiler, $mojoLldbLibs }')
 
-  if [[ $system == x86_64-linux ]]; then
-    x86_64Linux=$systemJson
-  else
-    aarch64Linux=$systemJson
-  fi
+  case "$system" in
+    x86_64-linux)
+      x86_64Linux=$systemJson
+      ;;
+    aarch64-linux)
+      aarch64Linux=$systemJson
+      ;;
+    aarch64-darwin)
+      aarch64Darwin=$systemJson
+      ;;
+  esac
 done
 
 jq --null-input \
@@ -81,6 +91,7 @@ jq --null-input \
   --argjson mblack "$mblack" \
   --argjson x86_64Linux "$x86_64Linux" \
   --argjson aarch64Linux "$aarch64Linux" \
+  --argjson aarch64Darwin "$aarch64Darwin" \
   '{
     $version,
     $mblackVersion,
@@ -88,6 +99,7 @@ jq --null-input \
     common: { $maxMojoLibs, $mojoCompilerMojoLibs, $mblack },
     systems: {
       "x86_64-linux": $x86_64Linux,
-      "aarch64-linux": $aarch64Linux
+      "aarch64-linux": $aarch64Linux,
+      "aarch64-darwin": $aarch64Darwin
     }
   }' > "$packageDir/sources.json"
